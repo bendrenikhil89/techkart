@@ -53,7 +53,7 @@ const Navbar = () => {
             <nav className="navbar__nav">
                 <div className="navbar__brand-wrapper">
                     <Link to="/" className="navbar__brand">TechKart
-                        <Input placeholder="Search products..." suffix={<SearchOutlined />} className="navbar__search" />
+                        <Input placeholder="Search for products, brands and more" suffix={<SearchOutlined />} className="navbar__search" />
                     </Link>
                 </div>
                 <div className="navbar__links-wrapper">

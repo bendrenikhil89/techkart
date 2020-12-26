@@ -56,7 +56,7 @@ const App = () => {
       }
       catch(err){
         localStorage.removeItem("techkart-user");
-        openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+        openNotificationWithIcon('error',err.response.statusText, "Your authorization token has expired. Please login again!");
         history.push("/login");
       }
     }
