@@ -1,0 +1,124 @@
+.navbar__container{
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    background-color: #fff;
+}
+
+.navbar__nav{
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: .5rem 1rem;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.navbar__brand{
+    display: inline-block;
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+    color:#282c3f;
+    text-decoration: none;
+}
+
+.navbar__brand:hover{
+    color: #282c3f;
+}
+
+.navbar__links{
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin:0px !important;
+    font-size: 16px;
+}
+
+.navbar__links li{
+    color: #282c3f;
+    cursor: pointer;
+}
+
+.navbar__signup{
+    display: flex;
+    align-self: center;
+    justify-content: space-between;
+    width:10vw;
+    margin: 8px 0px 16px 0px;
+    padding: 0px 15px;
+}
+
+.navbar__signup-container{
+    font-size: 0.8rem !important;
+    min-width: 8vw;
+    
+}
+
+.navbar__signup-container span{
+    font-size: 0.84rem !important;
+}
+
+.navbar__signup-container .ant-divider-horizontal{
+    margin: 8px 0px !important;
+}
+
+.navbar__brand-wrapper, .navbar__links-wrapper{
+    flex: 1;
+}
+
+.navbar__search{
+    margin-left: 15px;
+    width:30vw !important;
+    background: #fafafa;
+}
+
+.ant-input-affix-wrapper:hover{
+    border-color: #7a7d88 !important;
+    border-right-width: 1px !important;
+    z-index: 1;
+}
+
+.navbar__links li:not(:first-child){
+    margin-left:25px;
+    font-size: 14px;
+}
+
+.navbar__cart{
+    margin-left:8px;
+}
+
+.navbar__menu{
+    padding-top :3px;
+}
+
+.navbar__menu__icon-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.navbar__menu__icon{
+    font-size:1.1rem;
+    color:#7a7d88 !important;
+}
+
+.navbar__menu_text{
+    font-size: 13px;
+    color: #282c3f;
+    cursor: pointer;
+}
+
+.navbar__username{
+    padding:15px;
+    font-size: 13px;
+    font-weight: bold;
+}

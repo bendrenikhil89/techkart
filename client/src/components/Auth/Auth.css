@@ -1,0 +1,173 @@
+.login-signup__container {
+    position: relative;
+    max-width: 35rem;
+    margin: 5rem auto;
+    background: #fff;
+    width: 100%;
+    padding: 3rem 5rem 0;
+    border-radius: 1px;
+    height: 450px;
+    position: absolute; /*Can also be `fixed`*/
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    /*Solves a problem in which the content is being cut when the div is smaller than its' wrapper:*/
+    max-height: 100%;
+  }
+
+  .signup__container{
+    height:550px;
+  }
+
+  .login-signup__container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+    -webkit-transform: scale(0.98);
+            transform: scale(0.98);
+    -webkit-transition: -webkit-transform 0.28s ease-in-out;
+    transition: -webkit-transform 0.28s ease-in-out;
+    transition: transform 0.28s ease-in-out;
+    transition: transform 0.28s ease-in-out, -webkit-transform 0.28s ease-in-out;
+    z-index: -1;
+  }
+  .login-signup__container:hover::before {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+
+  .login-signup__container h1{
+      text-align: center;
+      color: #337ab7;
+  }
+  .login-signup__form-group {
+    position: relative;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-inline > .login-signup__form-group,
+.form-inline > .btn {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.login-signup__form-group .form-help {
+    position: absolute;
+    width: 100%;
+  }
+
+  .login-signup__form-group input {
+    height: 1.9rem;
+    font-size: 0.95rem;
+  }
+
+  .login-signup__form-group .login-signup__control-label {
+    position: absolute;
+    top: 0.25rem;
+    pointer-events: none;
+    padding-left: 0.125rem;
+    z-index: 1;
+    color: #b3b3b3;
+    font-size: 1rem;
+    font-weight: normal;
+    -webkit-transition: all 0.28s ease;
+    transition: all 0.28s ease;
+  }
+  .login-signup__form-group .login-signup__bar {
+    position: relative;
+    border-bottom: 0.0625rem solid #999;
+    display: block;
+  }
+  .login-signup__form-group .login-signup__bar::before {
+    content: '';
+    height: 0.125rem;
+    width: 0;
+    left: 50%;
+    bottom: -0.0625rem;
+    position: absolute;
+    background: #337ab7;
+    -webkit-transition: left 0.28s ease, width 0.28s ease;
+    transition: left 0.28s ease, width 0.28s ease;
+    z-index: 2;
+  }
+  .login-signup__form-group input,
+  .login-signup__form-group textarea {
+    display: block;
+    background: none;
+    padding: 0.125rem 0.125rem 0.0625rem;
+    font-size: 1rem;
+    border-width: 0;
+    border-color: transparent;
+    line-height: 1.9;
+    width: 100%;
+    color: transparent;
+    -webkit-transition: all 0.28s ease;
+    transition: all 0.28s ease;
+    box-shadow: none;
+  }
+
+  
+  .login-signup__form-group input:focus,
+  .login-signup__form-group input:valid{
+    color: #333;
+  }
+
+  .login-signup__form-group input:focus ~ .login-signup__control-label,
+  .login-signup__form-group input:valid ~ .login-signup__control-label,
+  .login-signup__form-group input.has-value ~ .login-signup__control-label{
+    font-size: 0.8rem;
+    color: gray;
+    top: -1rem;
+    left: 0;
+  }
+
+.login-signup__form-group input:focus {
+  outline: none;
+}
+
+.login-signup__form-group input:focus ~ .login-signup__control-label {
+  color: #337ab7;
+}
+
+
+.login-signup__form-group input:focus ~ .login-signup__bar::before {
+  width: 100%;
+  left: 0;
+}
+
+.login__forgot-password{
+    color: #2196f3;
+    margin-top: -1.45rem;
+    font-size: 13px;
+    text-align: end;
+    cursor: pointer;
+}
+
+.login-signup__button{
+    color: #fff !important;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: .125rem;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    padding: .84rem 2.14rem;
+    font-size: .81rem;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(40deg,#45cafc,#303f9f) !important;
+    display: block;
+    width: 100%;
+    border-radius: 25px;
+    margin: 40px 0px;
+}
+
+.login-signup__not-already-member{
+    text-align: end;
+}
