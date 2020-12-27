@@ -2,8 +2,6 @@ const User = require("../models/user-model");
 const jwt = require("jsonwebtoken");
 
 exports.authCheck = async(req,res,next) => {
-    console.log(req.headers);
-    console.log(req.body);
     const {authtoken} = req.headers;
     jwt.verify(authtoken, "techkart_crypto", (err,decoded) => {
         if(err) return res.status(500).json({msg: err.message});

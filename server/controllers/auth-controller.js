@@ -10,11 +10,12 @@ const Token = require("../models/token-model");
 
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
-        api_key: "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"
+        api_key: process.env.SENDGRID_API_KEY
     }
 }));
 
 exports.signUp = async(req, res) => {
+    console.log(process.env.SENDGRID_API_KEY);
     const {name, email, password} = req.body;
     try{
         let newUser = await User.findOne({ email: req.body.email }).exec();
@@ -22,7 +23,7 @@ exports.signUp = async(req, res) => {
             return res.status(400).send({msg:'This email address is already associated with another account.'});
         }
         else{
-            let hashPassword = Bcrypt.hashSync(req.body.password, 10);
+            let hashPassword = Bcrypt.hashSync(password, 10);
             try{
                 newUser = await new User({ name, email, password: hashPassword }).save();
                 try{
@@ -31,10 +32,10 @@ exports.signUp = async(req, res) => {
                         to: newUser.email,
                         from : 'bendre.nikhil.89@gmail.com',
                         subject: 'TechKart - Account Verification Link',
-                        html: 'Hello '+ user.name +',<br /><br />' + 'Please verify your account by clicking the link: \n' + req.headers.origin + '\/confirmation\/' + user.email + '\/' + token.token + '<br /><br />Thank You!\n'
+                        html: 'Hello '+ newUser.name +',<br /><br />' + 'Please verify your account by clicking the link: \n' + req.headers.origin + '\/confirmation\/' + newUser.email + '\/' + token.token + '<br /><br />Thank You!\n'
                     }, err => {
                         if (err) res.status(500).send({msg:'Technical Issue!, Please click on resend for verify your Email.'});
-                        return res.status(200).send('A verification email has been sent to ' + newUser.email + '. It will be expire after one day. If you not get verification Email click on resend token.');
+                        return res.status(200).send('A verification email has been sent to ' + newUser.email + '. It will expire after a day.');
                     })
                 }
                 catch(err){

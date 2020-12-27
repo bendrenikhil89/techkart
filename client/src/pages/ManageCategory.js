@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Row, Col, PageHeader, Input, Button, List, Card, Divider, notification, Popconfirm, Modal} from 'antd';
+import {Input, Button, List, Card, Divider, notification, Popconfirm, Modal} from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import AdminLeftNav from '../components/AdminDashboard/AdminLeftNav';
-import {create, fetchAll, update, remove} from '../utils/categories';
+import {create, fetchAll, update, remove} from '../utils/categories-util';
 import {useSelector} from 'react-redux';
 
 const ManageCategory = () => {
@@ -46,7 +46,7 @@ const ManageCategory = () => {
             openNotificationWithIcon('success','Category Updated', `${category.data.category} updated successfully!`)
         }
         catch(err){
-
+            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
         }
         setVisible(false);
         setConfirmLoading(false);
@@ -79,14 +79,6 @@ const ManageCategory = () => {
         setUpdateCategory({...updateCategory, slug, name});
     };
     
-    const handleOk = () => {
-        setConfirmLoading(true);
-        setTimeout(() => {
-          setVisible(false);
-          setConfirmLoading(false);
-        }, 2000);
-    };
-    
     const handleCancel = () => {
         setVisible(false);
     };
@@ -109,10 +101,10 @@ const ManageCategory = () => {
                         gutter: 16,
                         xs: 1,
                         sm: 2,
-                        md: 4,
+                        md: 2,
                         lg: 4,
-                        xl: 6,
-                        xxl: 3,
+                        xl: 4,
+                        xxl: 4,
                         }}
                         dataSource={categories}
                         renderItem={item => (
@@ -133,56 +125,9 @@ const ManageCategory = () => {
                     />
             </div>
         </div>
-        {/* <Row>
-            <Col span={16} offset={4}>
-                <PageHeader
-                    className="site-page-header"
-                    backIcon="false"
-                    title="Admin Dashboard"
-                />
-            </Col>
-        </Row> */}
-        {/* <Row justify="center">
-            <Col span={4}>
-                <AdminLeftNav />
-            </Col>
-            <Col span={12} style={{paddingLeft: '40px'}}>
-                <Input placeholder="Category name" allowClear value={category} onChange={e => setCategory(e.target.value)}/>
-                <Button type="primary" size="medium" style={{marginTop: '20px'}} onClick={e => createCategoryHandler(e)}>Create</Button>
-                <Divider />
-                <List
-                    grid={{
-                    gutter: 16,
-                    xs: 1,
-                    sm: 2,
-                    md: 4,
-                    lg: 4,
-                    xl: 6,
-                    xxl: 3,
-                    }}
-                    dataSource={categories}
-                    renderItem={item => (
-                    <List.Item>
-                        <Card actions={[
-                            <EditOutlined key="edit" onClick={() => showModal({slug: item.slug, name:item.name})} />,
-                            <Popconfirm
-                                title="Are you sure to delete this category?"
-                                onConfirm={() => removeCategoryHandler(item.slug)}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <DeleteOutlined key="ellipsis" />
-                            </Popconfirm>,
-                        ]}>{item.name}</Card>
-                    </List.Item>
-                    )}
-                />
-            </Col>
-        </Row> */}
         <Modal
             title="Update Category"
             visible={visible}
-            // onOk={handleOk}
             confirmLoading={confirmLoading}
             onCancel={handleCancel}
             centered
