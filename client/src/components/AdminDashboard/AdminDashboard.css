@@ -1,0 +1,67 @@
+.admin__wrapper{
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+}
+
+.ant-menu-submenu-selected {
+    color: #282c3f !important;
+}
+
+/***** CSS over ride of ant design classess *****/
+.ant-menu-item-selected, .ant-menu-item-selected a, .ant-menu-item-selected a:hover{
+    color: #272933 !important;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background-color: #f0f0f0 !important;
+}
+
+.ant-menu-vertical .ant-menu-item::after, .ant-menu-vertical-left .ant-menu-item::after, .ant-menu-vertical-right .ant-menu-item::after, .ant-menu-inline .ant-menu-item::after{
+    border-right: 3px solid #282c3f !important;
+}
+/****** ******/
+
+.admin__leftnav{
+    flex:1;
+    padding-right: 15px;
+}
+
+.admin__content{
+    flex:3;
+    padding-left: 15px;
+}
+
+.admin__aside{
+    list-style: none;
+}
+
+.admin__leftnav h3{
+    display: flex;
+    align-items: center;
+}
+
+.admin__leftnav .ant-divider-horizontal{
+    margin: 12px 0px;
+}
+
+.admin__leftnav-component{
+    height: calc(100vh - 140px);
+}
+
+@media screen and (max-width: 600px) {
+    .admin__wrapper{
+        flex-direction: column;
+    }
+
+    .admin__leftnav, .admin__content{
+        flex: 1;
+        padding: 15px 0px;
+    }
+
+    .admin__leftnav-component{
+        height: 100%;
+    }
+}

@@ -2,13 +2,13 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
-export default function PrivateRoute({component: Component, ...rest}) {
+export default function UserRoute({component: Component, ...rest}) {
     const {user} = useSelector(state => ({...state}));
     return (
         <Route
           {...rest}
           render={props => {
-            return user !== null ? <Component {...props} /> : <Redirect to="/login" />
+            return (user && user.role === 'subscriber') ? <Component {...props} /> : <Redirect to="/login" />
           }}
         ></Route>
     )

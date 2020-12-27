@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from './components/Navbar/Navbar';
 import { Route, Switch, useHistory} from 'react-router-dom';
 import Login from './components/Auth/Login/Login';
@@ -8,8 +8,15 @@ import {validatetoken} from './utils/auth-util';
 import {useDispatch, useSelector} from 'react-redux';
 import { notification } from 'antd';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
+import AdminRoute from './components/Routes/AdminRoute';
+import UserRoute from './components/Routes/UserRoute';
+import ManageCategory from './pages/ManageCategory';
+import ManageSubCategories from './pages/ManageSubCategories';
+import ManageProducts from './pages/ManageProducts';
+import ManageBannerImages from './pages/ManageBannerImages';
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const history = useHistory();
   const {user} = useSelector(state => ({...state}));
@@ -53,6 +60,7 @@ const App = () => {
           });
           history.push("/login");
         }
+        setLoading(false);
       }
       catch(err){
         localStorage.removeItem("techkart-user");
@@ -60,22 +68,28 @@ const App = () => {
         history.push("/login");
       }
     }
+    else{
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     persistUser();
-  }, [])
+  }, []);
+
   return (
-    <>
+    (!loading ? <>
       <Navbar />
         <Switch>
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={SignUp} />
           <Route path="/confirmation/:email/:token" exact component={Confirmation} />
-          {user !== null ? null : <LoadingSpinner />}
+          <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategory} />
+          <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
+          <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />
+          <AdminRoute path="/dashboard/admin/bannerimages" exact component={ManageBannerImages} />
         </Switch> 
-      
-    </>
+    </> : <LoadingSpinner />)
   );
 }
 

@@ -26,4 +26,3 @@ export const validatetoken = async(authtoken) => {
     };
     return axios(config);
 }
-

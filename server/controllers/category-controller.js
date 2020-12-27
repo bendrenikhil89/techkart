@@ -59,7 +59,7 @@ exports.update = async(req,res) => {
     try{
         let category = await Category.findOneAndUpdate({slug}, {name, slug: slugify(name)}, {new: true});
         if(!category) return res.status(404).json({msg: `${slug} does not exist!`})
-        return res.status(200).json({msg:`${category.name} is updated!`});
+        return res.status(200).json({category:`${category.name}`});
     }
     catch(err){
         return res.status(500).json({msg: err.message});

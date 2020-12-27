@@ -112,9 +112,10 @@
 }
 
 .navbar__menu_text{
-    font-size: 13px;
+    font-size: 11px;
     color: #282c3f;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .navbar__username{
