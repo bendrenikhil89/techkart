@@ -51,6 +51,18 @@
     height: calc(100vh - 140px);
 }
 
+.admin__uploadbanner{
+    display: inline-block;
+    padding: 6px 14px;
+    background: #282c3f;
+    color: white;
+    cursor: pointer;
+}
+
+.admin__uploadbanner:hover{
+    background: #444857;
+}
+
 @media screen and (max-width: 600px) {
     .admin__wrapper{
         flex-direction: column;

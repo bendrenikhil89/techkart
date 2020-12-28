@@ -67,7 +67,7 @@ exports.login = async(req, res) => {
         }
         else{
             let token;
-            token = jwt.sign({user: user._id, email: user.email}, "techkart_crypto", {expiresIn: '1h'});
+            token = jwt.sign({user: user._id, email: user.email}, process.env.SERVER_SECRET, {expiresIn: '1h'});
             return res.status(200).json({name: user.name, email: user.email, userId:user._id, token, role: user.role });
         }
     }
@@ -149,7 +149,7 @@ exports.resendLink = async(req, res) => {
 
 exports.validateToken = async(req,res) => {
     const {authtoken} = req.headers;
-    jwt.verify(authtoken, "techkart_crypto", (err,decoded) => {
+    jwt.verify(authtoken, process.env.SERVER_SECRET, (err,decoded) => {
     if(err) return res.status(500).json({msg: err.message});
         const {user, email, iat, exp} = decoded;
         return res.status(200).json({user, email, iat, exp});
