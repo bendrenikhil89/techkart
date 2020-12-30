@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Popconfirm, Button, List, Divider, notification, Upload, Card, Spin } from "antd";
+import { Popconfirm, Empty, List, Divider, notification, Upload, Card, Button } from "antd";
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import AdminLeftNav from '../components/AdminDashboard/AdminLeftNav';
 import '../components/AdminDashboard/AdminDashboard.css';
@@ -13,7 +13,6 @@ const ManageBannerImages = () => {
     const {email, authtoken} = user;
     const [loading, setLoading] = useState(false);
     const [bannerImages, setBannerImages] = useState([]);
-    const { Dragger } = Upload;
 
     const openNotificationWithIcon = (type, msgTitle, msgBody)  => {
         notification[type]({
@@ -36,7 +35,7 @@ const ManageBannerImages = () => {
         let file = e.target.files[0];
         if (file) {
             setLoading(true);
-            Resizer.imageFileResizer(file, 720, 720, "JPEG", 100, 0, (uri) => {
+            Resizer.imageFileResizer(file, 1920, 1080, "JPEG", 100, 0, (uri) => {
                 axios.post(`${process.env.REACT_APP_API_URL}/uploadimages`, { image: uri , email}, {
                       headers: {
                         authtoken
@@ -100,12 +99,11 @@ const ManageBannerImages = () => {
 
     return (
         <div className="admin__wrapper">
-            <Spin spinning={loading} size="large" />
             <div className="admin__leftnav">
                 <AdminLeftNav />
             </div>
             <div className="admin__content">
-                <label className="admin__uploadbanner">
+                {!loading ? <label className="admin__uploadbanner">
                     {<UploadOutlined style={{marginRight:'8px'}}/>}Choose File
                     <input
                         type="file"
@@ -113,9 +111,10 @@ const ManageBannerImages = () => {
                         accept="images/*"
                         onChange={fileUploadAndResize}
                     />
-                </label>
+                </label> : <Button type="primary" loading>Working on it</Button> }
                 <Divider />
-                    <List
+                {bannerImages.length > 0 
+                ?<List
                         grid={{
                         gutter: 16,
                         xs: 1,
@@ -153,6 +152,17 @@ const ManageBannerImages = () => {
                         </List.Item>
                         )}
                     />
+                    : <Empty
+                        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                        imageStyle={{
+                        height: 60,
+                        }}
+                        description={
+                        <span>
+                            No banner images found!
+                        </span>
+                        }
+                    />}
             </div>
         </div>
     )

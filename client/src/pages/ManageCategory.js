@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Input, Button, List, Card, Divider, notification, Popconfirm, Modal} from 'antd';
+import {Input, Button, List, Card, Divider, notification, Popconfirm, Modal, Empty} from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import AdminLeftNav from '../components/AdminDashboard/AdminLeftNav';
 import {create, fetchAll, update, remove} from '../utils/categories-util';
@@ -96,7 +96,8 @@ const ManageCategory = () => {
                 <Input placeholder="Category name" allowClear value={category} onChange={e => setCategory(e.target.value)}/>
                     <Button type="primary" size="medium" style={{marginTop: '20px'}} onClick={e => createCategoryHandler(e)}>Create</Button>
                     <Divider />
-                    <List
+                    {categories.length > 0 
+                    ?<List
                         grid={{
                         gutter: 16,
                         xs: 1,
@@ -123,6 +124,18 @@ const ManageCategory = () => {
                         </List.Item>
                         )}
                     />
+                    : <Empty
+                        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                        imageStyle={{
+                        height: 60,
+                        }}
+                        description={
+                        <span>
+                            No categories found!
+                        </span>
+                        }
+                    />
+                }
             </div>
         </div>
         <Modal

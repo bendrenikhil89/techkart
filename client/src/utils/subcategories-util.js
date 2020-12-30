@@ -4,6 +4,10 @@ export const fetchAllSubCategories = async() => {
     return await axios.get(`${process.env.REACT_APP_API_URL}/subcategories`, {}, {});
 }
 
+export const fetchLookupSubCategories = async(parent) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/lookupsubcategories`, {parent}, {});
+}
+
 export const createSubCategory = async(sub, email, authtoken) => {
     return await axios.post(`${process.env.REACT_APP_API_URL}/subcategory`, {sub, email}, {
         headers: {

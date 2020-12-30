@@ -6,11 +6,13 @@
     padding: 40px 16px;
 }
 
+
+
+/***** CSS over ride of ant design classess *****/
 .ant-menu-submenu-selected {
     color: #282c3f !important;
 }
 
-/***** CSS over ride of ant design classess *****/
 .ant-menu-item-selected, .ant-menu-item-selected a, .ant-menu-item-selected a:hover{
     color: #272933 !important;
 }
@@ -53,14 +55,14 @@
 
 .admin__uploadbanner{
     display: inline-block;
-    padding: 6px 14px;
-    background: #282c3f;
+    padding: 5px 14px;
+    background: #1890FF;
     color: white;
     cursor: pointer;
 }
 
 .admin__uploadbanner:hover{
-    background: #444857;
+    background: #40a9ff;
 }
 
 @media screen and (max-width: 600px) {

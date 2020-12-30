@@ -65,3 +65,14 @@ exports.updateSubCategory = async(req,res) => {
         return res.status(500).json({msg: err.message});
     }
 }
+
+exports.fetchLookupSubCategories = async(req, res) => {
+    const {parent} = req.body;
+    try{
+        let subcategories = await SubCategory.find({parent}).sort({createdAt : -1}).exec();
+        return res.status(200).json(subcategories);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
