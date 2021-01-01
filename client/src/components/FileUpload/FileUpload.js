@@ -5,10 +5,9 @@ import { useSelector } from "react-redux";
 import { Avatar, Button, Badge, Image, Divider, notification } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
-const FileUpload = ({ productDetails, setProductDetails, openNotificationWithIcon }) => {
+const FileUpload = ({ productDetails, setProductDetails, openNotificationWithIcon, loading, setLoading }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const { email, authtoken } = user;
-  const [loading, setLoading] = useState(false);
   let allProductImages = [...productDetails.images];
 
   const productImageUploadAndResize = (e) => {

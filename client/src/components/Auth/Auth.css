@@ -1,24 +1,27 @@
 .login-signup__container {
     position: relative;
-    max-width: 30rem;
+    max-width: 28rem;
     margin: 5rem auto;
     background: #fff;
     width: 100%;
-    padding: 3rem 5rem 0;
+    padding: 3rem;
     border-radius: 1px;
     height: 450px;
-    position: absolute; /*Can also be `fixed`*/
+    position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     margin: auto;
-    /*Solves a problem in which the content is being cut when the div is smaller than its' wrapper:*/
     max-height: 100%;
   }
 
   .signup__container{
     height:550px;
+  }
+
+  .forgotpassword__container, .passwordreset__container{
+    height: 350px;
   }
 
   .login-signup__container::before {
@@ -42,7 +45,7 @@
             transform: scale(1);
   }
 
-  .login-signup__container h1{
+  .login-signup__container h2{
       text-align: center;
       color: #337ab7;
   }
@@ -170,4 +173,12 @@
 
 .login-signup__not-already-member{
     text-align: end;
+}
+
+@media screen and (max-width:767px){
+  .login-signup__container{
+    min-height:88vh;
+    position: relative;
+    margin:0 !important;
+  }
 }

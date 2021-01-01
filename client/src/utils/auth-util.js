@@ -12,6 +12,14 @@ export const confirmation = async(email, token) => {
     return await axios.get(`${process.env.REACT_APP_API_URL}/confirmation/${email}/${token}`, {}, {});
 }
 
+export const resetPassword = async(email, token, password) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/resetpassword/${email}/${token}`, {password}, {});
+}
+
+export const forgotPassword = async(email) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/forgotpassword`, {email}, {});
+}
+
 export const resendlink = async(email) => {
     return await axios.post(`${process.env.REACT_APP_API_URL}/resendlink`, {email}, {});
 }

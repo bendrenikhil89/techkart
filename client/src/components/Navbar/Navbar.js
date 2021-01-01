@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import { Popover, Button, Divider, Input, Badge } from 'antd';
 import { UserOutlined, ShoppingCartOutlined, HeartOutlined, FundOutlined, SearchOutlined, LogoutOutlined, DashboardOutlined } from '@ant-design/icons';
 
@@ -10,7 +10,17 @@ const Navbar = () => {
     const { Search } = Input;
     const onSearch = value => console.log(value);
     const {user} = useSelector(state => ({...state}));
-    
+    const dispatch = useDispatch();
+
+    const logoutHandler = (e) => {
+        e.preventDefault();
+        dispatch({
+            type: 'LOG_OUT',
+            payload: null
+          });
+        localStorage.removeItem("techkart-user");
+    }
+
     const loginContent = (
         <div className="navbar__signup-container">
           <div className="navbar__signup">
@@ -38,7 +48,7 @@ const Navbar = () => {
                 <Divider />
                 <Button type="text" icon={<FundOutlined />}>Orders</Button>
                 <Divider />
-                <Button type="text" icon={<LogoutOutlined />}>Logout</Button>
+                <Button type="text" onClick={(e) => logoutHandler(e)} icon={<LogoutOutlined />}>Logout</Button>
             </div>
         );
     }

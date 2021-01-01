@@ -52,7 +52,7 @@ exports.fetchProduct = async(req, res) => {
 
 exports.fetchAllProducts = async(req, res) => {
     try{
-        let products = await Product.find({}).sort({createdAt: -1}).exec();
+        let products = await Product.find({}).sort([["createdAt", "desc"]]).exec();
         return res.status(200).json(products);
     }
     catch(err){

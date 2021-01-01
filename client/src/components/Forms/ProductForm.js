@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Drawer, Form, Input, Select, InputNumber, Button, notification } from 'antd';
 import { PlusOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { createProduct, updateProduct } from '../../utils/product-util';
 import { fetchLookupSubCategories } from '../../utils/subcategories-util';
 import FileUpload from '../FileUpload/FileUpload';
-var axios = require('axios');
 
 const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIcon, fetchProducts, setVisible, visible, initialState}) => {
     const [form] = Form.useForm();
-    // const [visible, setVisible] = useState(false);
     
     const {user} = useSelector(state => ({...state}));
     const {email, authtoken} = user;
+
+    const [loading, setLoading] = useState(false);
     
     const showDrawer = () => {
         setVisible(true);
@@ -22,6 +22,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
         try{
             await form.validateFields();
             try{
+                setLoading(true);
                 if(productDetails.mode === "edit"){
                     let updatedProduct = await updateProduct(productDetails, email, authtoken, productDetails.slug);
                     openNotificationWithIcon('success','Product Updated', `${updatedProduct.data.title} updated successfully!`);
@@ -38,6 +39,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 }
             }
             catch(err){
+                setLoading(false);
                 openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
             }
             
@@ -58,15 +60,24 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
 
     const categoryChangeHandler = async(value) => {
         try{
-            let subcategories =  await fetchLookupSubCategories(value);
-            setProductDetails({...productDetails, subcategories: subcategories.data, category: value });
+            let allsubcategories =  await fetchLookupSubCategories(value);
+            setProductDetails({...productDetails, allsubcategories: allsubcategories.data, category: value, subcategories : [] });
         }
         catch(err){
             openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
         }
     }
 
-    useEffect(() => form.resetFields(), [productDetails.mode]);
+    const subCategoriesChangeHandler = (value) => {
+        setProductDetails({...productDetails, subcategories: value });
+    }
+
+    useEffect(() => {
+        if(productDetails.mode === "edit"){
+            categoryChangeHandler(productDetails.category);
+        }
+        form.resetFields();
+    }, [productDetails.mode])
 
     return (
     <>
@@ -93,7 +104,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 rules={[{ required: true, message: 'Please input product title!' }]}
                 initialValue={productDetails.title}
             >
-                <Input name="title" onChange={onChangeHandler} />
+                <Input name="title" allowClear onChange={onChangeHandler} />
             </Form.Item>
 
             <Form.Item
@@ -102,7 +113,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 rules={[{ required: true, message: 'Please input product brand!' }]}
                 initialValue={productDetails.brand}
             >
-                <Input name="brand" onChange={onChangeHandler} />
+                <Input name="brand" allowClear onChange={onChangeHandler} />
             </Form.Item>
 
             <Form.Item
@@ -112,7 +123,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 rules={[{ required: true, message: 'Please input product highlights!' }]}
                 initialValue={productDetails.highlights}
             >
-                <Input.TextArea name="highlights" onChange={onChangeHandler} />
+                <Input.TextArea name="highlights" allowClear onChange={onChangeHandler} />
             </Form.Item>
 
             <Form.Item
@@ -122,7 +133,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 rules={[{ required: true, message: 'Please input product specifications!' }]}
                 initialValue={productDetails.specifications}
             >
-                <Input.TextArea name="specifications" onChange={onChangeHandler} />
+                <Input.TextArea name="specifications" allowClear onChange={onChangeHandler} />
             </Form.Item>
 
             <Form.Item
@@ -138,6 +149,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                     onChange={(e) => setProductDetails({...productDetails, price: e})}
                     name="price"
                     style={{width:'100%'}}
+                    allowClear
                 />
             </Form.Item>
 
@@ -147,7 +159,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 rules={[{ required: true, message: 'Please select product category!' }]}
                 initialValue={productDetails.mode === "edit" && productDetails.category}
             >
-                <Select onChange={categoryChangeHandler}>
+                <Select onChange={categoryChangeHandler} allowClear>
                     {productDetails.categories.length> 0 && productDetails.categories.map(c => (
                         <Select.Option key={c._id} value={c._id}>{c.name}</Select.Option>
                     ))}
@@ -158,10 +170,10 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 label="Sub Category"
                 name="subcategories"
                 rules={[{ required: true, message: 'Please select product sub category!' }]}
-                // initialValue={productDetails.mode === "edit" && productDetails.subcategories}
+                initialValue={productDetails.mode === "edit" && productDetails.subcategories.length > 0 ? productDetails.subcategories : []}
             >
-                <Select mode="multiple" onChange={(e) => setProductDetails({...productDetails, subcategory: e})}>
-                    {productDetails.subcategories.length> 0 && productDetails.subcategories.map(s => (
+                <Select mode="multiple" onChange={subCategoriesChangeHandler} allowClear>
+                    {productDetails.allsubcategories.length> 0 && productDetails.allsubcategories.map(s => (
                         <Select.Option key={s._id} value={s._id}>{s.name}</Select.Option>
                     ))}
                 </Select>
@@ -178,6 +190,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                     onChange={(e) => setProductDetails({...productDetails, quantity: e})}
                     name="quantity"
                     style={{width:'100%'}}
+                    allowClear
                 />
             </Form.Item>
 
@@ -192,6 +205,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                     onChange={(e) => setProductDetails({...productDetails, sold: e})}
                     name="sold"
                     style={{width:'100%'}}
+                    allowClear
                 />
             </Form.Item>
 
@@ -201,7 +215,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 rules={[{ required: true, message: 'Please input product color!' }]}
                 initialValue={productDetails.color}
             >
-                <Input name="color" onChange={onChangeHandler} />
+                <Input name="color" allowClear onChange={onChangeHandler} />
             </Form.Item>
 
             <Form.Item
@@ -210,7 +224,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 rules={[{ required: true, message: 'Please select product shipping option!' }]}
                 initialValue={productDetails.shipping}
             >
-                <Select placeholder="Select shipping" onChange={(e) => setProductDetails({...productDetails, shipping: e})}>
+                <Select placeholder="Select shipping" onChange={(e) => setProductDetails({...productDetails, shipping: e})} allowClear>
                     <Select.Option value="Yes">Yes</Select.Option>
                     <Select.Option value="No">No</Select.Option>
                 </Select>
@@ -221,11 +235,16 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 name="images"
                 
             >
-                <FileUpload productDetails={productDetails} setProductDetails={setProductDetails} openNotificationWithIcon={openNotificationWithIcon} />
+                <FileUpload productDetails={productDetails} 
+                    setProductDetails={setProductDetails} 
+                    openNotificationWithIcon={openNotificationWithIcon} 
+                    loading={loading}
+                    setLoading={setLoading}
+                />
             </Form.Item>
 
             <Form.Item>
-                <Button type="primary" onClick={onSubmit}>
+                <Button type="primary" onClick={onSubmit} loading={loading}>
                     Submit
                 </Button>
             </Form.Item>

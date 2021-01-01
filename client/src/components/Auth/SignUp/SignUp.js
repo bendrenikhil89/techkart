@@ -40,7 +40,7 @@ const SignUp = ({history}) => {
     return (
         <div className="login-signup__container signup__container">
             <form onSubmit={signUpHandler}>
-                <h1>Sign Up</h1>
+                <h2>Sign Up</h2>
                 <div className="login-signup__form-group">
                     <input type="text" required="required" value={name} onChange={(e) => setName(e.target.value)}/>
                     <label htmlFor="input" className="login-signup__control-label">Your name</label><i className="login-signup__bar"></i>

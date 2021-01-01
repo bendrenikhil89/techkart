@@ -33,7 +33,7 @@ const productSchema = new mongoose.Schema({
         type: ObjectId,
         ref: "Category",
     },
-    subcategory: [{
+    subcategories: [{
           type: ObjectId,
           ref: "SubCategory",
     }],
@@ -54,7 +54,6 @@ const productSchema = new mongoose.Schema({
     },
     brand: {
         type: String,
-        enum: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS", "Acer", "Dell", "HP", "MI", "MSI"],
     },
     // ratings: [{
     //     star: Number,

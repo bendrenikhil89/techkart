@@ -6,26 +6,21 @@ import SignUp from './components/Auth/SignUp/SignUp';
 import Confirmation from './components/Auth/Confirmation/Confirmation';
 import {validatetoken} from './utils/auth-util';
 import {useDispatch, useSelector} from 'react-redux';
-import { notification } from 'antd';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import AdminRoute from './components/Routes/AdminRoute';
 import UserRoute from './components/Routes/UserRoute';
-import ManageCategory from './pages/ManageCategory';
+import ManageCategories from './pages/ManageCategories';
 import ManageSubCategories from './pages/ManageSubCategories';
 import ManageProducts from './pages/ManageProducts';
 import ManageBannerImages from './pages/ManageBannerImages';
+import PasswordReset from './components/Auth/PasswordReset/PasswordReset';
+import ForgotPassword from './components/Auth/PasswordReset/ForgotPassword';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const history = useHistory();
   const {user} = useSelector(state => ({...state}));
-  const openNotificationWithIcon = (type, msgTitle, msgBody)  => {
-    notification[type]({
-      message: msgTitle,
-      description: msgBody
-    });
-  };
   
   const persistUser = async() => {
     const user = JSON.parse(localStorage.getItem("techkart-user"));
@@ -65,7 +60,6 @@ const App = () => {
       catch(err){
         setLoading(false);
         localStorage.removeItem("techkart-user");
-        openNotificationWithIcon('error',err.response.statusText, "Your authorization token has expired. Please login again!");
         history.push("/login");
       }
     }
@@ -84,8 +78,10 @@ const App = () => {
         <Switch>
           <Route path="/login" exact component={Login} />
           <Route path="/signup" exact component={SignUp} />
+          <Route path="/forgotpassword" component={ForgotPassword} />
+          <Route path="/resetpassword/:email/:token" exact component={PasswordReset} />
           <Route path="/confirmation/:email/:token" exact component={Confirmation} />
-          <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategory} />
+          <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategories} />
           <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
           <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />
           <AdminRoute path="/dashboard/admin/bannerimages" exact component={ManageBannerImages} />
