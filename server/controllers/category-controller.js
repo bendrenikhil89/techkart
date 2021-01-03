@@ -2,12 +2,12 @@ const slugify = require("slugify");
 const Category = require("../models/category-model");
 
 exports.create = async(req,res) => {
-    const {name} = req.body;
+    const {name, images} = req.body;
     try{
         let category = await Category.findOne({ name }).exec();
         if(category) return res.status(405).json({msg: `${name} already exists!`});
         try{
-            let newCategory = await new Category({name, slug: slugify(name)}).save();
+            let newCategory = await new Category({name, images, slug: slugify(name)}).save();
             return res.status(200).json({category: newCategory.name, slug: newCategory.slug});
         }
         catch(err){
@@ -55,9 +55,9 @@ exports.remove = async(req,res) => {
 
 exports.update = async(req,res) => {
     const slug = req.params.slug;
-    const {name} = req.body;
+    const {name, images} = req.body;
     try{
-        let category = await Category.findOneAndUpdate({slug}, {name, slug: slugify(name)}, {new: true});
+        let category = await Category.findOneAndUpdate({slug}, {name, images, slug: slugify(name)}, {new: true});
         if(!category) return res.status(404).json({msg: `${slug} does not exist!`})
         return res.status(200).json({category:`${category.name}`});
     }

@@ -12,6 +12,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-image-file-resizer": "^0.3.9",
+    "react-image-gallery": "^1.0.8",
+    "react-items-carousel": "^2.8.0",
     "react-redux": "^7.2.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

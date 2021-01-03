@@ -41,7 +41,7 @@ exports.fetchProduct = async(req, res) => {
     const slug = req.params.slug;
     console.log(slug);
     try{
-        let product = await Product.find({slug}).exec();
+        let product = await Product.findOne({slug}).exec();
         if(!product) return res.status(404).json({msg: `${slug} does not exist!`});
         return res.status(200).json(product);
     }
@@ -52,10 +52,45 @@ exports.fetchProduct = async(req, res) => {
 
 exports.fetchAllProducts = async(req, res) => {
     try{
-        let products = await Product.find({}).sort([["createdAt", "desc"]]).exec();
+        let products = await Product.find({})
+        .limit(parseInt(req.params.count))
+        .populate("category")
+        .populate("subcategory")
+        .sort([["createdAt", "desc"]])
+        .exec();
         return res.status(200).json(products);
     }
     catch(err){
         return res.status(500).json({msg: err.message});
     }
 }
+
+exports.fetchProductsByPageSize = async (req, res) => {
+    try {
+      const { sort, order, page, pageSize } = req.body;
+      const currentPage = page || 1;
+      const perPage = pageSize || 4;
+  
+      const products = await Product.find({})
+        .skip((currentPage - 1) * perPage)
+        .populate("category")
+        .populate("subcategory")
+        .sort([[sort, order]])
+        .limit(perPage)
+        .exec();
+  
+      res.json(products);
+    } catch (err) {
+        return res.status(500).json({msg: err.message});
+    }
+  };
+
+exports.productsCount = async (req, res) => {
+    try{
+        let total = await Product.find({}).estimatedDocumentCount().exec();
+        res.json(total);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+};

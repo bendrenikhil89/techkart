@@ -42,6 +42,9 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
                 setLoading(false);
                 openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
             }
+            finally{
+                setLoading(false);
+            }
             
         }
         catch(err){
@@ -85,7 +88,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
           <PlusOutlined /> New product
       </Button>
       <Drawer
-        title="Create Product"
+        title={productDetails.mode !== "edit" ? "Create Product" : "Edit Product"}
         width={window.innerWidth > 768 ? 650 : window.innerWidth - 75}
         placement="right"
         closable={true}
@@ -95,7 +98,7 @@ const ProductForm = ({ productDetails, setProductDetails, openNotificationWithIc
         <Form
             form={form}
             layout="vertical"
-            name="Create Product"
+            name={productDetails.mode !== "edit" ? "Create Product" : "Edit Product"}
             scrollToFirstError
         >
             <Form.Item

@@ -8,8 +8,12 @@ export const createProduct = async(product, email, authtoken) => {
     });
 }
 
-export const fetchAllProducts = async() => {
-    return await axios.get(`${process.env.REACT_APP_API_URL}/products`, {}, {});
+export const fetchProductsByPageSize = async(sort, order, page, pageSize) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/products`, {sort, order, page, pageSize},{});
+}
+
+export const fetchAllProducts = async(count = 5000) => {
+    return await axios.get(`${process.env.REACT_APP_API_URL}/products/${count}`, {}, {});
 }
 
 export const fetchProduct = async(slug) => {

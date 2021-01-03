@@ -1,0 +1,25 @@
+.dashboard__content__wrapper{
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+
+.dashboard__content__wrapper h2{
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 40px 0px;
+    position: relative;
+}
+
+.dashboard__content__wrapper h2::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    width: 5%;
+    height: 4px;
+    background: #ff4d4f;
+    margin-top: 10px;
+}

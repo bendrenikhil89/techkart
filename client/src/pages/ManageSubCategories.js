@@ -9,7 +9,7 @@ import {useSelector} from 'react-redux';
 import SubCategoryForm from '../components/Forms/SubCategoryForm';
 
 const ManageSubCategories = () => {
-    const [subCategory, setSubCategory] = useState({slug:'', name:'', mode:''});
+    const [subCategory, setSubCategory] = useState({slug:'', name:'', mode:'new'});
     const [subCategories, setSubCategories] = useState([]);
     const [category, setCategory] = useState(null);
     const [categories, setCategories] = useState([]);
@@ -38,7 +38,7 @@ const ManageSubCategories = () => {
               const newSubCategory = await createSubCategory({name: subCategory.name,parent: category}, email, authtoken);
               fetchSubCategories();
               setCategory(null);
-              setSubCategory({slug:'', name:'', mode:''});
+              setSubCategory({slug:'', name:'', mode:'new'});
               setVisible(false);
               openNotificationWithIcon('success','Sub Category Created', `${newSubCategory.data.subCategory} created successfully!`)
           }
@@ -60,7 +60,7 @@ const ManageSubCategories = () => {
               const updatedSubCategory = await updatesubCategory({name: subCategory.name, parent: category}, email, authtoken, subCategory.slug);
               fetchSubCategories();
               setCategory(null);
-              setSubCategory({slug:'', name:'', mode:''});
+              setSubCategory({slug:'', name:'', mode:'new'});
               setVisible(false);
               openNotificationWithIcon('success','Sub Category Updated', `${updatedSubCategory.data.subCategory} updated successfully!`)
           }
@@ -176,7 +176,7 @@ const ManageSubCategories = () => {
                         </Popconfirm>,
                       ]}
                     >
-                      {item.name}
+                      {`${item.name}`}
                     </Card>
                   </List.Item>
                 )}

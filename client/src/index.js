@@ -9,6 +9,7 @@ import {Provider} from 'react-redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import rootReducer from './Reducers'
 import 'antd/dist/antd.css';
+import 'react-image-gallery/styles/css/image-gallery.css'
 
 const store = createStore(rootReducer, composeWithDevTools());
 

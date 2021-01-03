@@ -1,0 +1,100 @@
+.footer__wrapper {
+    width: 100%;
+    position: relative;
+    height: auto;
+    background-color: #fff;
+    margin-top: 40px;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    padding:20px 0px;
+  }
+  .footer__wrapper .col {
+    width: 190px;
+    height: auto;
+    float: left;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding: 0px 20px 20px 20px;
+  }
+  .footer__wrapper .col h1 {
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 17px;
+    padding: 20px 0px 5px 0px;
+    color: #282c3f;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.250em;
+  }
+  .footer__wrapper .col ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  .footer__wrapper .col ul li {
+    color: #7a7d88;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 5px 0px 5px 0px;
+    cursor: pointer;
+    transition: .2s;
+    -webkit-transition: .2s;
+    -moz-transition: .2s;
+  }
+  .social ul li {
+    display: inline-block;
+    padding-right: 5px !important;
+  }
+  
+  .footer .col ul li:hover {
+    color: #ffffff;
+    transition: .1s;
+    -webkit-transition: .1s;
+    -moz-transition: .1s;
+  }
+  .clearfix {
+    clear: both;
+  }
+  @media only screen and (min-width: 1280px) {
+    .contain {
+      width: 1300px;
+      margin: 0 auto;
+    }
+  }
+  @media only screen and (max-width: 1139px) {
+    .contain .social {
+      display: block;
+    }
+    .social h1 {
+      margin: 0px;
+    }
+  }
+  @media only screen and (max-width: 950px) {
+    .footer__wrapper .col {
+      width: 33%;
+    }
+    .footer__wrapper .col h1 {
+      font-size: 14px;
+    }
+    .footer__wrapper .col ul li {
+      font-size: 13px;
+    }
+  }
+  @media only screen and (max-width: 500px) {
+      .footer__wrapper .col {
+        width: 50%;
+      }
+      .footer__wrapper .col h1 {
+        font-size: 14px;
+      }
+      .footer__wrapper .col ul li {
+        font-size: 13px;
+      }
+  }
+  @media only screen and (max-width: 340px) {
+    .footer__wrapper .col {
+      width: 100%;
+    }
+  }

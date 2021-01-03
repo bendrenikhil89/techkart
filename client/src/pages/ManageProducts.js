@@ -4,7 +4,7 @@ import '../components/AdminDashboard/AdminDashboard.css';
 import { Popconfirm, Empty, List, Divider, notification, Card, Carousel } from "antd";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import ProductForm from '../components/Forms/ProductForm';
-import { fetchAllProducts, removeProduct, fetchProduct } from '../utils/product-util';
+import { fetchAllProducts, removeProduct, fetchProduct, fetchProductsByPageSize } from '../utils/product-util';
 import { fetchAll } from '../utils/categories-util';
 import { useSelector } from "react-redux";
 
@@ -31,7 +31,6 @@ const ManageProducts = () => {
     const [loading, setLoading] = useState(false);
     const [productDetails, setProductDetails] = useState(initialState);
     const [products, setProducts] = useState([]);
-
     const [visible, setVisible] = useState(false);
 
     const { user } = useSelector((state) => ({ ...state }));
@@ -82,7 +81,7 @@ const ManageProducts = () => {
     const editProduct = async(slug) => {
         try{
             let product = await fetchProduct(slug);
-            setProductDetails({...productDetails, mode:"edit",...product.data[0]});
+            setProductDetails({...productDetails, mode:"edit",...product.data});
             setVisible(true);
         }
         catch(err){

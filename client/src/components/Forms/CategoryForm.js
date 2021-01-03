@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import { Drawer, Form, Input, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import FileUpload from '../FileUpload/FileUpload';
 
-const CategoryForm = ({category, setCategory, setVisible, visible, createCategoryHandler, updateCategoryHandler, form}) => {
+const CategoryForm = ({category, setCategory, setVisible, visible, createCategoryHandler, updateCategoryHandler, form, loading, setLoading, openNotificationWithIcon}) => {
     const showDrawer = () => {
-        if(category.mode !== "edit") setCategory({slug:'', name:'', mode:''})
+        if(category.mode !== "edit") setCategory({slug:'', name:'', mode:'', images:[]})
         setVisible(true);
     };
 
     const onClose = () => {
-        setCategory({slug:'', name:'', mode:''});
+        setCategory({slug:'', name:'', mode:'', images:[]});
         setVisible(false);
     }
 
@@ -23,7 +24,7 @@ const CategoryForm = ({category, setCategory, setVisible, visible, createCategor
                 <PlusOutlined /> New category
             </Button>
             <Drawer
-                title="Create Category"
+                title={category.mode !== "edit" ? "Create Category" : "Edit Category"}
                 width={window.innerWidth > 768 ? 650 : window.innerWidth - 75}
                 placement="right"
                 closable={true}
@@ -33,7 +34,7 @@ const CategoryForm = ({category, setCategory, setVisible, visible, createCategor
                 <Form
                     form={form}
                     layout="vertical"
-                    name="Create Category"
+                    name={category.mode !== "edit" ? "Create Category" : "Edit Category"}
                     scrollToFirstError
                 >
                     <Form.Item
@@ -44,8 +45,22 @@ const CategoryForm = ({category, setCategory, setVisible, visible, createCategor
                     >
                         <Input name="title" allowClear onChange={e => setCategory({...category, name: e.target.value})} />
                     </Form.Item>
+
+                    <Form.Item
+                        label="Images"
+                        name="images"
+                        
+                    >
+                        <FileUpload productDetails={category} 
+                            setProductDetails={setCategory} 
+                            openNotificationWithIcon={openNotificationWithIcon} 
+                            loading={loading}
+                            setLoading={setLoading}
+                        />
+                    </Form.Item>
+
                     <Form.Item>
-                        <Button type="primary" onClick={category.mode !== "edit" ? createCategoryHandler : updateCategoryHandler}>
+                        <Button type="primary" loading={loading} onClick={category.mode !== "edit" ? createCategoryHandler : updateCategoryHandler}>
                             Submit
                         </Button>
                     </Form.Item>

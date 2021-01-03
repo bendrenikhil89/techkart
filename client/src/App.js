@@ -15,6 +15,10 @@ import ManageProducts from './pages/ManageProducts';
 import ManageBannerImages from './pages/ManageBannerImages';
 import PasswordReset from './components/Auth/PasswordReset/PasswordReset';
 import ForgotPassword from './components/Auth/PasswordReset/ForgotPassword';
+import Dashboard from './pages/Dashboard';
+import { Footer } from 'antd/lib/layout/layout';
+import SiteFooter from './components/SiteFooter/SiteFooter';
+import ProductPage from './pages/ProductPage';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -73,7 +77,9 @@ const App = () => {
   }, []);
 
   return (
-    (!loading ? <>
+    (!loading ?
+      <> 
+      <div className="app__wrapper">
       <Navbar />
         <Switch>
           <Route path="/login" exact component={Login} />
@@ -81,11 +87,15 @@ const App = () => {
           <Route path="/forgotpassword" component={ForgotPassword} />
           <Route path="/resetpassword/:email/:token" exact component={PasswordReset} />
           <Route path="/confirmation/:email/:token" exact component={Confirmation} />
+          <Route path="/" exact component={Dashboard} />
+          <Route path="/product/:slug" exact component={ProductPage} />
           <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategories} />
           <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
           <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />
           <AdminRoute path="/dashboard/admin/bannerimages" exact component={ManageBannerImages} />
-        </Switch> 
+        </Switch>
+      </div>
+      <SiteFooter /> 
     </> : <LoadingSpinner />)
   );
 }

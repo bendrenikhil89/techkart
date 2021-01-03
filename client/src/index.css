@@ -9,6 +9,38 @@ body{
   background: #f7f7f7 !important;
 }
 
+#root{
+	  display: flex;
+  	flex-direction: column;
+  	min-height: 100vh;
+}
+
+.app__wrapper{
+	flex-grow: 1;
+}
+
 .ant-card-cover > * {
   height: 20vh;
+  padding: 10px 30px;
+}
+
+.image-gallery-slide .image-gallery-image{
+  height:60vh;
+  object-fit: fill !important;
+}
+
+@media screen and (max-width:768px){
+  .ant-card-cover > * {
+    height: 35vh;
+  }
+  .image-gallery-slide .image-gallery-image{
+    height:40vh;
+    object-fit: fill !important;
+  }
+}
+
+@media screen and (min-width:769px) and (max-width:1024px){
+  .ant-card-cover > * {
+    height: 16vh;
+  }
 }

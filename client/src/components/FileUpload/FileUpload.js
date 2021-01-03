@@ -15,7 +15,7 @@ const FileUpload = ({ productDetails, setProductDetails, openNotificationWithIco
     if (files) {
       for (let i = 0; i < files.length; i++) {
         setLoading(true);
-        Resizer.imageFileResizer(files[i], 720, 720, "JPEG", 100, 0, (uri) => {
+        Resizer.imageFileResizer(files[i], 540, 540, "JPEG", 100, 0, (uri) => {
             axios.post(`${process.env.REACT_APP_API_URL}/uploadimages`, { image: uri , email}, {
                   headers: {
                     authtoken
@@ -24,7 +24,6 @@ const FileUpload = ({ productDetails, setProductDetails, openNotificationWithIco
             )
             .then((res) => {
                 try{
-                    // let allProductImages = [...productDetails.images];
                     allProductImages.push(res.data);
                     setProductDetails({ ...productDetails, images: allProductImages });
                     setLoading(false);
@@ -54,7 +53,6 @@ const handleProductImageRemove = (public_id) => {
   })
   .then((res) => {
       try{
-          // let allProductImages = [...productDetails.images];
           let filteredImages = allProductImages.filter((item) => {
               return item.public_id !== public_id;
           });

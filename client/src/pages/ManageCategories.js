@@ -7,10 +7,11 @@ import {useSelector} from 'react-redux';
 import CategoryForm from '../components/Forms/CategoryForm';
 
 const ManageCategory = () => {
-    const [category, setCategory] = useState({slug:'', name:'', mode:''});
+    const [category, setCategory] = useState({slug:'', name:'', mode:'', images: []});
     const [categories, setCategories] = useState([]);
     const {user} = useSelector(state => ({...state}));
     const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [form] = Form.useForm();
     const {email, authtoken} = user;
@@ -26,15 +27,19 @@ const ManageCategory = () => {
         if(category.name.length > 1 && category.name.length < 2) return openNotificationWithIcon('error','Category Length Error', 'Please ensure that the category name has at least 2 characters');
         try{
             await form.validateFields();
+            setLoading(true);
             try{
-                const newCategory = await create(category.name, email, authtoken);
+                const newCategory = await create(category.name, category.images, email, authtoken);
                 fetchCategories();
-                setCategory({slug:'', name:'', mode:''});
+                setCategory({slug:'', name:'', mode:'', images: []});
                 setVisible(false);
                 openNotificationWithIcon('success','Category Created', `${newCategory.data.category} created successfully!`)
             }
             catch(err){
                 openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+            }
+            finally{
+              setLoading(false);
             }
         }
         catch(err){
@@ -47,15 +52,19 @@ const ManageCategory = () => {
         if(category.name.length > 1 && category.name.length < 2) return openNotificationWithIcon('error','Category Length Error', 'Please ensure that the category name has at least 2 characters');
         try{
             await form.validateFields();
+            setLoading(true);
             try{
-                const updatedCategory = await update(category.name, email, authtoken, category.slug);
+                const updatedCategory = await update(category.name, category.images, email, authtoken, category.slug);
                 fetchCategories();
-                setCategory({slug:'', name:'', mode:''});
+                setCategory({slug:'', name:'', mode:'', images: []});
                 setVisible(false);
                 openNotificationWithIcon('success','Category Updated', `${updatedCategory.data.category} updated successfully!`)
             }
             catch(err){
                 openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+            }
+            finally{
+              setLoading(false);
             }
         }
         catch(err){
@@ -85,7 +94,9 @@ const ManageCategory = () => {
     }
 
     const editCategory = async({name, slug, mode}) => {
-        setCategory({...category, slug, name, mode: "edit"});
+        let productImages = categories.find(c => c.slug===slug);
+        productImages = productImages.images;
+        setCategory({...category, slug, name, mode: "edit", images: productImages});
         setVisible(true);
     }
 
@@ -107,6 +118,9 @@ const ManageCategory = () => {
               createCategoryHandler={createCategoryHandler}
               updateCategoryHandler={updateCategoryHandler}
               form={form}
+              loading={loading}
+              setLoading={setLoading}
+              openNotificationWithIcon={openNotificationWithIcon}
             />
             <Divider />
             {categories.length > 0 ? (

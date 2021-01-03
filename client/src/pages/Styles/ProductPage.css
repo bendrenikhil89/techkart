@@ -1,0 +1,158 @@
+.product__container{
+    display: flex;
+    align-items: flex-start;
+    max-width: 1300px;
+    margin:0 auto;
+    padding: 16px;
+    margin-top:16px;
+    background: #fff;
+}
+
+.product__carousel{
+    flex:1;
+    position: sticky;
+    top: 75px;
+}
+
+.product__carousel-wrapper{
+    background: #fff;
+    border:1px solid #ddd;
+}
+
+.product__carousel-buttons{
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    padding: 20px 0px;
+}
+
+.product__carousel-button{
+    text-transform: uppercase;
+    margin: 0px 10px;
+    flex:1;
+}
+
+.product__carousel-buttonText{
+    font-size: 0.9rem;
+}
+
+.product__carousel-buttons .ant-btn-primary:first-child{
+    background: #ff9f00;
+    border:none;
+}
+
+.product__carousel-buttons .ant-btn-primary:first-child:hover{
+    background: #ffb52a;
+}
+
+.product__carousel-buttons .ant-btn-primary:last-child{
+    background: #fb641b;
+    border:none;
+}
+
+.product__carousel-buttons .ant-btn-primary:last-child:hover{
+    background: #ff7834;
+}
+
+.product__details{
+    flex:1.2;
+    background: #fff;
+    padding:0px 20px 10px 20px;
+}
+
+.product__details h1, h2, h3, h4{
+    font-weight: 600;
+}
+
+.product__details-ratingsText{
+    color:#7a7d88;
+    font-weight:600;
+    font-size:13px;
+}
+
+.product__details-highlights{
+    display: flex;
+}
+
+.product__details-highlights-columnName{
+    flex:1;
+    font-weight: 600;
+    color:#7a7d88;
+}
+
+.product__details-highlights-columnValue{
+    flex:4;
+}
+
+.product__details-highlights-columnValue ul {
+    list-style: none; /* Remove default bullets */
+  }
+  
+.product__details-highlights-columnValue ul li::before {
+    content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+    color: #bebdc3; /* Change the color */
+    font-weight: bold; /* If you want it to be bold */
+    display: inline-block; /* Needed to add space between the bullet and the text */
+    width: 1em; /* Also needed for space (tweak if needed) */
+    margin-left: -1em; /* Also needed for space (tweak if needed) */
+    font-size: 1rem;
+}
+
+.product__carousel .image-gallery-slide .image-gallery-image{
+    height:45vh !important;
+    object-fit: contain !important;
+}
+
+.product__details-specifications{
+    border:1px solid #ddd;
+    padding: 15px;
+}
+
+.product__details-specifications-header{
+    border-bottom:1px solid #ddd;
+}
+
+.product__details-spec-wrapper{
+    display: flex;
+    padding:3px 0px
+}
+
+.spec-wrapper-columnName{
+    flex:2;
+    color:#7a7d88;
+    padding: 0px 4px;
+}
+
+.spec-wrapper-columnValue{
+    flex:3;
+    padding: 0px 4px;
+}
+
+.product__details-spec-header{
+    padding: 20px 0px 0px 4px;
+    padding-top:12px;
+    font-weight:600;
+}
+
+.product__details__hr{
+    margin-top:12px;
+    border-top: 1px solid #ddd;
+}
+
+@media screen and (max-width:992px){
+    .product__container{
+        flex-direction: column;
+    }
+    .product__carousel, .product__details{
+        flex:1;
+    }
+    .product__details{
+        padding: 10px 0px;
+    }
+    .product__carousel{
+        flex:1;
+        position: relative;
+        top: 0;
+        width:100%;
+    }
+}

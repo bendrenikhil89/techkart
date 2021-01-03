@@ -5,16 +5,20 @@ import { PlusOutlined } from '@ant-design/icons';
 const SubCategoryForm = ({setVisible, visible, createSubCategoryHandler, updateSubCategoryHandler, onChange, subCategory, setSubCategory, category, setCategory, categories, form}) => {
     const showDrawer = () => {
         if(subCategory.mode !== "edit"){
-            setSubCategory({slug:'', name:'', mode:''});
+            setSubCategory({slug:'', name:'', mode:'new'});
             setCategory('');
         }
         setVisible(true);
     };
 
     const onClose = () => {
-        setSubCategory({slug:'', name:'', mode:''});
+        setSubCategory({slug:'', name:'', mode:'new'});
         setCategory('');
         setVisible(false);
+    }
+
+    const onFinish = () => {
+        form.resetFields();
     }
 
     useEffect(() => {
@@ -27,17 +31,18 @@ const SubCategoryForm = ({setVisible, visible, createSubCategoryHandler, updateS
                 <PlusOutlined /> New category
             </Button>
             <Drawer
-                title="Create Category"
+                title={subCategory.mode !== "edit" ? "Create Sub Category" : "Edit Sub Category"}
                 width={window.innerWidth > 768 ? 650 : window.innerWidth - 75}
                 placement="right"
                 closable={true}
                 onClose={onClose}
                 visible={visible}
+                onFinish={onFinish}
             >
                 <Form
                     form={form}
                     layout="vertical"
-                    name="Create Category"
+                    name={subCategory.mode !== "edit" ? "Create Sub Category" : "Edit Sub Category"}
                     scrollToFirstError
                 >
                     <Form.Item

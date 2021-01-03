@@ -4,8 +4,8 @@ export const fetchAll = async() => {
     return await axios.get(`${process.env.REACT_APP_API_URL}/categories`, {}, {});
 }
 
-export const create = async(name, email, authtoken) => {
-    return await axios.post(`${process.env.REACT_APP_API_URL}/category`, {name, email}, {
+export const create = async(name, images, email, authtoken) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/category`, {name, images, email}, {
         headers: {
             authtoken
         }
@@ -27,8 +27,8 @@ export const remove = async(authtoken, slug, email) => {
     return await axios(config);
 }
 
-export const update = async(name, email, authtoken, slug) => {
-    return await axios.put(`${process.env.REACT_APP_API_URL}/category/${slug}`, {name, email}, {
+export const update = async(name, images, email, authtoken, slug) => {
+    return await axios.put(`${process.env.REACT_APP_API_URL}/category/${slug}`, {name, images, email}, {
         headers: {
             authtoken
         }

@@ -35,7 +35,7 @@ const ForgotPassword = ({history}) => {
                 </div>
                 <button type="submit" className="login-signup__button" >Send Reset Link</button>
                 <Divider />
-                <p className="login-signup__not-already-member">Already a member? <Link to="/login">Sign In</Link></p>
+                <p className="login-signup__not-already-member">Remembered your password? <Link to="/login">Sign In</Link></p>
             </form>
         </div>
     )
