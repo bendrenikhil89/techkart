@@ -1,5 +1,6 @@
 const slugify = require("slugify");
 const Product = require("../models/product-model");
+const User = require("../models/user-model");
 
 exports.createProduct = async(req,res) => {
     req.body.product.slug = slugify(req.body.product.title);
@@ -55,7 +56,7 @@ exports.fetchAllProducts = async(req, res) => {
         let products = await Product.find({})
         .limit(parseInt(req.params.count))
         .populate("category")
-        .populate("subcategory")
+        .populate("subcategories")
         .sort([["createdAt", "desc"]])
         .exec();
         return res.status(200).json(products);
@@ -74,7 +75,7 @@ exports.fetchProductsByPageSize = async (req, res) => {
       const products = await Product.find({})
         .skip((currentPage - 1) * perPage)
         .populate("category")
-        .populate("subcategory")
+        .populate("subcategories")
         .sort([[sort, order]])
         .limit(perPage)
         .exec();
@@ -94,3 +95,101 @@ exports.productsCount = async (req, res) => {
         return res.status(500).json({msg: err.message});
     }
 };
+
+exports.postRating = async(req, res) => {
+    const {rating, email} = req.body;
+    try{
+        const product = await Product.findById(req.params.productId).exec();
+        const user = await User.findOne({ email }).exec();
+
+        const existingRatingObject = product.ratings.find(
+            (ele) => ele.postedBy.toString() === user._id.toString()
+        );
+        
+        if (existingRatingObject === undefined) {
+            let ratingAdded = await Product.findByIdAndUpdate(
+              product._id,
+              {
+                $push: { ratings: { star:rating, postedBy: user._id } },
+              },
+              { new: true }
+            ).exec();
+            res.status(200).json(ratingAdded);
+        }
+        else {
+            const ratingUpdated = await Product.updateOne(
+              {
+                ratings: { $elemMatch: existingRatingObject },
+              },
+              { $set: { "ratings.$.star": rating } },
+              { new: true }
+            ).exec();
+            res.status(200).json(ratingUpdated);
+        }
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
+
+const handleQuery = async(req,res,query) => {
+    try{
+        const products = await Product.find({$text: { $search: query} })
+        .populate("category")
+        .populate("subcategories")
+        .populate("postedBy")
+        .exec();
+        res.json(products);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
+
+const handlePrice = async(req, res, price) => {
+    try{
+        const products = await Product.find({
+            price: {
+                $gte: price[0],
+                $lte: price[1]
+            }
+        }).populate("category")
+        .populate("subcategories")
+        .populate("postedBy")
+        .exec();
+        res.json(products);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
+
+exports.searchFilters = async(req,res) => {
+    const {query, price} = req.body;
+    try{
+        if(query !== undefined){
+            await handleQuery(req,res,query);
+        }
+        if(query !== price){
+            await handlePrice(req, res, price);
+        }
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
+
+exports.fetchProductsByCategory = async(req, res) => {
+    const {category} = req.body;
+    try{
+        const products = await Product.find({category})
+        .populate("category")
+        .populate("subcategories")
+        .populate("postedBy")
+        .exec();
+        res.json(products);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}

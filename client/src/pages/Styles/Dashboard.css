@@ -23,3 +23,7 @@
     background: #ff4d4f;
     margin-top: 10px;
 }
+
+.dashboard__new-arrivals-wrapper .ant-card-cover > *, .dashboard__best-sellers-wrapper .ant-card-cover > * {
+    padding: 10px 40px;
+}

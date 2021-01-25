@@ -1,9 +1,21 @@
-import React from 'react';
-import {List, Card, Divider, notification, Popconfirm, Empty, Tooltip} from 'antd';
-import {EyeOutlined, RightOutlined, LeftOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import React, {useState, useEffect} from 'react';
+import {Tag, Card, Tooltip} from 'antd';
+import {EyeOutlined, StarFilled, ShoppingCartOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
 const ProductCard = ({p}) => {
+    const [avgRating, setAvgRating] = useState({avgRating: 0, totalRatings: 0});
+
+    const getAverageProductRating = product => {
+      const avgRating = product.ratings.reduce((sum, p) =>  {
+          return sum + parseFloat(p.star);
+      }, 0) / product.ratings.length;
+      setAvgRating({avgRating, totalRatings: product.ratings.length});
+    }
+
+    useEffect(() => {
+      getAverageProductRating(p);
+    }, [])
     return (
       <Card
         key={p._id}
@@ -27,7 +39,7 @@ const ProductCard = ({p}) => {
         ]}
       >
         <Tooltip title={p.title}>
-          <Card.Meta title={p.title} />
+          <Card.Meta title={p.title} description={avgRating.avgRating > 0 ? <p><Tag color="#388e3c">{avgRating.avgRating} <StarFilled /></Tag> <span className="product__details-ratingsText">{avgRating.totalRatings} Rating{avgRating.totalRatings > 1 ? "s" : ""}</span></p> : <p>No rating yet</p>}/>
         </Tooltip>
       </Card>
     );

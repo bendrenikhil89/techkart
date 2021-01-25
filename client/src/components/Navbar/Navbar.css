@@ -79,6 +79,10 @@
     flex: 1;
 }
 
+.navbar__brand-wrapper{
+    display: flex;
+}
+
 .navbar__search{
     margin-left: 15px;
     width:30vw !important;

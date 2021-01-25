@@ -42,3 +42,19 @@ export const updateProduct = async(product, email, authtoken, slug) => {
         }
     })
 }
+
+export const rateProduct = async(rating, authtoken, slug, email) => {
+    return await axios.put(`${process.env.REACT_APP_API_URL}/product/star/${slug}`,{rating, email}, {
+        headers: {
+            authtoken
+        }
+    })
+}
+
+export const fetchFilteredProducts = async(query) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/search/filters`,query, {})
+}
+
+export const fetchProductsByCategory = async(category) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/productsByCategory`,{category}, {})
+}

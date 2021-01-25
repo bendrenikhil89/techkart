@@ -19,6 +19,7 @@ import Dashboard from './pages/Dashboard';
 import { Footer } from 'antd/lib/layout/layout';
 import SiteFooter from './components/SiteFooter/SiteFooter';
 import ProductPage from './pages/ProductPage';
+import Shop from './pages/Shop';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -89,6 +90,7 @@ const App = () => {
           <Route path="/confirmation/:email/:token" exact component={Confirmation} />
           <Route path="/" exact component={Dashboard} />
           <Route path="/product/:slug" exact component={ProductPage} />
+          <Route path="/shop" exact component={Shop} />
           <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategories} />
           <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
           <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />

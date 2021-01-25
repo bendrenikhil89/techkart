@@ -64,6 +64,10 @@
     font-weight: 600;
 }
 
+.product__details p{
+    cursor: pointer;
+}
+
 .product__details-ratingsText{
     color:#7a7d88;
     font-weight:600;
@@ -137,6 +141,18 @@
 .product__details__hr{
     margin-top:12px;
     border-top: 1px solid #ddd;
+}
+
+.image-gallery-index {
+    background: transparent !important;
+    color: #aaa !important;
+    line-height: 1;
+    padding: 1px 2px !important;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 4;
+    font-size: 10px !important;
 }
 
 @media screen and (max-width:992px){

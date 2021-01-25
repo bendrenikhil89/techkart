@@ -22,6 +22,18 @@ const Login = ({history}) => {
         });
     };
 
+    const roleBasedRedirect = (role) => {
+        if(history.location.state){
+            history.push(history.location.state.source);
+        }
+        else if(role === 'admin'){
+            history.push("/dashboard/admin/categories");
+        }
+        else{
+            history.push("/")
+        }
+    }
+
     const showConfirm = (content) => {
         confirm({
           title: 'Email verification failed',
@@ -64,7 +76,8 @@ const Login = ({history}) => {
                   _id: res.data.userId
                 }
             });
-            res.data.role === 'admin' ? history.push("/dashboard/admin/categories") : history.push("/");
+            roleBasedRedirect(res.data.role);
+            // res.data.role === 'admin' ? history.push("/dashboard/admin/categories") : history.push("/");
         }
         catch(err){
             setLoading(false);
@@ -78,10 +91,10 @@ const Login = ({history}) => {
     }
 
     useEffect(() => {
-        if(user && user.token){
+        if(user && user.authtoken && (history.location.pathname === "/login" || history.location.pathname === "/login/")){
             history.push("/");
         }
-    }, [user])
+    }, [user]);
     return (
         <div className="login-signup__container">
             <form onSubmit={loginHandler}>

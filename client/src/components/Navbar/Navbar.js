@@ -1,16 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import { Popover, Button, Divider, Input, Badge } from 'antd';
 import { UserOutlined, ShoppingCartOutlined, HeartOutlined, FundOutlined, SearchOutlined, LogoutOutlined, DashboardOutlined } from '@ant-design/icons';
+import {useHistory} from 'react-router-dom';
 
 import './Navbar.css';
 
 const Navbar = () => {
+    const [searchText, setSearchText] = useState("");
     const { Search } = Input;
     const onSearch = value => console.log(value);
-    const {user} = useSelector(state => ({...state}));
+    const {user, search} = useSelector(state => ({...state}));
+    const {text} = search;
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const logoutHandler = (e) => {
         e.preventDefault();
@@ -60,15 +64,27 @@ const Navbar = () => {
         </div>
     );
 
-    
+    const searchChangeHandler = e => {
+        setSearchText(e.target.value)
+        dispatch({
+            type: 'SEARCH_QUERY',
+            payload: {text : e.target.value}
+        });
+    }
+
+    const searchHandler = async(e) => {
+        e.preventDefault();
+        history.push(`/shop?q=${searchText}`)
+    }
 
     return (
         <div className="navbar__container">
             <nav className="navbar__nav">
                 <div className="navbar__brand-wrapper">
                     <Link to="/" className="navbar__brand">TechKart
-                        <Input placeholder="Search for products, brands and more" suffix={<SearchOutlined />} className="navbar__search" />
+                        {/* <Input placeholder="Search for products, brands and more" value={searchText} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" /> */}
                     </Link>
+                    <Input placeholder="Search for products, brands and more" value={searchText} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />
                 </div>
                 <div className="navbar__links-wrapper">
                     <ul className="navbar__links">

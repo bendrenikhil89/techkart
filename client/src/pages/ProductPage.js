@@ -1,14 +1,29 @@
 import React, {useEffect, useState} from 'react';
 import ImageGallery from 'react-image-gallery';
 import './Styles/ProductPage.css';
-import { fetchProduct } from '../utils/product-util';
-import {Tag, notification, Button, Divider} from 'antd';
+import { fetchProduct, rateProduct } from '../utils/product-util';
+import {Tag, notification, Button, Modal, Rate} from 'antd';
 import { HeartOutlined, ShoppingCartOutlined, StarFilled } from '@ant-design/icons';
+import {useSelector} from 'react-redux';
+import {Link} from 'react-router-dom';
 
 const ProductPage = ({match}) => {
     const [productDetails, setProductDetails] = useState({});
     const [productImages, setProductImages] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [rating, setRating] = useState(0);
+    const [avgRating, setAvgRating] = useState({avgRating: 0, totalRatings: 0});
+
     const slug = match.params.slug;
+    const { user } = useSelector((state) => ({ ...state }));
+    let email;
+    let authtoken;
+    let userID;
+    if(user){
+        email = user.email;
+        authtoken = user.authtoken;
+        userID = user._id;
+    }
     
     const openNotificationWithIcon = (type, msgTitle, msgBody)  => {
         notification[type]({
@@ -16,6 +31,43 @@ const ProductPage = ({match}) => {
           description: msgBody
         });
     };
+    
+    const handleOk = async() => {
+        try{
+            await rateProduct(rating, authtoken, productDetails._id, email);
+            fetchProductDetails();
+            setIsModalVisible(false);
+            openNotificationWithIcon('success', 'Rating Submitted', 'Your rating for the product is submitted!');
+        }
+        catch(err){
+            setIsModalVisible(false);
+            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+        }
+    };
+    
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleRatingChange = (value) => {
+        setRating(value);
+    }
+
+    const getExistingUserRating = (product) => {
+        const userRating = product.ratings.find(p => {
+            return p.postedBy === userID;
+        });
+        if(userRating && userRating.star){
+            setRating(userRating.star);
+        }
+    }
+
+    const getAverageProductRating = product => {
+        const avgRating = product.ratings.reduce((sum, p) =>  {
+            return sum + parseFloat(p.star);
+        }, 0) / product.ratings.length;
+        setAvgRating({avgRating, totalRatings: product.ratings.length});
+    }
 
     const fetchProductDetails = async() => {
         try{
@@ -25,6 +77,8 @@ const ProductPage = ({match}) => {
                 setProductImages(product.data.images.map(p => {
                     return {original: p.url, thumbnail: p.url}
                 }));
+                getExistingUserRating(product.data);
+                if(product.data.ratings.length > 0) getAverageProductRating(product.data);
             }
         }
         catch(err){
@@ -59,6 +113,7 @@ const ProductPage = ({match}) => {
     }, []);
 
     return (
+        <>
         <div className="product__container">
             <div className="product__carousel">
                 <div className="product__carousel-wrapper">
@@ -84,7 +139,7 @@ const ProductPage = ({match}) => {
 
             <div className="product__details">
                 <h3>{productDetails.title}</h3>
-                <p><Tag color="#388e3c">4.4 <StarFilled /></Tag> <span className="product__details-ratingsText">5364 Ratings</span></p>
+                <p onClick={() => setIsModalVisible(true)}><Tag color="#388e3c">{avgRating.avgRating} <StarFilled /></Tag> <span className="product__details-ratingsText">{avgRating.totalRatings} Rating{avgRating.totalRatings > 1 ? "s" : ""}</span></p>
                 <h1>${productDetails.price}</h1>
                 <div className="product__details-highlights">
                     <div className="product__details-highlights-columnName">
@@ -107,6 +162,10 @@ const ProductPage = ({match}) => {
                 </div>
             </div>
         </div>
+        <Modal title="Rate Product" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
+            {user && user.authtoken ? <Rate defaultValue={0} onChange={handleRatingChange} value={rating}/> : <p>Please <Link to={{pathname:"/login", state: { source: `/product/${productDetails.slug}` }}}>login</Link> to rate a product!</p>}
+        </Modal>
+        </>
     )
 }
 

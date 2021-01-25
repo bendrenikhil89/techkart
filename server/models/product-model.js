@@ -18,7 +18,8 @@ const productSchema = new mongoose.Schema({
     highlights: {
         type: String,
         required: true,
-        time: true
+        time: true,
+        text: true,
     },
     specifications: {
         type: Array
@@ -32,6 +33,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: ObjectId,
         ref: "Category",
+        text: true,
     },
     subcategories: [{
           type: ObjectId,
@@ -55,10 +57,10 @@ const productSchema = new mongoose.Schema({
     brand: {
         type: String,
     },
-    // ratings: [{
-    //     star: Number,
-    //     postedBy: { type: ObjectId, ref: "User" },
-    // }],
+    ratings: [{
+        star: Number,
+        postedBy: { type: ObjectId, ref: "User" },
+    }],
 }, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

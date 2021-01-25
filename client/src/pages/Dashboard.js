@@ -8,17 +8,14 @@ import {List, Card, notification, Empty} from 'antd';
 import { RightOutlined, LeftOutlined } from '@ant-design/icons';
 import ItemsCarousel from 'react-items-carousel';
 import useWindowDimensions from '../Hooks/useWindowDimensions';
-import Offer1 from '../assets/images/Offer1.jpg';
-import Offer2 from '../assets/images/Offer2.jpg';
-import Offer3 from '../assets/images/Offer3.jpg';
-import Offer4 from '../assets/images/Offer4.jpg';
 import ProductCard from '../components/Card/ProductCard/ProductCard';
 import FooterCard from '../components/Card/FooterCard/FooterCard';
+import {useDispatch} from 'react-redux';
 
-const Dashboard = () => {
+const Dashboard = ({history}) => {
     const [loading, setLoading] = useState(false);
     const [bannerImages, setBannerImages] = useState([]);
-    const [categories, setCategories] = useState({slug:'', name:'', images: []});
+    const [categories, setCategories] = useState({slug:'', name:'', images: [], id:''});
     const [newArrivals, setNewArrivals] = useState([]);
     const [bestSellers, setBestSellers] = useState([]);
 
@@ -26,6 +23,7 @@ const Dashboard = () => {
     const [activeItemIndexNewArrivals, setActiveItemIndexNewArrivals] = useState(0);
     const [activeItemIndexBestSellers, setActiveItemIndexBestSellers] = useState(0);
     let itemCarouselCount = 1;
+    const dispatch = useDispatch();
 
     const { width } = useWindowDimensions();
     if(width >= 1024){
@@ -61,7 +59,7 @@ const Dashboard = () => {
         try{
             const categories = await fetchAll();
             setCategories(categories.data && categories.data.map(c => {
-                return {slug: c.slug, name: c.name, images: c.images};
+                return {slug: c.slug, name: c.name, images: c.images, id: c._id};
             }));
         }
         catch(err){
@@ -87,6 +85,14 @@ const Dashboard = () => {
         catch(err){
             openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
         }
+    }
+
+    const productsByCategoryHandler = (category) => {
+        dispatch({
+            type: 'SEARCH_QUERY',
+            payload: {category : category}
+        });
+        history.push("/shop");
     }
 
     useEffect(() => {
@@ -135,6 +141,7 @@ const Dashboard = () => {
                                         />
                                 }
                                 hoverable
+                                onClick={() => productsByCategoryHandler(item.id)}
                             >
                                 <Card.Meta
                                     title={item.name}
@@ -156,7 +163,7 @@ const Dashboard = () => {
                         }
                     />}
                     <h2>New Arrivals</h2>
-                    <div style={{"padding":0,"maxWidth":"1300px","margin":"0 auto"}}>
+                    <div className="dashboard__new-arrivals-wrapper" style={{"padding":0,"maxWidth":"1300px","margin":"0 auto"}}>
                         {newArrivals && newArrivals.length > 0 && <ItemsCarousel
                             numberOfCards={itemCarouselCount}
                             infiniteLoop={false}
@@ -219,7 +226,7 @@ const Dashboard = () => {
                         </div>     */}
 
                     <h2>Best Sellers</h2>
-                    <div style={{"padding":0,"maxWidth":"1300px","margin":"0 auto"}}>
+                    <div className="dashboard__best-sellers-wrapper" style={{"padding":0,"maxWidth":"1300px","margin":"0 auto"}}>
                         {bestSellers && bestSellers.length > 0 && <ItemsCarousel
                             numberOfCards={itemCarouselCount}
                             infiniteLoop={false}
