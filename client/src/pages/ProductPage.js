@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import ImageGallery from 'react-image-gallery';
 import './Styles/ProductPage.css';
 import { fetchProduct, rateProduct } from '../utils/product-util';
-import {Tag, notification, Button, Modal, Rate} from 'antd';
+import {Tag, notification, Button, Modal, Rate, Tooltip} from 'antd';
 import { HeartOutlined, ShoppingCartOutlined, StarFilled } from '@ant-design/icons';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
 
 const ProductPage = ({match}) => {
@@ -14,8 +14,10 @@ const ProductPage = ({match}) => {
     const [rating, setRating] = useState(0);
     const [avgRating, setAvgRating] = useState({avgRating: 0, totalRatings: 0});
 
+    const dispatch = useDispatch();
+
     const slug = match.params.slug;
-    const { user } = useSelector((state) => ({ ...state }));
+    const { user, cart } = useSelector((state) => ({ ...state }));
     let email;
     let authtoken;
     let userID;
@@ -23,6 +25,51 @@ const ProductPage = ({match}) => {
         email = user.email;
         authtoken = user.authtoken;
         userID = user._id;
+    }
+
+    const addCartHandler = (p) => {
+        let cart = [];
+        if(typeof window !== 'undefined'){
+          if(localStorage.getItem('cart')){
+            cart = JSON.parse(localStorage.getItem('cart'));
+            let productInCart = cart.find(c => {
+              return c._id === p._id;
+            });
+            if(!productInCart){
+              cart.push({...p, count:1});
+              localStorage.setItem('cart', JSON.stringify(cart));
+              dispatch({
+                type: 'ADD_TO_CART',
+                payload: cart
+              });
+              dispatch({
+                type: 'SHOW_HIDE_DRAWER',
+                payload: true
+              });
+            }
+          }
+          else{
+            cart.push({...p, count:1});
+            localStorage.setItem('cart', JSON.stringify(cart));
+            dispatch({
+              type: 'ADD_TO_CART',
+              payload: cart
+            });
+            dispatch({
+                type: 'SHOW_HIDE_DRAWER',
+                payload: true
+            });
+          }
+        }
+    }
+
+    const checkIfProductInCart = productDetails => {
+        if(cart && cart.length > 0){
+            let productAdded = cart.find(c => {
+                return c._id === productDetails._id;
+            });
+            return productAdded;
+        }
     }
     
     const openNotificationWithIcon = (type, msgTitle, msgBody)  => {
@@ -131,8 +178,8 @@ const ProductPage = ({match}) => {
                     <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large">
                         <span className="product__carousel-buttonText">Wishlist</span>
                     </Button>
-                    <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large">
-                        <span className="product__carousel-buttonText">Add to Cart</span>
+                    <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addCartHandler(productDetails)}>
+                        <span className="product__carousel-buttonText">Add to cart</span>
                     </Button>
                 </div>
             </div>

@@ -164,14 +164,77 @@ const handlePrice = async(req, res, price) => {
     }
 }
 
+const handleBrand = async(req, res, brand) => {
+    try{
+        const products = await Product.find({brand})
+        .populate("category")
+        .populate("subcategories")
+        .populate("postedBy")
+        .exec();
+        res.json(products);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
+
+const handleSubCategories = async(req, res, subcategories) => {
+    try{
+        const products = await Product.find({subcategories})
+        .populate("category")
+        .populate("subcategories")
+        .populate("postedBy")
+        .exec();
+        res.json(products);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
+
+const handleRating = async(req, res, rating) => {
+    try{
+        let productsStar = await Product.aggregate([
+            {
+                $project: {
+                    document: "$$ROOT",
+                    floorAverage: {
+                        $floor: { $avg: "$ratings.star"}
+                    }
+                }
+            },
+            { $match: {floorAverage: rating}}
+        ]).limit(12);
+        let products = await Product.find({_id: productsStar})
+        .populate("category")
+        .populate("subcategories")
+        .populate("postedBy")
+        .exec();
+
+        res.json(products);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
+
 exports.searchFilters = async(req,res) => {
-    const {query, price} = req.body;
+    const {query, price, rating, brand, subcategories} = req.body;
     try{
         if(query !== undefined){
             await handleQuery(req,res,query);
         }
-        if(query !== price){
+        if(price !== undefined){
             await handlePrice(req, res, price);
+        }
+        if(rating !== undefined){
+            await handleRating(req, res, rating);
+        }
+        if(brand !== undefined){
+            await handleBrand(req, res, brand);
+        }
+        if(subcategories !== undefined){
+            await handleSubCategories(req, res, subcategories);
         }
     }
     catch(err){

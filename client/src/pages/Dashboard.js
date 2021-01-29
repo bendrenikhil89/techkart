@@ -90,7 +90,7 @@ const Dashboard = ({history}) => {
     const productsByCategoryHandler = (category) => {
         dispatch({
             type: 'SEARCH_QUERY',
-            payload: {category : category}
+            payload: {category : [category]}
         });
         history.push("/shop");
     }

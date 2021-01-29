@@ -20,6 +20,8 @@ import { Footer } from 'antd/lib/layout/layout';
 import SiteFooter from './components/SiteFooter/SiteFooter';
 import ProductPage from './pages/ProductPage';
 import Shop from './pages/Shop';
+import Cart from './pages/Cart';
+import CartDrawer from './components/CartDrawer/CartDrawer';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -81,6 +83,7 @@ const App = () => {
     (!loading ?
       <> 
       <div className="app__wrapper">
+      <CartDrawer />
       <Navbar />
         <Switch>
           <Route path="/login" exact component={Login} />
@@ -91,6 +94,7 @@ const App = () => {
           <Route path="/" exact component={Dashboard} />
           <Route path="/product/:slug" exact component={ProductPage} />
           <Route path="/shop" exact component={Shop} />
+          <Route path="/cart" exact component={Cart} />
           <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategories} />
           <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
           <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />

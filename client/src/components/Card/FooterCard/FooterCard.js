@@ -1,6 +1,6 @@
 import React from 'react';
 import './FooterCard.css';
-import { LockOutlined, VerifiedOutlined, CustomerServiceOutlined, MobileOutlined } from '@ant-design/icons';
+import { LockOutlined, SafetyCertificateOutlined, CustomerServiceOutlined, MobileOutlined } from '@ant-design/icons';
 
 const FooterCard = () => {
     return (
@@ -12,7 +12,7 @@ const FooterCard = () => {
             </div>
 
             <div className="footercard__wrapper">
-                <VerifiedOutlined className="footercard__icon" style={{color:'#67d1a4'}}/>
+                <SafetyCertificateOutlined className="footercard__icon" style={{color:'#67d1a4'}}/>
                 <h3>TrustPay</h3>
                 <p>100% Payment Protection. Easy  Return Policy</p>
             </div>

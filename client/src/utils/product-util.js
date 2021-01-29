@@ -56,5 +56,5 @@ export const fetchFilteredProducts = async(query) => {
 }
 
 export const fetchProductsByCategory = async(category) => {
-    return await axios.post(`${process.env.REACT_APP_API_URL}/productsByCategory`,{category}, {})
+    return await axios.post(`${process.env.REACT_APP_API_URL}/productsByCategory`,category, {})
 }

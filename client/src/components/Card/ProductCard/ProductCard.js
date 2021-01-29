@@ -2,15 +2,57 @@ import React, {useState, useEffect} from 'react';
 import {Tag, Card, Tooltip} from 'antd';
 import {EyeOutlined, StarFilled, ShoppingCartOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 
 const ProductCard = ({p}) => {
     const [avgRating, setAvgRating] = useState({avgRating: 0, totalRatings: 0});
+    const [tooltip, setTooltip] = useState("Click to add");
+
+    const dispatch = useDispatch();
 
     const getAverageProductRating = product => {
       const avgRating = product.ratings.reduce((sum, p) =>  {
           return sum + parseFloat(p.star);
       }, 0) / product.ratings.length;
       setAvgRating({avgRating, totalRatings: product.ratings.length});
+    }
+
+    const addCartHandler = () => {
+      let cart = [];
+      if(typeof window !== 'undefined'){
+        if(localStorage.getItem('cart')){
+          cart = JSON.parse(localStorage.getItem('cart'));
+          let productInCart = cart.find(c => {
+            return c._id === p._id;
+          });
+          if(!productInCart){
+            cart.push({...p, count:1});
+            localStorage.setItem('cart', JSON.stringify(cart));
+            setTooltip("Added");
+            dispatch({
+              type: 'ADD_TO_CART',
+              payload: cart
+            });
+            dispatch({
+              type: 'SHOW_HIDE_DRAWER',
+              payload: true
+            });
+          }
+        }
+        else{
+          cart.push({...p, count:1});
+          localStorage.setItem('cart', JSON.stringify(cart));
+          setTooltip("Added");
+          dispatch({
+            type: 'ADD_TO_CART',
+            payload: cart
+          });
+          dispatch({
+            type: 'SHOW_HIDE_DRAWER',
+            payload: true
+          });
+        }
+      }
     }
 
     useEffect(() => {
@@ -32,10 +74,12 @@ const ProductCard = ({p}) => {
             <EyeOutlined key="view" />
             <br /> View Product
           </Link>,
-          <Link to="">
-            <ShoppingCartOutlined key="cart" />
-            <br /> Add To Cart
-          </Link>,
+          <div onClick={addCartHandler}>
+            <Tooltip title={tooltip}>
+              <ShoppingCartOutlined key="cart" />
+              <br /> Add To Cart
+            </Tooltip>
+          </div>,
         ]}
       >
         <Tooltip title={p.title}>

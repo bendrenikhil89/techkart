@@ -1,0 +1,14 @@
+.cart__drawer-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 5px;
+}
+
+.cart__drawer-img{
+    flex:1;
+}
+
+.cart__drawer-title{
+    flex: 3;
+}

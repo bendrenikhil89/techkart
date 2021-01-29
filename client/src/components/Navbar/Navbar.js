@@ -11,7 +11,7 @@ const Navbar = () => {
     const [searchText, setSearchText] = useState("");
     const { Search } = Input;
     const onSearch = value => console.log(value);
-    const {user, search} = useSelector(state => ({...state}));
+    const {user, search, cart} = useSelector(state => ({...state}));
     const {text} = search;
     const dispatch = useDispatch();
     const history = useHistory();
@@ -74,16 +74,14 @@ const Navbar = () => {
 
     const searchHandler = async(e) => {
         e.preventDefault();
-        history.push(`/shop?q=${searchText}`)
+        history.push(`/shop`)
     }
 
     return (
         <div className="navbar__container">
             <nav className="navbar__nav">
                 <div className="navbar__brand-wrapper">
-                    <Link to="/" className="navbar__brand">TechKart
-                        {/* <Input placeholder="Search for products, brands and more" value={searchText} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" /> */}
-                    </Link>
+                    <Link to="/" className="navbar__brand">TechKart</Link>
                     <Input placeholder="Search for products, brands and more" value={searchText} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />
                 </div>
                 <div className="navbar__links-wrapper">
@@ -104,12 +102,14 @@ const Navbar = () => {
                             </div>
                         </li>
                         <li>
-                            <Badge count={0} size="small">
-                                <div className="navbar__menu">
-                                    <div className="navbar__menu__icon-wrapper"><ShoppingCartOutlined className="navbar__menu__icon" style={{fontSize: '1.2rem'}}/></div>
-                                    <div style={{paddingTop: '3px'}} className="navbar__menu_text"><label>Cart</label></div>
-                                </div>
-                            </Badge>
+                            <Link to="/cart">
+                                <Badge count={cart && cart.length} size="default" offset={[0, 3]}>
+                                    <div className="navbar__menu">
+                                        <div className="navbar__menu__icon-wrapper"><ShoppingCartOutlined className="navbar__menu__icon" style={{fontSize: '1.2rem'}}/></div>
+                                        <div style={{paddingTop: '3px'}} className="navbar__menu_text"><label>Cart</label></div>
+                                    </div>
+                                </Badge>
+                            </Link>
                         </li>
                     </ul>
                 </div>
