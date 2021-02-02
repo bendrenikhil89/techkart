@@ -7,9 +7,10 @@ import {List, notification, Empty, Menu, Slider, Checkbox, Radio, Pagination} fr
 import { DollarOutlined, BarsOutlined, AntDesignOutlined, StarOutlined, StarFilled, TagsOutlined } from '@ant-design/icons';
 import ProductCard from '../components/Card/ProductCard/ProductCard';
 import './Styles/Shop.css';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 
 const Shop = () => {
+    const dispatch = useDispatch();
     const {search} = useSelector(state => ({...state}));
     const {text, category} = search;
 
@@ -196,7 +197,7 @@ const Shop = () => {
         if(filterCategoryIDs.length > 0){
             fetchAllProductsByCategory();
         }
-        else if(filterSubCategoryID === null && filterBrand === null && filterRating === null && price === [0, 0]){
+        else if(filterSubCategoryID === null && filterBrand === null && filterRating === null && price[0] === 0 && price[1] === 0){
             fetchAllProductsOnLoad();
         }
     }, [filterCategoryIDs]);
@@ -227,7 +228,7 @@ const Shop = () => {
 
     return (
         <div className="admin__wrapper productspage__wrapper">
-            <div className="admin__leftnav">
+            <div className="admin__leftnav productspage__leftnav">
                 <Menu mode="inline" defaultOpenKeys={['price', 'categories','subcategories', 'brand','rating']}>
                     <SubMenu key="price" icon={<DollarOutlined />} title="Price" >
                         <Slider range max="4999" value={price} tipFormatter={sliderToolTipFormatter} onChange={value => setPrice(value)} style={{margin:'0px 20px 10px 30px'}}/>
@@ -277,7 +278,7 @@ const Shop = () => {
                         xs: 1,
                         sm: 2,
                         md: 2,
-                        lg: 3,
+                        lg: 2,
                         xl: 3,
                         xxl: 3
                         }}

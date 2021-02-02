@@ -22,6 +22,8 @@ import ProductPage from './pages/ProductPage';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
 import CartDrawer from './components/CartDrawer/CartDrawer';
+import Checkout from './pages/Checkout';
+import Payment from './pages/Payment';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -95,6 +97,8 @@ const App = () => {
           <Route path="/product/:slug" exact component={ProductPage} />
           <Route path="/shop" exact component={Shop} />
           <Route path="/cart" exact component={Cart} />
+          <Route path="/checkout" exact component={Checkout} />
+          <Route path="/payment" exact component={Payment} />
           <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategories} />
           <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
           <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />

@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux';
 
 const ProductCard = ({p}) => {
     const [avgRating, setAvgRating] = useState({avgRating: 0, totalRatings: 0});
+    const [quantity, setQuantity] = useState(0);
     const [tooltip, setTooltip] = useState("Click to add");
 
     const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const ProductCard = ({p}) => {
           return sum + parseFloat(p.star);
       }, 0) / product.ratings.length;
       setAvgRating({avgRating, totalRatings: product.ratings.length});
+      setQuantity(product.quantity);
     }
 
     const addCartHandler = () => {
@@ -74,11 +76,14 @@ const ProductCard = ({p}) => {
             <EyeOutlined key="view" />
             <br /> View Product
           </Link>,
-          <div onClick={addCartHandler}>
-            <Tooltip title={tooltip}>
+          <div onClick={quantity > 0 ? addCartHandler: null}>
+            {quantity > 0 ? <Tooltip title={tooltip}>
               <ShoppingCartOutlined key="cart" />
               <br /> Add To Cart
-            </Tooltip>
+            </Tooltip> : <Tooltip title="Out of stock">
+              <ShoppingCartOutlined key="cart" />
+              <br /> Out Of Stock
+            </Tooltip>}
           </div>,
         ]}
       >

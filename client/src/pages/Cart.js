@@ -1,16 +1,35 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Link} from 'react-router-dom';
-import { Divider, Image, InputNumber, Button, Tag } from 'antd';
+import {useHistory, Link} from 'react-router-dom';
+import { Divider, Image, InputNumber, Button, Tag, notification } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
+
+import {saveCart} from '../utils/user-util';
+
 import emptyCart from '../assets/images/emptycart.png';
 
 import './Styles/Cart.css';
+import StepWizard from '../components/StepWizard/StepWizard';
 
 const Cart = () => {
     const {user, cart} = useSelector(state => ({...state}));
+
+    let email, authtoken;
+    if(user){
+        email = user.email;
+        authtoken = user.authtoken;
+    }
     const [cartContent, setCartContent] = useState(cart);
+    const [disable, setDisable] = useState(false);
     const dispatch = useDispatch();
+    const history = useHistory();
+
+    const openNotificationWithIcon = (type, msgTitle, msgBody)  => {
+        notification[type]({
+          message: msgTitle,
+          description: msgBody
+        });
+    };
 
     function updateCartQuantity(value, cartDetails) {
         let currCart = [...cartContent];
@@ -50,7 +69,7 @@ const Cart = () => {
                 <Image width={100} src={cartDetails.images[0].url} style={{cursor:'pointer'}} />
             </div>
             <div className="productDetails__details">
-                <p>{cartDetails.title}<span style={{paddingLeft:"20px"}}>{cartDetails.quantity > 0 ? <Tag color="#87d068">In stock</Tag> : <Tag color="default">Out of stock</Tag> }</span></p>
+                <p>{cartDetails.title}<span style={{paddingLeft:"20px"}}>{cartDetails.quantity > 0 ? <Tag color="#87d068">In stock</Tag> : <Tag color="red">Out of stock</Tag> }</span></p>
                 <p><strong>$ {cartDetails.price}</strong></p>
                 <div style={{display:'flex'}}>
                     <div style={{marginRight:'20px',display:'flex',alignItems:'center'}}>
@@ -74,7 +93,31 @@ const Cart = () => {
         return cart.reduce((total,curr) => total + curr.count, 0);
     }
 
+    const checkoutHandler = async(e) => {
+        e.preventDefault();
+        if(cartContent.length > 0) {
+            try{
+                const updatedUserCart = await saveCart(email, authtoken, cartContent);
+                history.push("/checkout")
+            }
+            catch(err){
+                openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+            }
+        }
+    }
+
+    const checkIfOutOfStock = () => {
+        let outOfStockItem =  cart.find(c => c.quantity === 0);
+        if(outOfStockItem) setDisable(true);
+    }
+
+    useEffect(() => {
+        checkIfOutOfStock();
+    }, [])
+
     return (
+        <>
+        <StepWizard />
         <div className="cart__wrapper">
             {cart && cart.length>0 ? 
             <><div className="cart__productDetails">
@@ -82,9 +125,9 @@ const Cart = () => {
                 {cart.map(c => {
                     return <div key={c._id}>{productCart(c)}</div>;
                 })}
-                {user ? <div className="cart__placeorderWrapper"><Button className="cart__placeorder" type="primary" size="large">
-                        <span className="cart__placeorderText">PLACE ORDER</span>
-                    </Button></div> : <Link to={{pathname:"/login", state: { source: "/cart" }}}><div className="cart__placeorderWrapper"><Button type="primary" size="large">Login to checkout</Button></div></Link>}
+                {user ? <div className="cart__placeorderWrapper"><Button disabled={disable} className="cart__placeorder" type="primary" size="default" onClick={checkoutHandler}>
+                        <span className="cart__placeorderText">PROCEED TO CHECKOUT</span>
+                    </Button></div> : <Link to={{pathname:"/login", state: { source: "/checkout" }}}><div className="cart__placeorderWrapper"><Button disabled={disable} type="primary" size="default">Login to checkout</Button></div></Link>}
             </div>
             <div className="cart__priceDetails">
                 <h3>PRICE DETAILS</h3>
@@ -121,6 +164,7 @@ const Cart = () => {
                 </div>
             </div> }
         </div>
+        </>
     )
 }
 

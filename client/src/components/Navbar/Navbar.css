@@ -1,7 +1,7 @@
 .navbar__container{
     -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
-    background-color: #fff;
+    background-color: #1976d2;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -30,12 +30,13 @@
     font-size: 1.25rem;
     line-height: inherit;
     white-space: nowrap;
-    color:#282c3f;
+    /* color:#282c3f; */
+    color:#fff;
     text-decoration: none;
 }
 
 .navbar__brand:hover{
-    color: #282c3f;
+    color: #fff;
 }
 
 .navbar__links{
@@ -115,12 +116,14 @@
 
 .navbar__menu__icon{
     font-size:1.1rem;
-    color:#7a7d88 !important;
+    /* color:#7a7d88 !important; */
+    color:#fafafa !important;
 }
 
 .navbar__menu_text{
     font-size: 11px;
-    color: #282c3f;
+    /* color: #282c3f; */
+    color:#f7f7f7;
     cursor: pointer;
     font-weight: bold;
 }

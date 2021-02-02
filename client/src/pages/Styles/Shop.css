@@ -9,3 +9,17 @@
 .productspage__wrapper .admin__content{
     width:74% !important;
 }
+
+/* @media screen and (max-width:968px){
+    .productspage__leftnav{
+        flex-direction: column;
+    }
+
+    .productspage__wrapper .admin__leftnav{
+        width:100% !important;
+    }
+    
+    .productspage__wrapper .admin__content{
+        width:100% !important;
+    }
+} */

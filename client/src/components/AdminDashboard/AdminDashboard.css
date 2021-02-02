@@ -8,8 +8,8 @@
 
 
 
-/***** CSS over ride of ant design classess *****/
-.ant-menu-submenu-selected {
+/* **** CSS over ride of ant design classess *****/
+/* .ant-menu-submenu-selected {
     color: #282c3f !important;
 }
 
@@ -22,9 +22,9 @@
 }
 
 .ant-menu-vertical .ant-menu-item::after, .ant-menu-vertical-left .ant-menu-item::after, .ant-menu-vertical-right .ant-menu-item::after, .ant-menu-inline .ant-menu-item::after{
-    border-right: 3px solid #282c3f !important;
-}
-/****** ******/
+    border-right: 3px solid #282c3f !important; 
+}*/
+/****** ***** */
 
 .admin__leftnav{
     flex:1;
@@ -51,6 +51,7 @@
 
 .admin__leftnav-component{
     height: calc(100vh - 140px);
+    width: 100%;
 }
 
 .admin__uploadbanner{

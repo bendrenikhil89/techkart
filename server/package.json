@@ -25,6 +25,7 @@
     "nodemailer-sendgrid-transport": "^0.2.0",
     "nodemon": "^2.0.6",
     "sendgrid": "^5.2.3",
-    "slugify": "^1.4.6"
+    "slugify": "^1.4.6",
+    "stripe": "^8.132.0"
   }
 }
