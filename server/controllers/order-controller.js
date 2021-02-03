@@ -24,3 +24,18 @@ exports.createOrder = async(req,res) => {
         return res.status(500).json({msg: err.message});
     }
 }
+
+exports.fetchAllOrders = async(req,res) => {
+  const {purchasedBy} = req.body;
+  console.log(purchasedBy);
+  try{
+    const orders = await Order.find({purchasedBy})
+    .populate("purchasedBy")
+    .sort([["updatedAt", "desc"]])
+    .exec();
+    res.status(200).json(orders);
+  }
+  catch(err){
+    return res.status(500).json({msg: err.message});
+  }
+}

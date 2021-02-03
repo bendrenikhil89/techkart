@@ -97,7 +97,7 @@ const StripeCheckout = ({history}) => {
                 title="Payment Successful!"
                 subTitle={`Order number - ${orderID}. You can view this order in your order history.`}
                 extra={[
-                    <Button size="default" type="primary" style={{width:'150px'}}><Link to="/purchasehistory">ORDER HISTORY</Link></Button>,
+                    <Button size="default" type="primary" style={{width:'150px'}}><Link to="/my/orders">ORDER HISTORY</Link></Button>,
                     <Button size="default" type="primary" style={{width:'150px'}}><Link to="/shop">SHOP</Link></Button>
                 ]}
             />

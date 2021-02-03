@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import ImageGallery from 'react-image-gallery';
 import './Styles/ProductPage.css';
 import { fetchProduct, rateProduct } from '../utils/product-util';
-import {Tag, notification, Button, Modal, Rate, Tooltip} from 'antd';
+import { addWishlist } from '../utils/user-util';
+import {Tag, notification, Button, Modal, Rate, message} from 'antd';
 import { HeartOutlined, ShoppingCartOutlined, StarFilled } from '@ant-design/icons';
 import {useSelector, useDispatch} from 'react-redux';
 import {Link} from 'react-router-dom';
@@ -60,6 +61,16 @@ const ProductPage = ({match}) => {
                 payload: true
             });
           }
+        }
+    }
+
+    const addToWishlistHandler = async(p) => {
+        try{
+            const user = await addWishlist(email, authtoken, p._id);
+            openNotificationWithIcon('success', 'Product added to wishlist', '');
+        }
+        catch(err){
+            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
         }
     }
 
@@ -175,7 +186,7 @@ const ProductPage = ({match}) => {
                     />}
                 </div>
                 <div className="product__carousel-buttons">
-                    <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large">
+                    <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addToWishlistHandler(productDetails)}>
                         <span className="product__carousel-buttonText">Wishlist</span>
                     </Button>
                     <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addCartHandler(productDetails)}>

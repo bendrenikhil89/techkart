@@ -1,0 +1,19 @@
+.wishlist__wrapper{
+    margin-top:16px;
+}
+
+.wishlist__product-title p{
+    margin-bottom:0px !important;
+    cursor: pointer;
+}
+.wishlist__price{
+    padding-right:10px;
+}
+.wishlist__delete{
+    padding-left:10px;
+    border-left:2px solid #ccc;
+}
+
+.wishlist__wrapper .ant-card{
+    margin-bottom:20px !important;
+}

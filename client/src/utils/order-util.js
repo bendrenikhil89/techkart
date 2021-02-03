@@ -7,3 +7,11 @@ export const createOrder = async(email, authtoken, userId, paymentIntent) => {
         }
     });
 }
+
+export const fetchAllOrders = async(email, authtoken, purchasedBy) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/orders/all`, {email, purchasedBy}, {
+        headers: {
+            authtoken
+        }
+    });
+}

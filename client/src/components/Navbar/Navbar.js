@@ -25,6 +25,11 @@ const Navbar = () => {
         localStorage.removeItem("techkart-user");
     }
 
+    const ordersLinkHandler = e => {
+        e.preventDefault();
+        history.push("/my/orders");
+    }
+
     const loginContent = (
         <div className="navbar__signup-container">
           <div className="navbar__signup">
@@ -32,9 +37,9 @@ const Navbar = () => {
               <Link to="/signup">Sign Up</Link>
           </div>
           <Divider /> 
-          <Button type="text" icon={<UserOutlined />}>My Profile</Button>
+          {/* <Button type="text" icon={<UserOutlined />}>My Profile</Button>
           <Divider />
-          <Button type="text" icon={<FundOutlined />}>Orders</Button>
+          <Button type="text" icon={<FundOutlined />}>Orders</Button> */}
         </div>
     );
     
@@ -50,7 +55,7 @@ const Navbar = () => {
                 {adminLink}
                 <Button type="text" icon={<UserOutlined />}>My Profile</Button>
                 <Divider />
-                <Button type="text" icon={<FundOutlined />}>Orders</Button>
+                <Button type="text" icon={<FundOutlined />} onClick={ordersLinkHandler}>Orders</Button>
                 <Divider />
                 <Button type="text" onClick={(e) => logoutHandler(e)} icon={<LogoutOutlined />}>Logout</Button>
             </div>

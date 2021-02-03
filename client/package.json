@@ -12,6 +12,7 @@
     "antd": "^4.9.4",
     "axios": "^0.21.1",
     "react": "^17.0.1",
+    "react-currency-format": "^1.0.0",
     "react-dom": "^17.0.1",
     "react-image-file-resizer": "^0.3.9",
     "react-image-gallery": "^1.0.8",

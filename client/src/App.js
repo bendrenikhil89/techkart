@@ -24,6 +24,9 @@ import Cart from './pages/Cart';
 import CartDrawer from './components/CartDrawer/CartDrawer';
 import Checkout from './pages/Checkout';
 import Payment from './pages/Payment';
+import Orders from './pages/Orders';
+import UpdatePassword from './pages/UpdatePassword';
+import Wishlist from './pages/Wishlist';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -99,6 +102,9 @@ const App = () => {
           <Route path="/cart" exact component={Cart} />
           <Route path="/checkout" exact component={Checkout} />
           <Route path="/payment" exact component={Payment} />
+          <Route path="/my/orders" exact component={Orders} />
+          <Route path="/my/passwordupdate" exact component={UpdatePassword} />
+          <Route path="/my/wishlist" exact component={Wishlist} />
           <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategories} />
           <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
           <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />

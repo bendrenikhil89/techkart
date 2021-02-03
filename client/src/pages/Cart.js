@@ -6,7 +6,7 @@ import { DeleteFilled } from '@ant-design/icons';
 
 import {saveCart} from '../utils/user-util';
 
-import emptyCart from '../assets/images/emptycart.png';
+import emptyCart from '../assets/images/Empty_Cart.svg';
 
 import './Styles/Cart.css';
 import StepWizard from '../components/StepWizard/StepWizard';
