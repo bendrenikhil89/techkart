@@ -6,6 +6,7 @@ import {getWishlist, removeWishlist} from '../utils/user-util';
 import { Avatar, Tooltip, Card , Image, Button, notification } from 'antd';
 import { DeleteFilled, HeartOutlined, ShoppingCartOutlined, StarFilled } from '@ant-design/icons';
 import CurrencyFormat from 'react-currency-format'; 
+import emptyWishlist from '../assets/images/Empty_Wishlist.svg';
 import './Styles/Wishlist.css';
 
 const Wishlist = ({history}) => {
@@ -51,6 +52,7 @@ const Wishlist = ({history}) => {
         try{
             const user = await removeWishlist(email, authtoken, p._id);
             let updatedWishlist = [...wishlist];
+            openNotificationWithIcon('success','Product removed from wishlist', '');
             setWishlist(updatedWishlist.filter(w => w._id !== p._id));
         }
         catch(err){
@@ -83,7 +85,7 @@ const Wishlist = ({history}) => {
                                     </div>
                                 </div>
                             </Card>
-                    }) : null}
+                    }) : <div className="orders__empty"><div><img src={emptyWishlist} /><p>Your wishlist is empty!</p></div></div>}
                 </div>
             </div>
         </div>

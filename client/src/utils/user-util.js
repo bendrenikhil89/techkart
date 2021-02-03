@@ -49,9 +49,16 @@ export const getWishlist = async(email, authtoken) => {
 }
 
 export const removeWishlist = async(email, authtoken, productID) => {
-    return await axios.delete(`${process.env.REACT_APP_API_URL}/user/removewishlist`, {email, productID}, {
-        headers: {
-            authtoken
-        }
-    });
+    var data = JSON.stringify({"email":email,"productID":productID});
+
+    var config = {
+        method: 'delete',
+        url: `${process.env.REACT_APP_API_URL}/user/removewishlist`,
+        headers: { 
+            'authtoken': authtoken, 
+            'Content-Type': 'application/json'
+        },
+        data : data
+    };
+    return await axios(config);
 }
