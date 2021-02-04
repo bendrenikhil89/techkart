@@ -8,7 +8,8 @@ export default function UserRoute({component: Component, ...rest}) {
         <Route
           {...rest}
           render={props => {
-            return (user && user.role === 'subscriber') ? <Component {...props} /> : <Redirect to="/login" />
+            return (user && user.authtoken
+              ) ? <Component {...props} /> : <Redirect to="/login" />
           }}
         ></Route>
     )

@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import { Divider, notification, Modal } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { notification, Modal, Form, Input, Button, Checkbox } from 'antd';
+import { ExclamationCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
 import {login, resendlink} from '../../../utils/auth-util';
 import {useDispatch, useSelector} from 'react-redux';
+
 
 import '../../Auth/Auth.css';
 const { confirm } = Modal;
@@ -96,8 +97,8 @@ const Login = ({history}) => {
         }
     }, [user]);
     return (
-        <div className="login-signup__container">
-            <form onSubmit={loginHandler}>
+      <div className="login-signup__container">
+        {/* <form onSubmit={loginHandler}>
                 <h2>Sign In</h2>
                 <div className="login-signup__form-group">
                     <input type="text" required="required" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -111,9 +112,61 @@ const Login = ({history}) => {
                 <button type="submit" className="login-signup__button" >Sign In</button>
                 <Divider />
                 <p className="login-signup__not-already-member">Not a member? <Link to="/signup">Sign Up</Link></p>
-            </form>
-        </div>
-    )
+            </form> */}
+        <h2>Sign In</h2>
+        <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
+        >
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Please input your Username!" }]}
+          >
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+
+            
+            <Link className="login-form-forgot" to="/forgotpassword">Forgot Password?</Link>
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              block
+              onClick={loginHandler}
+              loading={loading}
+            >
+              Log in
+            </Button>
+            Or <Link to="/signup">register now!</Link>
+          </Form.Item>
+        </Form>
+      </div>
+    );
 }
 
 export default Login;

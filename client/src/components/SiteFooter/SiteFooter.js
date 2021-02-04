@@ -1,9 +1,15 @@
 import React from 'react';
+import {useLocation} from 'react-router-dom';
 import './SiteFooter.css';
 
 const SiteFooter = () => {
+    const location = useLocation();
+    let pathname = location.pathname.toString();
+    pathname = pathname.split('/')[1];
     return (
-        <div className="footer__wrapper">
+        <>
+        {pathname !== "login" && pathname !== "signup" &&  pathname !== "forgotpassword" &&  pathname !== "resetpassword"
+        ? <div className="footer__wrapper">
             <div className="contain">
                 <div className="col">
                     <h1>Company</h1>
@@ -64,7 +70,8 @@ const SiteFooter = () => {
                 </div>
                 <div className="clearfix"></div>
                 </div>
-        </div>
+        </div> : null}
+        </>
     )
 }
 

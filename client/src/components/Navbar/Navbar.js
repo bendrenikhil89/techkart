@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import {useSelector, useDispatch} from 'react-redux';
 import { Popover, Button, Divider, Input, Badge } from 'antd';
-import { UserOutlined, ShoppingCartOutlined, HeartOutlined, FundOutlined, SearchOutlined, LogoutOutlined, DashboardOutlined } from '@ant-design/icons';
+import { UserOutlined, ShoppingCartOutlined, HeartOutlined, FundOutlined, SearchOutlined, LogoutOutlined, DashboardOutlined, ShoppingOutlined } from '@ant-design/icons';
 import {useHistory} from 'react-router-dom';
 
 import './Navbar.css';
@@ -30,14 +30,19 @@ const Navbar = () => {
         history.push("/my/orders");
     }
 
+    const wishlistLinkHandler = e => {
+        e.preventDefault();
+        history.push("/my/wishlist");
+    }
+
     const loginContent = (
         <div className="navbar__signup-container">
           <div className="navbar__signup">
               <strong>New customer?</strong>
               <Link to="/signup">Sign Up</Link>
           </div>
-          <Divider /> 
-          {/* <Button type="text" icon={<UserOutlined />}>My Profile</Button>
+          {/* <Divider /> 
+          <Button type="text" icon={<UserOutlined />}>My Profile</Button>
           <Divider />
           <Button type="text" icon={<FundOutlined />}>Orders</Button> */}
         </div>
@@ -56,6 +61,8 @@ const Navbar = () => {
                 <Button type="text" icon={<UserOutlined />}>My Profile</Button>
                 <Divider />
                 <Button type="text" icon={<FundOutlined />} onClick={ordersLinkHandler}>Orders</Button>
+                <Divider />
+                <Button type="text" icon={<HeartOutlined />} onClick={wishlistLinkHandler}>Wishlist</Button>
                 <Divider />
                 <Button type="text" onClick={(e) => logoutHandler(e)} icon={<LogoutOutlined />}>Logout</Button>
             </div>
@@ -101,10 +108,12 @@ const Navbar = () => {
                                 </Popover>}
                         </li>
                         <li>
-                            <div className="navbar__menu">
-                                <div className="navbar__menu__icon-wrapper"><HeartOutlined className="navbar__menu__icon" /></div>
-                                <div className="navbar__menu_text"><label>Wishlist</label></div>
-                            </div>
+                            <Link to="/shop">
+                                <div className="navbar__menu">
+                                    <div className="navbar__menu__icon-wrapper"><ShoppingOutlined  className="navbar__menu__icon" /></div>
+                                    <div className="navbar__menu_text"><label>Shop</label></div>
+                                </div>
+                            </Link>
                         </li>
                         <li>
                             <Link to="/cart">

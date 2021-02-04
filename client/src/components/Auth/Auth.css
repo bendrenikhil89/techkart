@@ -4,9 +4,9 @@
     margin: 5rem auto;
     background: #fff;
     width: 100%;
-    padding: 3rem;
+    padding: 2rem 3rem;
     border-radius: 1px;
-    height: 450px;
+    height: 360px;
     position: absolute;
     left: 0;
     right: 0;
@@ -17,11 +17,11 @@
   }
 
   .signup__container{
-    height:550px;
+    height:460px;
   }
 
-  .forgotpassword__container, .passwordreset__container{
-    height: 350px;
+  .passwordreset__container, .forgotpassword__container{
+    height: 295px;
   }
 
   .login-signup__container::before {
@@ -47,7 +47,8 @@
 
   .login-signup__container h2{
       text-align: center;
-      color: #337ab7;
+      color: rgb(24, 144, 255);
+      margin-bottom: 1.5rem;
   }
   .login-signup__form-group {
     position: relative;
@@ -173,6 +174,10 @@
 
 .login-signup__not-already-member{
     text-align: end;
+}
+
+.login-form-forgot{
+  float:right;
 }
 
 @media screen and (max-width:767px){

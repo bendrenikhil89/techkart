@@ -64,6 +64,17 @@ exports.addToWishlist = async(req, res) => {
     }
 }
 
+exports.updateUserProfile = async(req, res) => {
+    const {email, userProfile} = req.body;
+    try{
+        const user = await User.findOneAndUpdate({email}, userProfile).exec();
+        return res.status(200).json({user});
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}
+
 exports.getUserWishlist = async(req, res) => {
     const {email} = req.body;
     try{

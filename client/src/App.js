@@ -27,6 +27,7 @@ import Payment from './pages/Payment';
 import Orders from './pages/Orders';
 import UpdatePassword from './pages/UpdatePassword';
 import Wishlist from './pages/Wishlist';
+import Profile from './pages/Profile';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -100,11 +101,12 @@ const App = () => {
           <Route path="/product/:slug" exact component={ProductPage} />
           <Route path="/shop" exact component={Shop} />
           <Route path="/cart" exact component={Cart} />
-          <Route path="/checkout" exact component={Checkout} />
-          <Route path="/payment" exact component={Payment} />
-          <Route path="/my/orders" exact component={Orders} />
-          <Route path="/my/passwordupdate" exact component={UpdatePassword} />
-          <Route path="/my/wishlist" exact component={Wishlist} />
+          <UserRoute path="/checkout" exact component={Checkout} />
+          <UserRoute path="/payment" exact component={Payment} />
+          <UserRoute path="/my/orders" exact component={Orders} />
+          <UserRoute path="/my/passwordupdate" exact component={UpdatePassword} />
+          <UserRoute path="/my/wishlist" exact component={Wishlist} />
+          <UserRoute path="/my/profile" exact component={Profile} />
           <AdminRoute path="/dashboard/admin/categories" exact component={ManageCategories} />
           <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
           <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />

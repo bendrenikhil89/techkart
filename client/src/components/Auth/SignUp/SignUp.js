@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import { Divider, notification } from 'antd';
+import { notification, Modal, Form, Input, Button, Checkbox, Divider } from 'antd';
+import { ExclamationCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
 import {signUp} from '../../../utils/auth-util';
 
 const SignUp = ({history}) => {
@@ -39,7 +40,7 @@ const SignUp = ({history}) => {
 
     return (
         <div className="login-signup__container signup__container">
-            <form onSubmit={signUpHandler}>
+            {/* <form onSubmit={signUpHandler}>
                 <h2>Sign Up</h2>
                 <div className="login-signup__form-group">
                     <input type="text" required="required" value={name} onChange={(e) => setName(e.target.value)}/>
@@ -60,7 +61,78 @@ const SignUp = ({history}) => {
                 <button type="submit" className="login-signup__button">Sign Up</button>
                 <Divider />
                 <p className="login-signup__not-already-member">Already a member? <Link to="/login">Sign In</Link></p>
-            </form>
+            </form> */}
+            <h2>Sign Up</h2>
+            <Form
+                name="normal_signup"
+                className="signup-form"
+                initialValues={{ remember: true }}
+            >
+                <Form.Item
+                    name="name"
+                    rules={[{ required: true, message: "Please input your Name!" }]}
+                >
+                    <Input
+                        prefix={<UserOutlined className="site-form-item-icon" />}
+                        placeholder="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="username"
+                    rules={[{ required: true, message: "Please input your Username!" }]}
+                >
+                    <Input
+                    prefix={<UserOutlined className="site-form-item-icon" />}
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="password"
+                    rules={[{ required: true, message: "Please input your Password!" }]}
+                >
+                    <Input
+                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    />
+                </Form.Item>
+                <Form.Item
+                    name="confirmpassword"
+                    rules={[{ required: true, message: "Please input your Confirm Password!" }]}
+                >
+                    <Input
+                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                </Form.Item>
+
+                <Form.Item>
+                    <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="login-form-button"
+                    block
+                    onClick={signUpHandler}
+                    loading={loading}
+                    >
+                    Sign Up
+                    </Button>
+                </Form.Item>
+                <Divider />
+
+                <Form.Item>
+                    <span style={{float:'right'}}>Already a member? <Link to="/login">Log In</Link></span>
+                </Form.Item>
+            </Form>
         </div>
     )
 }

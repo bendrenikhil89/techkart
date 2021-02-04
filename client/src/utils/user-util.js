@@ -62,3 +62,11 @@ export const removeWishlist = async(email, authtoken, productID) => {
     };
     return await axios(config);
 }
+
+export const updateUserProfile = async(email, authtoken, userProfile) => {
+    return await axios.put(`${process.env.REACT_APP_API_URL}/user/updateprofile`, {email, userProfile}, {
+        headers: {
+            authtoken
+        }
+    });
+}

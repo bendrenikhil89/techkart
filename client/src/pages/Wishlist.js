@@ -73,7 +73,7 @@ const Wishlist = ({history}) => {
                 <div className="wishlist__wrapper">
                     {wishlist && wishlist.length > 0 ? wishlist.map((c) => {
                         return <Card key={c._id}><div className="orders__products-wrapper wishlist__card">
-                                    <div className="orders__products-img"><Avatar size="large" shape="square" src={<Image src={c.images[0].url} />}/></div>
+                                    <div className="orders__products-img"><Image src={c.images[0].url} /></div>
                                     <div className="orders__products-title wishlist__product-title">
                                         <div onClick={() => wishlistProductHandler(c)}><Tooltip title={c.title}><p>{c.title.substring(0,80)}...</p></Tooltip></div>
                                         <div style={{fontSize:'0.8rem', color:'#757575',fontWeight:'600'}}>
