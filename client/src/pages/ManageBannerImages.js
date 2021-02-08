@@ -4,7 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Popconfirm, Empty, List, Divider, notification, Upload, Card, Button } from "antd";
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
-import AdminLeftNav from '../components/AdminDashboard/AdminLeftNav';
+import LeftNav from '../components/LeftNav/LeftNav';
 import '../components/AdminDashboard/AdminDashboard.css';
 import {uploadBannerImage, removeBannerImage, fetchBannerImages} from '../utils/bannerImages-util';
 
@@ -20,6 +20,14 @@ const ManageBannerImages = () => {
           description: msgBody
         });
     };
+
+    const links = [
+        {to:"/dashboard/admin/categories", title:"Categories"},
+        {to:"/dashboard/admin/subcategories", title:"Sub Categories"},
+        {to:"/dashboard/admin/products", title:"Products"},
+        {to:"/dashboard/admin/bannerimages", title:"Banner Images"},
+        {to:"/dashboard/admin/orders", title:"Orders"},
+    ];
 
     const loadBannerImages = async() => {
         try{
@@ -99,8 +107,8 @@ const ManageBannerImages = () => {
 
     return (
         <div className="admin__wrapper">
-            <div className="admin__leftnav">
-                <AdminLeftNav />
+            <div className="main__leftnav">
+                <LeftNav links={links} title="Admin Dashboard" active="/dashboard/admin/bannerimages" />
             </div>
             <div className="admin__content">
                 {!loading ? <label className="admin__uploadbanner">

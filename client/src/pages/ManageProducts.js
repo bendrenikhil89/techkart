@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import AdminLeftNav from '../components/AdminDashboard/AdminLeftNav';
+import LeftNav from '../components/LeftNav/LeftNav';
 import '../components/AdminDashboard/AdminDashboard.css';
-import { Popconfirm, Empty, List, Divider, notification, Card, Carousel } from "antd";
+import { Popconfirm, Empty, List, Divider, notification, Card } from "antd";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import ProductForm from '../components/Forms/ProductForm';
 import { fetchAllProducts, removeProduct, fetchProduct, fetchProductsByPageSize } from '../utils/product-util';
@@ -42,6 +42,14 @@ const ManageProducts = () => {
           description: msgBody
         });
     };
+
+    const links = [
+        {to:"/dashboard/admin/categories", title:"Categories"},
+        {to:"/dashboard/admin/subcategories", title:"Sub Categories"},
+        {to:"/dashboard/admin/products", title:"Products"},
+        {to:"/dashboard/admin/bannerimages", title:"Banner Images"},
+        {to:"/dashboard/admin/orders", title:"Orders"},
+    ];
 
     const fetchCategories = async() => {
         try{
@@ -96,8 +104,8 @@ const ManageProducts = () => {
 
     return (
         <div className="admin__wrapper">
-            <div className="admin__leftnav">
-                <AdminLeftNav />
+            <div className="main__leftnav">
+                <LeftNav links={links} title="Admin Dashboard" active="/dashboard/admin/products" />
             </div>
             <div className="admin__content">
                 <ProductForm 

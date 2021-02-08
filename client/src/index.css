@@ -19,39 +19,3 @@ body{
 .app__wrapper{
 	flex-grow: 1;
 }
-
-.ant-card-cover > * {
-  height: 18vh;
-}
-
-.image-gallery-slide .image-gallery-image{
-  height:60vh;
-  object-fit: fill !important;
-}
-
-@media screen and (max-width:575px){
-  .image-gallery-slide .image-gallery-image{
-    height:200px;
-    object-fit: fill !important;
-  }
-}
-
-@media screen and (min-width:576px) and (max-width:768px){
-  .ant-card-cover > * {
-    height: 20vh;
-  }
-  .image-gallery-slide .image-gallery-image{
-    height:300px;
-    object-fit: fill !important;
-  }
-}
-
-@media screen and (min-width:769px) and (max-width:1024px){
-  .ant-card-cover > * {
-    height: 12vh;
-  }
-  .image-gallery-slide .image-gallery-image{
-    height:350px;
-    object-fit: fill !important;
-  }
-}

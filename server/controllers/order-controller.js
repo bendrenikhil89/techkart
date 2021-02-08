@@ -25,15 +25,38 @@ exports.createOrder = async(req,res) => {
     }
 }
 
-exports.fetchAllOrders = async(req,res) => {
+exports.fetchAllOrdersForUser = async(req,res) => {
   const {purchasedBy} = req.body;
-  console.log(purchasedBy);
   try{
     const orders = await Order.find({purchasedBy})
     .populate("purchasedBy")
-    .sort([["updatedAt", "desc"]])
+    .sort([["createdAt", "desc"]])
     .exec();
     res.status(200).json(orders);
+  }
+  catch(err){
+    return res.status(500).json({msg: err.message});
+  }
+}
+
+exports.fetchAllOrders = async(req,res) => {
+  try{
+    const orders = await Order.find({})
+    .populate("purchasedBy")
+    .sort([["createdAt", "desc"]])
+    .exec();
+    res.status(200).json(orders);
+  }
+  catch(err){
+    return res.status(500).json({msg: err.message});
+  }
+}
+
+exports.updateOrder = async(req, res) => {
+  const {orderID, orderStatus} = req.body;
+  try{
+    const updatedOrder = await Order.findOneAndUpdate({_id:orderID}, {orderStatus}, {new: true});
+    res.status(200).json(updatedOrder);
   }
   catch(err){
     return res.status(500).json({msg: err.message});

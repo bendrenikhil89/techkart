@@ -15,3 +15,19 @@ export const fetchAllOrders = async(email, authtoken, purchasedBy) => {
         }
     });
 }
+
+export const fetchAllOrdersAdmin = async(email, authtoken) => {
+    return await axios.post(`${process.env.REACT_APP_API_URL}/admin/orders/all`, {email}, {
+        headers: {
+            authtoken
+        }
+    });
+}
+
+export const updateOrderAdmin = async(email, authtoken, orderID, orderStatus) => {
+    return await axios.put(`${process.env.REACT_APP_API_URL}/admin/updateorder`, {email, orderID, orderStatus}, {
+        headers: {
+            authtoken
+        }
+    });
+}

@@ -1,7 +1,7 @@
 .dashboard__content__wrapper{
     max-width: 1300px;
     margin: 0 auto;
-    padding: 16px;
+    padding: 15px 0px;
 }
 
 
@@ -18,12 +18,50 @@
     left: 0;
     right: 0;
     top: 100%;
-    width: 5%;
+    width: 75px;
     height: 4px;
     background: #ff4d4f;
     margin-top: 10px;
 }
 
-.dashboard__new-arrivals-wrapper .ant-card-cover > *, .dashboard__best-sellers-wrapper .ant-card-cover > * {
+.dashboard__new-arrivals-wrapper .ant-card-cover > *, .dashboard__best-sellers-wrapper .ant-card-cover > *{
     padding: 10px 40px;
+    height:200px;
 }
+
+.dashboard__shopbycategory .ant-card-cover > *{
+    height:200px;
+}
+
+.dashboard__hero__wrapper .image-gallery-slide .image-gallery-image{
+    height:600px;
+    object-fit: fill !important;
+}
+
+@media screen and (max-width:575px){
+    .dashboard__hero__wrapper .image-gallery-slide .image-gallery-image{
+      height:225px;
+      object-fit: fill !important;
+    }
+  }
+  
+  @media screen and (min-width:576px) and (max-width:768px){
+    .dashboard__hero__wrapper .image-gallery-slide .image-gallery-image{
+      height:325px;
+      object-fit: fill !important;
+    }
+  }
+  
+  @media screen and (min-width:769px) and (max-width:1024px){
+    .dashboard__hero__wrapper .image-gallery-slide .image-gallery-image{
+      height:375px;
+      object-fit: fill !important;
+    }
+  }
+
+  @media screen and (max-width:1365px){
+    .dashboard__content__wrapper{
+        padding:15px 25px;
+    }
+}
+

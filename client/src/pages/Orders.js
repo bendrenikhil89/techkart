@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import LeftNav from '../components/LeftNav/LeftNav';
-import { Avatar, Tooltip, Collapse, Image, Divider } from 'antd';
-import { CodeSandboxOutlined } from '@ant-design/icons';
+import { Tag, Tooltip, Collapse, Image, Divider } from 'antd';
+import { CodeSandboxOutlined, CheckCircleOutlined, SyncOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import {fetchAllOrders} from '../utils/order-util';
 import {useSelector} from 'react-redux';
 import CurrencyFormat from 'react-currency-format'; 
@@ -38,10 +38,17 @@ const Orders = () => {
         }
     }
 
+    const orderStatus = status => {
+        if(status === "Not Processed") return <Tag style={{marginTop:'10px'}} icon={<ClockCircleOutlined />} color="warning">Not Processed</Tag>
+        if(status === "Shipped") return <Tag style={{marginTop:'10px'}} icon={<SyncOutlined spin />} color="processing">Shipped</Tag>
+        if(status === "Delivered") return <Tag style={{marginTop:'10px'}} icon={<CheckCircleOutlined />} color="success">Delivered</Tag>
+        if(status === "Failed") return <Tag style={{marginTop:'10px'}} icon={<CloseCircleOutlined />} color="error">Order Failed</Tag>
+    }
+
     const displayOrders = () => {
         return orders.map((o,i) => {
             return <Collapse key={o._id} className="orders__wrapper" defaultActiveKey={['0']} ghost style={{background:'#fff', padding:'0px 16px', marginTop:'16px'}} expandIconPosition="right"> 
-                <Panel header={<p><CodeSandboxOutlined style={{marginRight:'10px'}} />Order No - <span style={{fontWeight:'600'}}>{o._id}</span> / Order Status - <span style={{fontWeight:'600'}}>{o.orderStatus}</span> / Total - <span style={{fontWeight:'600'}}><CurrencyFormat value={o.paymentIntent.amount/100} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></span></p>} key={i}>
+                <Panel header={<p><CodeSandboxOutlined style={{marginRight:'10px'}} />Order No - <span style={{fontWeight:'600'}}>{o._id}</span> / Order Date - <span style={{fontWeight:'600'}}>{new Date(o.createdAt).toDateString()}</span> / Total - <span style={{fontWeight:'600'}}><CurrencyFormat value={o.paymentIntent.amount/100} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></span><br />{orderStatus(o.orderStatus)}</p>} key={i}>
                     {o.products.map((c,index) => {
                         return <div key={c._id}><div className="orders__products-wrapper">
                             <div className="orders__products-img"><Image src={c.images[0].url} /></div>
@@ -58,7 +65,7 @@ const Orders = () => {
 
     useEffect(() => {
         getAllOrders();
-    }, [])
+    }, []);
 
     return (
         <div className="main__wrapper">

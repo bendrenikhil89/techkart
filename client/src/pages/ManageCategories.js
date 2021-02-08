@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {List, Card, Divider, notification, Popconfirm, Form, Empty} from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import AdminLeftNav from '../components/AdminDashboard/AdminLeftNav';
+import LeftNav from '../components/LeftNav/LeftNav';
 import {create, fetchAll, update, remove} from '../utils/categories-util';
 import {useSelector} from 'react-redux';
 import CategoryForm from '../components/Forms/CategoryForm';
@@ -21,6 +21,14 @@ const ManageCategory = () => {
           description: msgBody
         });
     };
+
+    const links = [
+      {to:"/dashboard/admin/categories", title:"Categories"},
+      {to:"/dashboard/admin/subcategories", title:"Sub Categories"},
+      {to:"/dashboard/admin/products", title:"Products"},
+      {to:"/dashboard/admin/bannerimages", title:"Banner Images"},
+      {to:"/dashboard/admin/orders", title:"Orders"},
+    ];
 
     const createCategoryHandler = async(e) => {
         e.preventDefault();
@@ -106,8 +114,8 @@ const ManageCategory = () => {
     return (
       <>
         <div className="admin__wrapper">
-          <div className="admin__leftnav">
-            <AdminLeftNav />
+          <div className="main__leftnav">
+                <LeftNav links={links} title="Admin Dashboard" active="/dashboard/admin/categories" />
           </div>
           <div className="admin__content">
             <CategoryForm

@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import AdminLeftNav from '../components/AdminDashboard/AdminLeftNav';
+import LeftNav from '../components/LeftNav/LeftNav';
 import '../components/AdminDashboard/AdminDashboard.css';
 import {Form, List, Card, Divider, notification, Popconfirm, Select, Empty} from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -28,6 +28,14 @@ const ManageSubCategories = () => {
           description: msgBody
         });
     };
+
+    const links = [
+      {to:"/dashboard/admin/categories", title:"Categories"},
+      {to:"/dashboard/admin/subcategories", title:"Sub Categories"},
+      {to:"/dashboard/admin/products", title:"Products"},
+      {to:"/dashboard/admin/bannerimages", title:"Banner Images"},
+      {to:"/dashboard/admin/orders", title:"Orders"},
+    ];
 
     const createSubCategoryHandler = async(e) => {
         e.preventDefault();
@@ -122,8 +130,8 @@ const ManageSubCategories = () => {
     return (
       <>
         <div className="admin__wrapper">
-          <div className="admin__leftnav">
-            <AdminLeftNav />
+          <div className="main__leftnav">
+                <LeftNav links={links} title="Admin Dashboard" active="/dashboard/admin/subcategories" />
           </div>
           <div className="admin__content">
             <SubCategoryForm

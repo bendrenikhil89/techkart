@@ -1,25 +1,40 @@
-.admin__content .ant-card-cover > *, .admin__content .ant-card-cover > * {
+.shop__content .ant-card-cover > *{
     padding: 10px 40px;
+    height:200px;
 }
 
-.productspage__wrapper .admin__leftnav{
-    width:26% !important;
+.productspage__wrapper .productspage__leftnav{
+    flex:1;
+    padding-right:10px;
+    margin-bottom: 20px;
+    margin-top:32px;
 }
 
-.productspage__wrapper .admin__content{
-    width:74% !important;
+.productspage__wrapper .shop__content{
+    flex:3;
+    padding-left:10px;
+    margin-top:32px;
 }
 
-/* @media screen and (max-width:968px){
-    .productspage__leftnav{
+.productspage__wrapper{
+    display: flex;
+    max-width: 1300px;
+    margin:0 auto;
+}
+
+@media screen and (max-width:1023px){
+    .productspage__wrapper{
         flex-direction: column;
     }
 
-    .productspage__wrapper .admin__leftnav{
-        width:100% !important;
+    .productspage__leftnav{
+        padding-right: 0px !important;
+        margin:0px 25px;
     }
-    
-    .productspage__wrapper .admin__content{
-        width:100% !important;
+
+    .shop__content{
+        padding-left:0px !important;
+        margin:0px 25px;
+        margin-top:25px !important;
     }
-} */
+}

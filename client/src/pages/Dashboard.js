@@ -129,6 +129,7 @@ const Dashboard = ({history}) => {
                         xl: 4,
                         xxl: 4
                         }}
+                        className="dashboard__shopbycategory"
                         dataSource={categories}
                         renderItem={item => (
                         <List.Item>
@@ -225,7 +226,7 @@ const Dashboard = ({history}) => {
                             </ItemsCarousel>
                         </div>     */}
 
-                    <h2>Best Sellers</h2>
+                    <h2 style={{paddingTop:'15px'}}>Best Sellers</h2>
                     <div className="dashboard__best-sellers-wrapper" style={{"padding":0,"maxWidth":"1300px","margin":"0 auto"}}>
                         {bestSellers && bestSellers.length > 0 && <ItemsCarousel
                             numberOfCards={itemCarouselCount}

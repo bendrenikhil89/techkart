@@ -28,6 +28,7 @@ import Orders from './pages/Orders';
 import UpdatePassword from './pages/UpdatePassword';
 import Wishlist from './pages/Wishlist';
 import Profile from './pages/Profile';
+import ManageOrders from './pages/ManageOrders';
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -111,6 +112,7 @@ const App = () => {
           <AdminRoute path="/dashboard/admin/subcategories" exact component={ManageSubCategories} />
           <AdminRoute path="/dashboard/admin/products" exact component={ManageProducts} />
           <AdminRoute path="/dashboard/admin/bannerimages" exact component={ManageBannerImages} />
+          <AdminRoute path="/dashboard/admin/orders" exact component={ManageOrders} />
         </Switch>
       </div>
       <SiteFooter /> 
