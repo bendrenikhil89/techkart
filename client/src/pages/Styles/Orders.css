@@ -87,5 +87,26 @@
 .orders__empty p{
     text-align: center;
     margin-top:30px;
+}
+
+@media screen and (max-width:1023px){
+    .main__wrapper{
+        flex-direction: column;
+        padding:0px !important;
+        margin:0px 20px;
+    }
+
+    .main__leftnav{
+        padding-right:0px !important;
+    }
+
+    .main__content{
+        flex:1;
+        padding-left:0px !important;
+        margin-top:20px;
+    }
     
+    .sidebar{
+        margin-top:0px !important;
+    }
 }

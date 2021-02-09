@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import LeftNav from '../components/LeftNav/LeftNav';
-import { Form, Input, Button, notification, Radio, DatePicker } from 'antd';
+import { Form, Input, Button, notification, Radio } from 'antd';
 import { getCart, updateUserProfile } from '../utils/user-util';
+
+import './Styles/Profile.css';
+import './Styles/Orders.css';
 
 const Profile = () => {
     const [userProfile, setUserProfile] = useState({name:'', email:'', mobile:'', gender:'', location:''});

@@ -58,15 +58,18 @@
 @media screen and (max-width:968px){
     .checkout__wrapper{
         flex-direction: column;
+        padding: 0px !important;
     }
     .checkout__left, .checkout__right{
         flex:1;
     }
     .checkout__left{
         margin-right:0px;
+        margin:15px 20px;
     }
     .checkout__right{
         margin-left:0px;
-        margin:16px 0px;
+        margin:15px 20px;
+        margin-bottom:20px;
     }
 }

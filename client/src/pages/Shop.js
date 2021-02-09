@@ -272,7 +272,8 @@ const Shop = () => {
             </div>
             <div className="shop__content">
                 {pageLoadProducts.length > 0 
-                    ?<><List
+                    ?<>
+                    {/* <List
                         grid={{
                         gutter: 16,
                         xs: 1,
@@ -288,7 +289,10 @@ const Shop = () => {
                             <ProductCard p={item} key={item._id}/>
                         </List.Item>
                         )}
-                    />
+                    /> */}
+                    <div className="shop__productcard-wrapper">
+                        {pageLoadProducts.map(p => { return <ProductCard p={p} key={p._id}/>})}
+                    </div>
                     <br />
                     {pageLoadProducts.length > pageSizeCount && <Pagination defaultCurrent={1} total={pageLoadProducts.length} pageSize={pageSizeCount} value={page} onChange={value => setPage(value)} />}
                     </>

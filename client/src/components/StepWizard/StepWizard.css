@@ -1,0 +1,9 @@
+@media screen and (max-width:767px){
+    .site-navigation-steps .ant-steps-item:not(:last-of-type){
+        margin-bottom: 10px;
+    }
+    
+    .site-navigation-steps{
+        padding-bottom: 0px !important;
+    }
+}

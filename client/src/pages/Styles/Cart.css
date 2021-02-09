@@ -106,16 +106,18 @@
 @media screen and (max-width:968px){
     .cart__wrapper{
         flex-direction: column;
+        padding:0px !important;
     }
     .cart__productDetails, .cart__priceDetails{
         flex:1;
     }
     .cart__productDetails{
-        margin-right:0px;
+        margin:15px 20px;
+        /* margin-bottom:15px; */
     }
     .cart__priceDetails{
-        margin-left:0px;
-        margin:16px 0px;
+        margin:20px;
+        margin-top:15px;
     }
     .productDetails__image, .productDetails__details{
         padding:0px 16px;

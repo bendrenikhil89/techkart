@@ -1,0 +1,15 @@
+.main__content{
+    margin-bottom:20px;
+}
+
+@media screen and (max-width: 600px) {
+    form {
+      margin: 0 auto;
+    }
+}
+
+@media screen and (max-width:1023px){
+    .main__leftnav{
+        margin-top:20px;
+    }
+}

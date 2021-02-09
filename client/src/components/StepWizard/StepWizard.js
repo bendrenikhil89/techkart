@@ -3,6 +3,8 @@ import { Steps } from 'antd';
 import {useLocation, useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
+import './StepWizard.css';
+
 const StepWizard = () => {
     const { Step } = Steps;
 
