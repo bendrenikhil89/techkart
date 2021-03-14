@@ -4,18 +4,19 @@ import {useSelector, useDispatch} from 'react-redux';
 import { Popover, Button, Divider, Input, Badge } from 'antd';
 import { UserOutlined, ShoppingCartOutlined, HeartOutlined, FundOutlined, SearchOutlined, LogoutOutlined, DashboardOutlined, ShoppingOutlined } from '@ant-design/icons';
 import {useHistory} from 'react-router-dom';
+import useWindowDimensions from '../../Hooks/useWindowDimensions';
 
 import './Navbar.css';
 
 const Navbar = () => {
-    const [searchText, setSearchText] = useState("");
     const { Search } = Input;
-    const onSearch = value => console.log(value);
     const {user, search, cart} = useSelector(state => ({...state}));
     const {text} = search;
+    const [searchText, setSearchText] = useState(text || "");
     const dispatch = useDispatch();
     const history = useHistory();
-
+    const { width } = useWindowDimensions();
+    
     const logoutHandler = (e) => {
         e.preventDefault();
         dispatch({
@@ -23,6 +24,11 @@ const Navbar = () => {
             payload: null
           });
         localStorage.removeItem("techkart-user");
+    }
+
+    const profileLinkHandler = e => {
+        e.preventDefault();
+        history.push("/my/profile");
     }
 
     const ordersLinkHandler = e => {
@@ -58,7 +64,7 @@ const Navbar = () => {
                 <label className="navbar__username">Hello {user.name.split(' ')[0]}</label>
                 <Divider /> 
                 {adminLink}
-                <Button type="text" icon={<UserOutlined />}>My Profile</Button>
+                <Button type="text" icon={<UserOutlined />} onClick={profileLinkHandler}>My Profile</Button>
                 <Divider />
                 <Button type="text" icon={<FundOutlined />} onClick={ordersLinkHandler}>Orders</Button>
                 <Divider />
@@ -94,7 +100,7 @@ const Navbar = () => {
             <nav className="navbar__nav">
                 <div className="navbar__brand-wrapper">
                     <Link to="/" className="navbar__brand">TechKart</Link>
-                    <Input placeholder="Search for products, brands and more" value={searchText} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />
+                    {width > 768 && <Input placeholder="Search for products, brands and more" value={text} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />}
                 </div>
                 <div className="navbar__links-wrapper">
                     <ul className="navbar__links">
@@ -128,6 +134,7 @@ const Navbar = () => {
                     </ul>
                 </div>
             </nav>
+            {width <=  768 && <Input placeholder="Search for products, brands and more" value={searchText} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />}
         </div>
     )
 }

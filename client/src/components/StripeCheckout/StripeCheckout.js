@@ -5,6 +5,7 @@ import {createPaymentIntent} from '../../utils/stripe-util';
 import { Alert, Result, Button } from 'antd';
 import { createOrder } from '../../utils/order-util';
 import {Link} from 'react-router-dom';
+import CurrencyFormat from 'react-currency-format';
 
 const StripeCheckout = ({history}) => {
     const dispatch = useDispatch();
@@ -113,7 +114,8 @@ const StripeCheckout = ({history}) => {
                 disabled={processing || disabled || succeeded}
                 >
                 <span id="button-text">
-                    {processing ? <div className="spinner" id="spinner"></div> : `Pay $${cart.reduce((total,curr) => total + (curr.count * curr.price), 0)}`}
+                    {/* {processing ? <div className="spinner" id="spinner"></div> : `Pay $${cart.reduce((total,curr) => total + (curr.count * curr.price), 0)}`} */}
+                    <CurrencyFormat value={cart.reduce((total,curr) => total + (curr.count * curr.price), 0)} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{`Pay ${value}`}</span>} />
                 </span>
                 </button>
                 <br />

@@ -2,18 +2,22 @@ import React, {useEffect, useState} from 'react';
 import ImageGallery from 'react-image-gallery';
 import './Styles/ProductPage.css';
 import { fetchProduct, rateProduct } from '../utils/product-util';
-import { addWishlist } from '../utils/user-util';
-import {Tag, notification, Button, Modal, Rate, message} from 'antd';
+import { addWishlist, getWishlist } from '../utils/user-util';
+import {Tag, notification, Button, Modal, Rate} from 'antd';
 import { HeartOutlined, ShoppingCartOutlined, StarFilled } from '@ant-design/icons';
 import {useSelector, useDispatch} from 'react-redux';
+import CurrencyFormat from 'react-currency-format';
 import {Link} from 'react-router-dom';
+import noImage from '../assets/images/No_Image.svg';
 
-const ProductPage = ({match}) => {
+const ProductPage = ({match, history}) => {
     const [productDetails, setProductDetails] = useState({});
     const [productImages, setProductImages] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [rating, setRating] = useState(0);
     const [avgRating, setAvgRating] = useState({avgRating: 0, totalRatings: 0});
+    const [addedInCart, setAddedInCart] = useState(false);
+    const [userWishlist, setUserWishlist] = useState([]);
 
     const dispatch = useDispatch();
 
@@ -74,12 +78,38 @@ const ProductPage = ({match}) => {
         }
     }
 
-    const checkIfProductInCart = productDetails => {
+    const getUserWishlist = async() => {
+        try{
+            const user = await getWishlist(email, authtoken);
+            setUserWishlist(user.data.user.wishlist);
+        }
+        catch(err){
+            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+        }
+    }
+
+    const checkIfProductInWishlist = () => {
+        if(userWishlist && userWishlist.length > 0){
+            let productAdded = userWishlist.find(u => {
+                return u._id === productDetails._id;
+            });
+            if(productAdded){
+                return true
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    const checkIfProductInCart = () => {
         if(cart && cart.length > 0){
             let productAdded = cart.find(c => {
                 return c._id === productDetails._id;
             });
-            return productAdded;
+            if(productAdded){
+                setAddedInCart(true);
+            }
         }
     }
     
@@ -92,7 +122,7 @@ const ProductPage = ({match}) => {
     
     const handleOk = async() => {
         try{
-            await rateProduct(rating, authtoken, productDetails._id, email);
+            await rateProduct(rating, avgRating, authtoken, productDetails._id, email);
             fetchProductDetails();
             setIsModalVisible(false);
             openNotificationWithIcon('success', 'Rating Submitted', 'Your rating for the product is submitted!');
@@ -168,37 +198,46 @@ const ProductPage = ({match}) => {
 
     useEffect(() => {
         fetchProductDetails();
+        getUserWishlist();
     }, []);
+
+    useEffect(() => {
+        checkIfProductInCart();
+    }, [productDetails])
 
     return (
         <>
         <div className="product__container">
             <div className="product__carousel">
                 <div className="product__carousel-wrapper">
-                    {productImages.length > 0 && <ImageGallery 
+                    {productImages.length > 0 ? <ImageGallery 
                         items={productImages}
                         showThumbnails={true} 
                         thumbnailPosition="left"
                         showIndex={true} 
                         showPlayButton={false}
                         showNav={false}
-                        showFullscreenButton={false}  
-                    />}
+                        showFullscreenButton={false}
+                    /> : <img src={noImage} style={{width:'100%',height:'45vh'}}/>}
                 </div>
                 <div className="product__carousel-buttons">
-                    <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addToWishlistHandler(productDetails)}>
+                    {!checkIfProductInWishlist() ? <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addToWishlistHandler(productDetails)}>
                         <span className="product__carousel-buttonText">Wishlist</span>
-                    </Button>
-                    <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addCartHandler(productDetails)}>
+                    </Button> : <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large">
+                        <span className="product__carousel-buttonText">Wishlisted</span>
+                    </Button>}
+                    {!addedInCart ? <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addCartHandler(productDetails)}>
                         <span className="product__carousel-buttonText">Add to cart</span>
-                    </Button>
+                    </Button> : <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => history.push("/cart")}>
+                        <span className="product__carousel-buttonText">Go to cart</span>
+                    </Button>}
                 </div>
             </div>
 
             <div className="product__details">
                 <h3>{productDetails.title}</h3>
                 <p onClick={() => setIsModalVisible(true)}><Tag color="#388e3c">{avgRating.avgRating} <StarFilled /></Tag> <span className="product__details-ratingsText">{avgRating.totalRatings} Rating{avgRating.totalRatings > 1 ? "s" : ""}</span></p>
-                <h1>${productDetails.price}</h1>
+                <h1><CurrencyFormat value={productDetails.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></h1>
                 <div className="product__details-highlights">
                     <div className="product__details-highlights-columnName">
                         Highlights

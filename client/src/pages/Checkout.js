@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import { Divider, Form, Button, notification } from 'antd';
-import { DeleteFilled } from '@ant-design/icons';
+import CurrencyFormat from 'react-currency-format';
 import {getCart, addAddress} from '../utils/user-util';
 import {useHistory} from 'react-router-dom';
 import './Styles/Checkout.css';
@@ -126,7 +126,7 @@ useEffect(() => {
                             <p>{c.title.substring(0, 50)}... x <strong>{c.count}</strong></p>
                         </div>
                         <div className="cart__priceNum">
-                            <p>${c.price}</p>
+                            <p><CurrencyFormat value={c.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></p>
                         </div>
                     </div>
                 })}
@@ -136,7 +136,7 @@ useEffect(() => {
                         <p>Total Amount: </p>
                     </div>
                     <div className="cart__priceNum">
-                        <p><strong>${totalCartValue()}</strong></p>
+                        <p><strong><CurrencyFormat value={totalCartValue()} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></strong></p>
                     </div>
                 </div>
             </div>

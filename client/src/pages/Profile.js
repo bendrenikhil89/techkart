@@ -131,7 +131,7 @@ const Profile = () => {
 
                     <Form.Item>
                         <Button type="primary" onClick={updateUserProfileHandler} loading={loading}>
-                            Submit
+                            Save
                         </Button>
                     </Form.Item>
                 </Form>

@@ -98,21 +98,6 @@ const Login = ({history}) => {
     }, [user]);
     return (
       <div className="login-signup__container">
-        {/* <form onSubmit={loginHandler}>
-                <h2>Sign In</h2>
-                <div className="login-signup__form-group">
-                    <input type="text" required="required" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <label htmlFor="input" className="login-signup__control-label">Your email</label><i className="login-signup__bar"></i>
-                </div>
-                <div className="login-signup__form-group">
-                    <input type="password" required="required" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <label htmlFor="input" className="login-signup__control-label">Your password</label><i className="login-signup__bar"></i>
-                </div>
-                <p className="login__forgot-password"><Link to="/forgotpassword">Forgot Password?</Link></p>
-                <button type="submit" className="login-signup__button" >Sign In</button>
-                <Divider />
-                <p className="login-signup__not-already-member">Not a member? <Link to="/signup">Sign Up</Link></p>
-            </form> */}
         <h2>Sign In</h2>
         <Form
           name="normal_login"

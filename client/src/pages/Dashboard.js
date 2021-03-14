@@ -4,13 +4,15 @@ import './Styles/Dashboard.css';
 import {fetchBannerImages} from '../utils/bannerImages-util';
 import {fetchAll} from '../utils/categories-util';
 import { fetchProductsByPageSize } from '../utils/product-util';
-import {List, Card, notification, Empty} from 'antd';
-import { RightOutlined, LeftOutlined } from '@ant-design/icons';
+import {List, Card, notification, Empty, Avatar} from 'antd';
+import { RightOutlined, LeftOutlined, UnorderedListOutlined, LaptopOutlined, DesktopOutlined, TabletOutlined, MobileOutlined } from '@ant-design/icons';
 import ItemsCarousel from 'react-items-carousel';
 import useWindowDimensions from '../Hooks/useWindowDimensions';
 import ProductCard from '../components/Card/ProductCard/ProductCard';
 import FooterCard from '../components/Card/FooterCard/FooterCard';
 import {useDispatch} from 'react-redux';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
+import { Link } from 'react-router-dom';
 
 const Dashboard = ({history}) => {
     const [loading, setLoading] = useState(false);
@@ -42,15 +44,12 @@ const Dashboard = ({history}) => {
 
     const loadBannerImages = async() => {
         try{
-            setLoading(true);
             let resBannerImages = await fetchBannerImages();
             setBannerImages(resBannerImages.data.length > 0 && resBannerImages.data.map(b => {
                 return {original: b.url, thumbnail: ''}
             }));
-            setLoading(false);
         }
         catch(err){
-            setLoading(false);
             console.log('error',err.response.statusText, err.response.data);
         }
     }
@@ -69,7 +68,7 @@ const Dashboard = ({history}) => {
 
     const fetchProductsNewArrivals = async() => {
         try{
-            let newArrivals = await fetchProductsByPageSize("updatedAt", "desc", 1, 8);
+            let newArrivals = await fetchProductsByPageSize("createdAt", "desc", 1, 8);
             setNewArrivals(newArrivals.data);
         }
         catch(err){
@@ -78,12 +77,16 @@ const Dashboard = ({history}) => {
     }
 
     const fetchProductsBestSellers = async() => {
+        setLoading(true);
         try{
             let newArrivals = await fetchProductsByPageSize("sold", "desc", 1, 8);
             setBestSellers(newArrivals.data);
         }
         catch(err){
             openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+        }
+        finally{
+            setLoading(false);
         }
     }
 
@@ -103,7 +106,16 @@ const Dashboard = ({history}) => {
     }, []);
 
     return (
-        <div className="dashboard__wrapper">
+        (!loading ? <div className="dashboard__wrapper">
+            <div className="dashboard__shop-category-header">
+                {categories.length > 0 && <ul>
+                    <li style={{textAlign:'center'}}><Link to="/shop"><div><Avatar style={{ backgroundColor: '#1976d2' }} icon={<UnorderedListOutlined />} /></div><div style={{fontSize:'0.8rem'}}>All</div></Link></li>
+                    <li style={{textAlign:'center'}} onClick={() => productsByCategoryHandler(categories.find(c => c.name === 'Laptop').id)}><div><Avatar style={{ backgroundColor: '#1976d2' }} icon={<LaptopOutlined />} /></div><div style={{fontSize:'0.8rem'}}>Laptop</div></li>
+                    <li style={{textAlign:'center'}} onClick={() => productsByCategoryHandler(categories.find(c => c.name === 'Desktop').id)}><div><Avatar style={{ backgroundColor: '#1976d2' }} icon={<DesktopOutlined />} /></div><div style={{fontSize:'0.8rem'}}>Desktop</div></li>
+                    <li style={{textAlign:'center'}} onClick={() => productsByCategoryHandler(categories.find(c => c.name === 'Tablet').id)}><div><Avatar style={{ backgroundColor: '#1976d2' }} icon={<TabletOutlined />} /></div><div style={{fontSize:'0.8rem'}}>Tablet</div></li>
+                    <li style={{textAlign:'center'}} onClick={() => productsByCategoryHandler(categories.find(c => c.name === 'Mobile').id)}><div><Avatar style={{ backgroundColor: '#1976d2' }} icon={<MobileOutlined />} /></div><div style={{fontSize:'0.8rem'}}>Mobile</div></li>
+                </ul>}
+            </div>
             <div className="dashboard__hero__wrapper">
                 <ImageGallery 
                     items={bannerImages}
@@ -253,7 +265,7 @@ const Dashboard = ({history}) => {
                     </div>
             </div>
             <FooterCard />
-        </div>
+        </div> : <LoadingSpinner />)
     )
 }
 

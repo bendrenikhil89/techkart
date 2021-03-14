@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {confirmation, resendlink} from '../../../utils/auth-util';
 import { notification, Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';

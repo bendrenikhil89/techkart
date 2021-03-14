@@ -1,5 +1,6 @@
 import React from 'react';
 import {useLocation} from 'react-router-dom';
+import { FacebookFilled, InstagramFilled, YoutubeFilled } from '@ant-design/icons';
 import './SiteFooter.css';
 
 const SiteFooter = () => {
@@ -12,23 +13,23 @@ const SiteFooter = () => {
         ? <div className="footer__wrapper">
             <div className="contain">
                 <div className="col">
-                    <h1>Company</h1>
+                    <h1>About</h1>
                     <ul>
-                    <li>About</li>
-                    <li>Mission</li>
-                    <li>Services</li>
-                    <li>Social</li>
-                    <li>Get in touch</li>
+                    <li>Contact Us</li>
+                    <li>About Us</li>
+                    <li>Careers</li>
+                    <li>Techkart Stories</li>
+                    <li>Press</li>
                     </ul>
                 </div>
                 <div className="col">
-                    <h1>Products</h1>
+                    <h1>Help</h1>
                     <ul>
-                    <li>About</li>
-                    <li>Mission</li>
-                    <li>Services</li>
-                    <li>Social</li>
-                    <li>Get in touch</li>
+                    <li>Payments</li>
+                    <li>Shipping</li>
+                    <li>Cancellation & Returns</li>
+                    <li>FAQ</li>
+                    <li>Report Infringement</li>
                     </ul>
                 </div>
                 <div className="col">
@@ -42,14 +43,14 @@ const SiteFooter = () => {
                     </ul>
                 </div>
                 <div className="col">
-                    <h1>Resources</h1>
+                    <h1>Policy</h1>
                     <ul>
-                    <li>Webmail</li>
-                    <li>Redeem code</li>
-                    <li>WHOIS lookup</li>
-                    <li>Site map</li>
-                    <li>Web templates</li>
-                    <li>Email templates</li>
+                    <li>Return Policy</li>
+                    <li>Terms Of Use</li>
+                    <li>Security</li>
+                    <li>Privacy</li>
+                    <li>Sitemap</li>
+                    <li>ERP Compliance</li>
                     </ul>
                 </div>
                 <div className="col">
@@ -63,9 +64,9 @@ const SiteFooter = () => {
                 <div className="col social">
                     <h1>Social</h1>
                     <ul>
-                    <li><img src="https://svgshare.com/i/5fq.svg" width="32" style={{width: "32px"}} /></li>
-                    <li><img src="https://svgshare.com/i/5eA.svg" width="32" style={{width: "32px"}} /></li>
-                    <li><img src="https://svgshare.com/i/5f_.svg" width="32" style={{width: "32px"}} /></li>
+                    <li><FacebookFilled style={{fontSize:'2rem', color:'#3a5794'}}/></li>
+                    <li><InstagramFilled style={{fontSize:'2rem',color:'#c83278'}}/></li>
+                    <li><YoutubeFilled style={{fontSize:'2rem',color:'#f70000'}}/></li>
                     </ul>
                 </div>
                 <div className="clearfix"></div>

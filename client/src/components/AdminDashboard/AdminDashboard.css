@@ -47,6 +47,17 @@
     background: #40a9ff;
 }
 
+.admin__productcard-wrapper{
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.admin__content .ant-card-cover > *{
+    padding: 10px 40px;
+    height:200px;
+}
+
 @media screen and (max-width: 600px) {
     .admin__wrapper{
         flex-direction: column;
@@ -72,5 +83,19 @@
     .admin__wrapper{
         padding: 0px !important;
         margin:0px 20px;
+    }
+}
+
+@media screen and (min-width:768px) and (max-width:1000px){
+    .admin__productcard-wrapper{
+        grid-template-columns: repeat(2, minmax(250px, 1fr));
+        padding:0px;
+    }
+}
+
+@media screen and (min-width:1001px){
+    .admin__productcard-wrapper{
+        grid-template-columns: repeat(3, minmax(250px, 1fr));
+        padding:0px;
     }
 }

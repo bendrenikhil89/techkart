@@ -40,28 +40,6 @@ const SignUp = ({history}) => {
 
     return (
         <div className="login-signup__container signup__container">
-            {/* <form onSubmit={signUpHandler}>
-                <h2>Sign Up</h2>
-                <div className="login-signup__form-group">
-                    <input type="text" required="required" value={name} onChange={(e) => setName(e.target.value)}/>
-                    <label htmlFor="input" className="login-signup__control-label">Your name</label><i className="login-signup__bar"></i>
-                </div>
-                <div className="login-signup__form-group">
-                    <input type="text" required="required" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <label htmlFor="input" className="login-signup__control-label">Your email</label><i className="login-signup__bar"></i>
-                </div>
-                <div className="login-signup__form-group">
-                    <input type="password" required="required" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <label htmlFor="input" className="login-signup__control-label">Your password</label><i className="login-signup__bar"></i>
-                </div>
-                <div className="login-signup__form-group">
-                    <input type="password" required="required" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
-                    <label htmlFor="input" className="login-signup__control-label">Confirm password</label><i className="login-signup__bar"></i>
-                </div>
-                <button type="submit" className="login-signup__button">Sign Up</button>
-                <Divider />
-                <p className="login-signup__not-already-member">Already a member? <Link to="/login">Sign In</Link></p>
-            </form> */}
             <h2>Sign Up</h2>
             <Form
                 name="normal_signup"

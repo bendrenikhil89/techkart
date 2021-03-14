@@ -9,15 +9,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import AdminRoute from './components/Routes/AdminRoute';
 import UserRoute from './components/Routes/UserRoute';
+import PasswordReset from './components/Auth/PasswordReset/PasswordReset';
+import ForgotPassword from './components/Auth/PasswordReset/ForgotPassword';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import SiteFooter from './components/SiteFooter/SiteFooter';
 import ManageCategories from './pages/ManageCategories';
 import ManageSubCategories from './pages/ManageSubCategories';
 import ManageProducts from './pages/ManageProducts';
 import ManageBannerImages from './pages/ManageBannerImages';
-import PasswordReset from './components/Auth/PasswordReset/PasswordReset';
-import ForgotPassword from './components/Auth/PasswordReset/ForgotPassword';
 import Dashboard from './pages/Dashboard';
-import { Footer } from 'antd/lib/layout/layout';
-import SiteFooter from './components/SiteFooter/SiteFooter';
 import ProductPage from './pages/ProductPage';
 import Shop from './pages/Shop';
 import Cart from './pages/Cart';
@@ -91,6 +91,7 @@ const App = () => {
       <> 
       <div className="app__wrapper">
       <CartDrawer />
+      <ScrollToTop />
       <Navbar />
         <Switch>
           <Route path="/login" exact component={Login} />

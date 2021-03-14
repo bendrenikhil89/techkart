@@ -17,7 +17,7 @@
     align-items: center;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    padding: .5rem 1rem;
+    padding: .5rem 0rem;
     max-width: 1300px;
     margin: 0 auto;
 }
@@ -86,7 +86,7 @@
 
 .navbar__search{
     margin-left: 15px;
-    width:30vw !important;
+    width:600px !important;
     background: #fafafa;
 }
 
@@ -132,4 +132,18 @@
     padding:15px;
     font-size: 13px;
     font-weight: bold;
+}
+
+@media screen and (max-width:768px){
+    .navbar__search{
+        width:calc(100vw - 40px) !important;
+        margin: 0 20px;
+        margin-bottom: 5px;    
+    }
+}
+
+@media screen and (max-width:1366px){
+    .navbar__nav{
+        padding: 0.5rem 20px;
+    }
 }

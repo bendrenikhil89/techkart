@@ -3,13 +3,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useHistory, Link} from 'react-router-dom';
 import { Divider, Image, InputNumber, Button, Tag, notification } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
-
+import CurrencyFormat from 'react-currency-format';
 import {saveCart} from '../utils/user-util';
 
 import emptyCart from '../assets/images/Empty_Cart.svg';
 
 import './Styles/Cart.css';
 import StepWizard from '../components/StepWizard/StepWizard';
+import noImage from '../assets/images/No_Image.png';
 
 const Cart = () => {
     const {user, cart} = useSelector(state => ({...state}));
@@ -66,11 +67,11 @@ const Cart = () => {
     const productCart = (cartDetails) => {
         return <><div className="productDetails__wrapper">
             <div className="productDetails__image">
-                <Image width={100} src={cartDetails.images[0].url} style={{cursor:'pointer'}} />
+                <Image width={100} src={cartDetails && cartDetails.images.length > 0 ? cartDetails.images[0].url : noImage} style={{cursor:'pointer'}} />
             </div>
             <div className="productDetails__details">
                 <p>{cartDetails.title}<span style={{paddingLeft:"20px"}}>{cartDetails.quantity > 0 ? <Tag color="#87d068">In stock</Tag> : <Tag color="red">Out of stock</Tag> }</span></p>
-                <p><strong>$ {cartDetails.price}</strong></p>
+                <p><strong><CurrencyFormat value={cartDetails.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></strong></p>
                 <div style={{display:'flex'}}>
                     <div style={{marginRight:'20px',display:'flex',alignItems:'center'}}>
                         <span style={{marginRight:'10px'}}>Quantity:</span><InputNumber min={1} max={cartDetails.quantity} defaultValue={cartDetails.count} onChange={value => updateCartQuantity(value, cartDetails)} />
@@ -142,7 +143,7 @@ const Cart = () => {
                             <p>{c.title.substring(0, 50)}... x <strong>{c.count}</strong></p>
                         </div>
                         <div className="cart__priceNum">
-                            <p>${c.price}</p>
+                            <p><CurrencyFormat value={c.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></p>
                         </div>
                     </div>
                 })}
@@ -152,7 +153,7 @@ const Cart = () => {
                         <p>Total Amount: </p>
                     </div>
                     <div className="cart__priceNum">
-                        <p><strong>${totalCartValue()}</strong></p>
+                        <p><strong><CurrencyFormat value={totalCartValue()} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></strong></p>
                     </div>
                 </div>
             </div></> : 

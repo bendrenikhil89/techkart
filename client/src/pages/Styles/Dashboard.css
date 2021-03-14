@@ -4,6 +4,28 @@
     padding: 15px 0px;
 }
 
+.dashboard__shop-category-header{
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 5px 0px 2px 0px;
+}
+
+.dashboard__shop-category-header ul{
+  list-style: none;
+  margin-bottom: 0px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard__shop-category-header li{
+  cursor: pointer;
+}
+
+.dashboard__shop-category-header a{
+  color:#282c3f;
+}
+
 
 .dashboard__content__wrapper h2{
     text-transform: uppercase;
@@ -62,6 +84,10 @@
   @media screen and (max-width:1365px){
     .dashboard__content__wrapper{
         padding:15px 20px;
+    }
+    .dashboard__shop-category-header{
+      padding-left:15px;
+      padding-right:15px;
     }
 }
 

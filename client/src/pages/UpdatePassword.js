@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import LeftNav from '../components/LeftNav/LeftNav';
 import { Form, Input, Button, notification } from 'antd';
@@ -102,7 +102,7 @@ const UpdatePassword = () => {
 
                     <Form.Item>
                         <Button type="primary" onClick={updatePasswordHandler} loading={loading}>
-                            Submit
+                            Save
                         </Button>
                     </Form.Item>
                 </Form>

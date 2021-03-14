@@ -40,7 +40,6 @@ exports.removeProduct = async(req, res) => {
 
 exports.fetchProduct = async(req, res) => {
     const slug = req.params.slug;
-    console.log(slug);
     try{
         let product = await Product.findOne({slug}).exec();
         if(!product) return res.status(404).json({msg: `${slug} does not exist!`});
@@ -87,9 +86,29 @@ exports.fetchProductsByPageSize = async (req, res) => {
   };
 
 exports.productsCount = async (req, res) => {
+    const filter = {...req.body};
+    let filterQuery = {};
     try{
-        let total = await Product.find({}).estimatedDocumentCount().exec();
-        res.json(total);
+        if(filter && filter.categoryID !== undefined && filter.categoryID.length > 0){
+            filterQuery = {...filterQuery, category: filter.categoryID};
+        }
+        if(filter && filter.subcategoryID){
+            filterQuery = {...filterQuery, subcategories: filter.subcategoryID};
+        }
+        if(filter && filter.brand){
+            filterQuery = {...filterQuery, brand: filter.brand};
+        }
+        if(filter && filter.price){
+            filterQuery = {...filterQuery, price: { $gte: filter.price[0], $lte: filter.price[1]} };
+        }
+        if(filter && filter.query){
+            filterQuery = {$text: { $search: filter.query}};
+        }
+        if(filter && filter.rating){
+            filterQuery = {...filterQuery, avgRating: { $eq: filter.rating} };
+        }
+        let total = await Product.find(filterQuery).exec();
+        res.json(total.length);
     }
     catch(err){
         return res.status(500).json({msg: err.message});
@@ -126,19 +145,29 @@ exports.postRating = async(req, res) => {
             ).exec();
             res.status(200).json(ratingUpdated);
         }
+        const updatedProduct = await Product.findById(req.params.productId).exec();
+        const productAvgRating = updatedProduct.ratings.reduce((sum, p) =>  {
+            return sum + parseFloat(p.star);
+        }, 0) / updatedProduct.ratings.length;
+        await Product.findByIdAndUpdate(product._id, {avgRating: Math.floor(productAvgRating)}, { new: true }).exec();
     }
     catch(err){
         return res.status(500).json({msg: err.message});
     }
 }
 
-const handleQuery = async(req,res,query) => {
+const handleQuery = async(req,res,query, page, pageSize) => {
     try{
+        const currentPage = page || 1;
+        const perPage = pageSize || 4;
         const products = await Product.find({$text: { $search: query} })
-        .populate("category")
-        .populate("subcategories")
-        .populate("postedBy")
-        .exec();
+            .skip((currentPage - 1) * perPage)
+            .populate("category")
+            .populate("subcategories")
+            .populate("postedBy")
+            .sort([["createdAt", "desc"]])
+            .limit(perPage)
+            .exec();
         res.json(products);
     }
     catch(err){
@@ -146,72 +175,34 @@ const handleQuery = async(req,res,query) => {
     }
 }
 
-const handlePrice = async(req, res, price) => {
+const handleFilter = async(req,res,filter, page, pageSize) => {
+    let filterQuery={};
     try{
-        const products = await Product.find({
-            price: {
-                $gte: price[0],
-                $lte: price[1]
-            }
-        }).populate("category")
-        .populate("subcategories")
-        .populate("postedBy")
-        .exec();
-        res.json(products);
-    }
-    catch(err){
-        return res.status(500).json({msg: err.message});
-    }
-}
-
-const handleBrand = async(req, res, brand) => {
-    try{
-        const products = await Product.find({brand})
-        .populate("category")
-        .populate("subcategories")
-        .populate("postedBy")
-        .exec();
-        res.json(products);
-    }
-    catch(err){
-        return res.status(500).json({msg: err.message});
-    }
-}
-
-const handleSubCategories = async(req, res, subcategories) => {
-    try{
-        const products = await Product.find({subcategories})
-        .populate("category")
-        .populate("subcategories")
-        .populate("postedBy")
-        .exec();
-        res.json(products);
-    }
-    catch(err){
-        return res.status(500).json({msg: err.message});
-    }
-}
-
-const handleRating = async(req, res, rating) => {
-    try{
-        let productsStar = await Product.aggregate([
-            {
-                $project: {
-                    document: "$$ROOT",
-                    floorAverage: {
-                        $floor: { $avg: "$ratings.star"}
-                    }
-                }
-            },
-            { $match: {floorAverage: rating}}
-        ]).limit(12);
-        let products = await Product.find({_id: productsStar})
-        .populate("category")
-        .populate("subcategories")
-        .populate("postedBy")
-        .exec();
-
-        res.json(products);
+        if(filter.categoryID.length > 0){
+            filterQuery = {...filterQuery, category: filter.categoryID};
+        }
+        if(filter.subcategoryID){
+            filterQuery = {...filterQuery, subcategories: filter.subcategoryID};
+        }
+        if(filter.brand){
+            filterQuery = {...filterQuery, brand: filter.brand};
+        }
+        if(filter.price){
+            filterQuery = {...filterQuery, price: { $gte: filter.price[0], $lte: filter.price[1]} };
+        }
+        if(filter.rating){
+            filterQuery = {...filterQuery, avgRating: { $eq: filter.rating} };
+        }
+        const currentPage = page || 1;
+        const perPage = pageSize || 4;
+        const products = await Product.find(filterQuery)
+            .skip((currentPage - 1) * perPage)
+            .populate("category")
+            .populate("subcategories")
+            .sort([["createdAt", "desc"]])
+            .limit(perPage)
+            .exec();
+        res.status(200).json(products);
     }
     catch(err){
         return res.status(500).json({msg: err.message});
@@ -219,22 +210,13 @@ const handleRating = async(req, res, rating) => {
 }
 
 exports.searchFilters = async(req,res) => {
-    const {query, price, rating, brand, subcategories} = req.body;
+    const {query, filter, page, pageSizeCount} = req.body;
     try{
-        if(query !== undefined){
-            await handleQuery(req,res,query);
+        if(query !== ""){
+            await handleQuery(req,res,query, page, pageSizeCount);
         }
-        if(price !== undefined){
-            await handlePrice(req, res, price);
-        }
-        if(rating !== undefined){
-            await handleRating(req, res, rating);
-        }
-        if(brand !== undefined){
-            await handleBrand(req, res, brand);
-        }
-        if(subcategories !== undefined){
-            await handleSubCategories(req, res, subcategories);
+        else {
+            await handleFilter(req, res, filter, page, pageSizeCount);
         }
     }
     catch(err){

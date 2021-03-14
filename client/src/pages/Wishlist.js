@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 import LeftNav from '../components/LeftNav/LeftNav';
 import {getWishlist, removeWishlist} from '../utils/user-util';
-import { Avatar, Tooltip, Card , Image, Button, notification } from 'antd';
-import { DeleteFilled, HeartOutlined, ShoppingCartOutlined, StarFilled } from '@ant-design/icons';
+import { Tooltip, Card , Image, notification } from 'antd';
+import { DeleteFilled } from '@ant-design/icons';
 import CurrencyFormat from 'react-currency-format'; 
 import emptyWishlist from '../assets/images/Empty_Wishlist.svg';
 import './Styles/Wishlist.css';
@@ -27,11 +27,10 @@ const Wishlist = ({history}) => {
     };
 
     const {user} = useSelector(state => ({...state}));
-    let authtoken, email, purchasedBy;
+    let authtoken, email;
     if(user){
         authtoken = user.authtoken;
         email = user.email;
-        purchasedBy = user._id;
     }
     
     const getUserWishlist = async() => {
@@ -50,7 +49,7 @@ const Wishlist = ({history}) => {
 
     const wishlistRemoveHandler = async(p) => {
         try{
-            const user = await removeWishlist(email, authtoken, p._id);
+            await removeWishlist(email, authtoken, p._id);
             let updatedWishlist = [...wishlist];
             openNotificationWithIcon('success','Product removed from wishlist', '');
             setWishlist(updatedWishlist.filter(w => w._id !== p._id));
@@ -85,7 +84,7 @@ const Wishlist = ({history}) => {
                                     </div>
                                 </div>
                             </Card>
-                    }) : <div className="orders__empty"><div><img src={emptyWishlist} /><p>Your wishlist is empty!</p></div></div>}
+                    }) : <div className="orders__empty"><div><img src={emptyWishlist} alt="Empty wishlist" /><p>Your wishlist is empty!</p></div></div>}
                 </div>
             </div>
         </div>

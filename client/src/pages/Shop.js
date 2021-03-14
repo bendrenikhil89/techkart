@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import { fetchProductsByPageSize, fetchFilteredProducts, fetchProductsByCategory } from '../utils/product-util';
+import { fetchFilteredProducts, fetchProductsCount } from '../utils/product-util';
 import {fetchAllSubCategories} from '../utils/subcategories-util';
 import {fetchAll} from '../utils/categories-util';
-import useWindowDimensions from '../Hooks/useWindowDimensions';
-import {List, notification, Empty, Menu, Slider, Checkbox, Radio, Pagination} from 'antd';
+import {notification, Menu, Slider, Checkbox, Radio, Pagination, Button, Rate} from 'antd';
 import { DollarOutlined, BarsOutlined, AntDesignOutlined, StarOutlined, StarFilled, TagsOutlined } from '@ant-design/icons';
 import ProductCard from '../components/Card/ProductCard/ProductCard';
-import './Styles/Shop.css';
 import {useSelector, useDispatch} from 'react-redux';
+import notFound from '../assets/images/Not_Found.svg';
+
+import './Styles/Shop.css';
 
 const Shop = () => {
     const dispatch = useDispatch();
@@ -15,14 +16,11 @@ const Shop = () => {
     const {text, category} = search;
 
     const [pageLoadProducts, setPageLoadProducts] = useState([]);
-    const [price, setPrice] = useState([0, 0]);
     const [categories, setCategories] = useState({slug:'', name:'', images: [], id:''});
     const [subcategories, setSubcategories] = useState({slug:'', name:'', id:''});
-    const [filterCategoryIDs, setFilterCategoryIDs] = useState(category);
-    const [filterSubCategoryID, setFilterSubCategoryID] = useState(null);
-    const [filterBrand, setFilterBrand] = useState(null);
-    const [filterRating, setFilterRating] = useState(null);
     const [page, setPage] = useState(1);
+    const [filter, setFilter] = useState({categoryID: [...category] || []});
+    const [productsCount, setProductsCount] = useState(0);
 
     const openNotificationWithIcon = (type, msgTitle, msgBody)  => {
         notification[type]({
@@ -41,28 +39,14 @@ const Shop = () => {
     let typingTimer = null;
     let pageSizeCount = 9;
 
-    // const { width } = useWindowDimensions();
-    // if(width < 576){
-    //     pageSizeCount = 1;
-    // }
-    // else if(width >= 576 && width <= 768){
-    //     pageSizeCount = 6;
-    // }
-
-    const fetchAllProductsOnLoad = async() => {
+    const fetchCurrProductsCount = async() => {
+        let paramFilter = {query:text};
         try{
-            let plProducts = await fetchProductsByPageSize("updatedAt", "desc", page, pageSizeCount);
-            setPageLoadProducts(plProducts.data);
-        }
-        catch(err){
-            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
-        }
-    }
-
-    const fetchAllProductsByCategory = async() => {
-        try{
-            let flProducts = await fetchProductsByCategory({category: filterCategoryIDs});
-            setPageLoadProducts(flProducts.data);
+            if(filter && filter.constructor === Object && (Object.keys(filter).length > 1 || filter.categoryID.length > 0)){
+                paramFilter = {...filter};
+            }
+            let plProductsCount = await fetchProductsCount(paramFilter);
+            setProductsCount(plProductsCount.data);
         }
         catch(err){
             openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
@@ -74,8 +58,9 @@ const Shop = () => {
             clearTimeout(typingTimer);
             typingTimer = setTimeout(async() => {
                 if (text) {
-                    let filteredProducts = await fetchFilteredProducts({query: text});
+                    let filteredProducts = await fetchFilteredProducts({query: text, page, pageSizeCount});
                     setPageLoadProducts(filteredProducts.data);
+                    setFilter({categoryID:[]});
                 }
             }, 500);
         }
@@ -84,76 +69,14 @@ const Shop = () => {
         }
     }
 
-    const priceSliderFilter = async() => {
+    const fetchFilteredProductsByLeftNav = async() => {
         try{
-            setFilterBrand(null);
-            setFilterSubCategoryID(null);
-            setFilterCategoryIDs([]);
-            setFilterRating(null);
-            setPrice(price)
-            let filteredProducts = await fetchFilteredProducts({price});
+            let filteredProducts = await fetchFilteredProducts({query: "", filter, page, pageSizeCount});
             setPageLoadProducts(filteredProducts.data);
-        }
-        catch(err){
-            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
-        }
-    }
-
-    const filterCategoryHandler = async(e) => {
-        setPrice([0, 0]);
-        setFilterBrand(null);
-        setFilterSubCategoryID(null);
-        setFilterRating(null);
-        let categoryFilterInState = [...filterCategoryIDs];
-        let categoryFilterInStateCheck = filterCategoryIDs.indexOf(e.target.value);
-        if(categoryFilterInStateCheck === -1){
-            categoryFilterInState.push(e.target.value);
-        }
-        else{
-            categoryFilterInState.splice(categoryFilterInStateCheck, 1)
-        }
-        setFilterCategoryIDs(categoryFilterInState);
-    }
-
-    const starFilterHandler = async(rating) => {
-        try{
-            setPrice([0, 0]);
-            setFilterBrand(null);
-            setFilterCategoryIDs([]);
-            setFilterSubCategoryID(null);
-            setFilterRating(rating);
-            let filteredProducts = await fetchFilteredProducts({rating});
-            setPageLoadProducts(filteredProducts.data);
-        }
-        catch(err){
-            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
-        }
-    }
-
-    const brandFilterHandler = async(brand) => {
-        try{
-            setPrice([0, 0]);
-            setFilterSubCategoryID(null);
-            setFilterRating(null);
-            setFilterCategoryIDs([]);
-            setFilterBrand(brand);
-            let filteredProducts = await fetchFilteredProducts({brand});
-            setPageLoadProducts(filteredProducts.data);
-        }
-        catch(err){
-            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
-        }
-    }
-
-    const subcategoriesFilterHandler = async(subcategories) => {
-        try{
-            setPrice([0, 0]);
-            setFilterBrand(null);
-            setFilterRating(null);
-            setFilterCategoryIDs([]);
-            setFilterSubCategoryID(subcategories);
-            let filteredProducts = await fetchFilteredProducts({subcategories});
-            setPageLoadProducts(filteredProducts.data);
+            dispatch({
+                type: 'SEARCH_QUERY',
+                payload: {text: "",category : []}
+            });
         }
         catch(err){
             openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
@@ -184,76 +107,101 @@ const Shop = () => {
         }
     }
 
-    useEffect(() => {
-        fetchCategories();
-        fetchSubCategories();
-    }, []);
-
-    useEffect(() => {
-        fetchAllProductsOnLoad();
-    }, [page])
-
-    useEffect(() => {
-        if(filterCategoryIDs.length > 0){
-            fetchAllProductsByCategory();
-        }
-        else if(filterSubCategoryID === null && filterBrand === null && filterRating === null && price[0] === 0 && price[1] === 0){
-            fetchAllProductsOnLoad();
-        }
-    }, [filterCategoryIDs]);
-
-    useEffect(() => {
-        if(text !== ""){
-            fetchFilteredProductsQuery();
-        }
-        return () => clearTimeout(typingTimer);
-    }, [text]);
-
-    useEffect(() => {
-        if(price[0] > 0 || price[1] > 0)
-            priceSliderFilter();
-    }, [price]);
-
     function sliderToolTipFormatter(value) {
         return `$${value}`;
     }
 
     const filterCategories = categories && categories.length > 0 && categories.map(c => {
-        return <div key={c.id} style={{margin:'5px 0px 15px 25px'}}><Checkbox name="category" value={c.id} checked={filterCategoryIDs.includes(c.id)} onChange={filterCategoryHandler}>{c.name}</Checkbox><br/></div>
+        return <div key={c.id} style={{margin:'5px 0px 15px 25px'}}>
+            <Checkbox 
+                name="category" 
+                value={c.id} 
+                checked={filter && filter.categoryID && filter.categoryID.includes(c.id)} 
+                onChange={(e) => handleFilterChange("categoryID", e.target.value)}>
+            {c.name}</Checkbox>
+            <br/>
+        </div>
     });
 
     const filterSubCategories = subcategories && subcategories.length > 0 && subcategories.map((s,i) => {
-        return <Radio key={s.id} style={radioStyle} value={s.id} onChange={() => subcategoriesFilterHandler(s.id)}>{s.name}</Radio>
+        return <Radio key={s.id} style={radioStyle} value={s.id} onChange={(e) => handleFilterChange("subcategoryID", s.id)}>{s.name}</Radio>
     });
+
+    const handleFilterChange = (key, value) => {
+        if(key === "categoryID"){
+            let categoryFilterInState = (filter.categoryID && [...filter.categoryID]) || [];
+            let categoryFilterInStateCheck = filter.categoryID ? filter.categoryID.indexOf(value) : -1;
+            if(categoryFilterInStateCheck === -1){
+                categoryFilterInState.push(value);
+            }
+            else{
+                categoryFilterInState.splice(categoryFilterInStateCheck, 1)
+            }
+            setFilter({...filter, [key]: categoryFilterInState});
+        }
+        else{
+            setFilter({...filter, [key]: value});
+        }
+    }
+
+    const handleClearFilter = e => {
+        e.preventDefault();
+        setFilter({categoryID:[]});
+        dispatch({
+            type: 'SEARCH_QUERY',
+            payload: {text: "",category : []}
+        });
+    }
+
+    useEffect(() => {
+        fetchCategories();
+        fetchSubCategories();
+        fetchCurrProductsCount();
+    }, []);
+
+    useEffect(() => {
+        if(text === ""){
+            fetchFilteredProductsByLeftNav();
+            fetchCurrProductsCount();
+        }
+    }, [page,filter,text]);
+
+    useEffect(() => {
+        if(text !== "") {
+            fetchFilteredProductsQuery();
+            fetchCurrProductsCount();
+        }
+    }, [text]);
 
     return (
         <div className="productspage__wrapper">
             <div className="productspage__leftnav">
+            <Button type="primary" style={{background:'#1976d2'}} block onClick={handleClearFilter}>Clear Filter</Button>
                 <Menu mode="inline" defaultOpenKeys={['price', 'categories','subcategories', 'brand','rating']}>
                     <SubMenu key="price" icon={<DollarOutlined />} title="Price" >
-                        <Slider range max="4999" value={price} tipFormatter={sliderToolTipFormatter} onChange={value => setPrice(value)} style={{margin:'0px 20px 10px 30px'}}/>
+                        <Slider range max="4999" value={filter && filter.price} tipFormatter={sliderToolTipFormatter} onChange={value => handleFilterChange("price", value)} style={{margin:'0px 20px 10px 30px'}}/>
                     </SubMenu>
                     <SubMenu key="categories" icon={<BarsOutlined />} title="Category">
                         {filterCategories}
                     </SubMenu>
                     <SubMenu key="subcategories" icon={<TagsOutlined />} title="SubCategories">
                         <div style={{margin:'0px 0px 10px 25px'}}>
-                            <Radio.Group value={filterSubCategoryID}>{filterSubCategories}</Radio.Group>
+                            <Radio.Group value={filter && (filter.subcategoryID || null)}>{filterSubCategories}</Radio.Group>
                         </div>
                     </SubMenu>
                     <SubMenu key="brand" icon={<AntDesignOutlined />} title="Brand">
                         <div style={{margin:'0px 0px 10px 25px'}}>
-                        <Radio.Group value={filterBrand}>
-                            <Radio style={radioStyle} value={"Acer"} onChange={() => brandFilterHandler("Acer")}>
+                        <Radio.Group value={filter && filter.brand}>
+                            <Radio style={radioStyle} value={"Acer"} onChange={() => handleFilterChange("brand","Acer")}>
                                 Acer
                             </Radio>
-                            <Radio style={radioStyle} value={"Apple"} onChange={() => brandFilterHandler("Apple")}>
+                            <Radio style={radioStyle} value={"Apple"} onChange={() => handleFilterChange("brand","Apple")}>
                                 Apple
                             </Radio>
-                            <Radio style={radioStyle} value={"Asus"} onChange={() => brandFilterHandler("Asus")}>
+                            <Radio style={radioStyle} value={"Asus"} onChange={() => handleFilterChange("brand","Asus")}>
                                 Asus
                             </Radio>
-                            <Radio style={radioStyle} value={"Huawei"} onChange={() => brandFilterHandler("Huawei")}>
+                            <Radio style={radioStyle} value={"Huawei"} onChange={() => handleFilterChange("brand","Huawei")}>
                                 Huawei
                             </Radio>
                         </Radio.Group>
@@ -261,11 +209,11 @@ const Shop = () => {
                     </SubMenu>
                     <SubMenu key="rating" icon={<StarOutlined />} title="Rating">
                         <div style={{margin:'0px 0px 10px 25px'}}>
-                            <div style={{margin:'0px 0px', cursor:'pointer'}} onClick={() => starFilterHandler(5)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
-                            <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => starFilterHandler(4)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
-                            <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => starFilterHandler(3)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
-                            <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => starFilterHandler(2)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
-                            <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => starFilterHandler(1)}><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                            <div style={{margin:'0px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",5)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                            <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",4)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                            <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",3)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                            <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",2)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                            <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",1)}><StarFilled style={{color:'#ffc107'}}/><br /></div>
                         </div>
                     </SubMenu>
                 </Menu>
@@ -273,40 +221,22 @@ const Shop = () => {
             <div className="shop__content">
                 {pageLoadProducts.length > 0 
                     ?<>
-                    {/* <List
-                        grid={{
-                        gutter: 16,
-                        xs: 1,
-                        sm: 2,
-                        md: 2,
-                        lg: 2,
-                        xl: 3,
-                        xxl: 3
-                        }}
-                        dataSource={pageLoadProducts}
-                        renderItem={item => (
-                        <List.Item>
-                            <ProductCard p={item} key={item._id}/>
-                        </List.Item>
-                        )}
-                    /> */}
+                    <div style={{display:'flex', justifyContent:'space-between'}}>
+                        <div><p style={{fontWeight:'600'}}>Showing Products {(page-1)*pageSizeCount+1} - {productsCount >= page*pageSizeCount ? page*pageSizeCount : productsCount} of {productsCount} results</p></div>
+                        <div>
+                            <Pagination size="small" hideOnSinglePage={true} defaultCurrent={1} total={productsCount} pageSize={pageSizeCount} value={page} onChange={value => setPage(value)} />
+                        </div>
+                    </div>
                     <div className="shop__productcard-wrapper">
                         {pageLoadProducts.map(p => { return <ProductCard p={p} key={p._id}/>})}
                     </div>
                     <br />
-                    {pageLoadProducts.length > pageSizeCount && <Pagination defaultCurrent={1} total={pageLoadProducts.length} pageSize={pageSizeCount} value={page} onChange={value => setPage(value)} />}
                     </>
-                    : <Empty
-                        image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
-                        imageStyle={{
-                        height: 60,
-                        }}
-                        description={
-                        <span>
-                            No products found!
-                        </span>
-                        }
-                    />}
+                    :<>
+                        <div><img src={notFound} style={{height:'30vh',width:'auto',display:'block',margin:'0 auto'}}/></div>
+                        <div><p style={{display:'block',textAlign:'center', marginTop:'1.5rem', fontSize:'1rem'}}>No products found!</p></div>
+                    </>
+                    }
             </div>
         </div>
     )

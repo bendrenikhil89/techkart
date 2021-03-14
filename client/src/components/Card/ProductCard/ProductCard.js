@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {Tag, Card, Tooltip} from 'antd';
+import {Tag, Card, Tooltip, Rate} from 'antd';
 import {EyeOutlined, StarFilled, ShoppingCartOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import {useDispatch} from 'react-redux';
+import CurrencyFormat from 'react-currency-format';
 
 const ProductCard = ({p}) => {
     const [avgRating, setAvgRating] = useState({avgRating: 0, totalRatings: 0});
@@ -88,7 +89,11 @@ const ProductCard = ({p}) => {
         ]}
       >
         <Tooltip title={p.title}>
-          <Card.Meta title={p.title} description={avgRating.avgRating > 0 ? <p><Tag color="#388e3c">{avgRating.avgRating} <StarFilled /></Tag> <span className="product__details-ratingsText">{avgRating.totalRatings} Rating{avgRating.totalRatings > 1 ? "s" : ""}</span></p> : <p>No rating yet</p>}/>
+          <Card.Meta 
+            title={p.title} 
+            description={avgRating.avgRating > 0 ? 
+              <p>{<span style={{marginBottom:'8px !important', fontWeight:'600', fontSize:'0.9rem', color:'#323a32', paddingRight:'20px', borderRight:"1px solid #ccc"}}><CurrencyFormat value={p.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></span>}<span style={{paddingLeft:'20px'}}><Tag color="#388e3c">{avgRating.avgRating} <StarFilled /></Tag> <span className="product__details-ratingsText">{avgRating.totalRatings} Rating{avgRating.totalRatings > 1 ? "s" : ""}</span></span></p> 
+              : <p>{<span style={{marginBottom:'8px !important', fontWeight:'600', fontSize:'0.9rem', color:'#323a32', paddingRight:'20px', borderRight:"1px solid #ccc"}}><CurrencyFormat value={p.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></span>}<span style={{paddingLeft:'20px'}}>No rating yet</span></p>}/>
         </Tooltip>
       </Card>
     );
