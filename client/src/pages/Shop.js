@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { fetchFilteredProducts, fetchProductsCount } from '../utils/product-util';
+import { fetchFilteredProducts, fetchProductsCount, fetchBrands } from '../utils/product-util';
 import {fetchAllSubCategories} from '../utils/subcategories-util';
 import {fetchAll} from '../utils/categories-util';
 import {notification, Menu, Slider, Checkbox, Radio, Pagination, Button, Rate} from 'antd';
@@ -16,6 +16,7 @@ const Shop = () => {
     const {text, category} = search;
 
     const [pageLoadProducts, setPageLoadProducts] = useState([]);
+    const [brands, setBrands] = useState([]);
     const [categories, setCategories] = useState({slug:'', name:'', images: [], id:''});
     const [subcategories, setSubcategories] = useState({slug:'', name:'', id:''});
     const [page, setPage] = useState(1);
@@ -38,6 +39,16 @@ const Shop = () => {
     const { SubMenu } = Menu;
     let typingTimer = null;
     let pageSizeCount = 9;
+
+    const fetchBrandsForFilter = async() =>{
+        try{
+            const prodBrands = await fetchBrands();
+            setBrands(prodBrands.data.sort());
+        }
+        catch(err){
+            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+        }
+    }
 
     const fetchCurrProductsCount = async() => {
         let paramFilter = {query:text};
@@ -127,7 +138,15 @@ const Shop = () => {
         return <Radio key={s.id} style={radioStyle} value={s.id} onChange={(e) => handleFilterChange("subcategoryID", s.id)}>{s.name}</Radio>
     });
 
+    const filterBrands = brands && brands.length > 0 && brands.map((b,i) => {
+        return <Radio key={i} style={radioStyle} value={b} onChange={() => handleFilterChange("brand",b)}>{b}</Radio>;
+    });
+
     const handleFilterChange = (key, value) => {
+        dispatch({
+            type: 'SEARCH_QUERY',
+            payload: {text: "",category : []}
+        });
         if(key === "categoryID"){
             let categoryFilterInState = (filter.categoryID && [...filter.categoryID]) || [];
             let categoryFilterInStateCheck = filter.categoryID ? filter.categoryID.indexOf(value) : -1;
@@ -153,9 +172,17 @@ const Shop = () => {
         });
     }
 
+    const handleIndividualClearFilter = (e, key) => {
+        e.preventDefault();
+        let newFilter = {...filter};
+        delete newFilter[key];
+        setFilter(newFilter);
+    }
+
     useEffect(() => {
         fetchCategories();
         fetchSubCategories();
+        fetchBrandsForFilter();
         fetchCurrProductsCount();
     }, []);
 
@@ -179,35 +206,33 @@ const Shop = () => {
             <Button type="primary" style={{background:'#1976d2'}} block onClick={handleClearFilter}>Clear Filter</Button>
                 <Menu mode="inline" defaultOpenKeys={['price', 'categories','subcategories', 'brand','rating']}>
                     <SubMenu key="price" icon={<DollarOutlined />} title="Price" >
-                        <Slider range max="4999" value={filter && filter.price} tipFormatter={sliderToolTipFormatter} onChange={value => handleFilterChange("price", value)} style={{margin:'0px 20px 10px 30px'}}/>
+                        <Slider range max="4999" value={filter && filter.price ? filter.price : [0,0]} tipFormatter={sliderToolTipFormatter} onChange={value => handleFilterChange("price", value)} style={{margin:'0px 20px 10px 30px'}}/>
                     </SubMenu>
                     <SubMenu key="categories" icon={<BarsOutlined />} title="Category">
                         {filterCategories}
                     </SubMenu>
                     <SubMenu key="subcategories" icon={<TagsOutlined />} title="SubCategories">
+                        {filter && filter.subcategoryID && <div style={{display:'flex', justifyContent:'flex-end', paddingRight:'8px'}}>
+                            <Button size="small" type="link" onClick={(e) => handleIndividualClearFilter(e,"subcategoryID")}>Clear</Button>
+                        </div>}
                         <div style={{margin:'0px 0px 10px 25px'}}>
                             <Radio.Group value={filter && (filter.subcategoryID || null)}>{filterSubCategories}</Radio.Group>
                         </div>
                     </SubMenu>
                     <SubMenu key="brand" icon={<AntDesignOutlined />} title="Brand">
+                        {filter && filter.brand && <div style={{display:'flex', justifyContent:'flex-end', paddingRight:'8px'}}>
+                            <Button size="small" type="link" onClick={(e) => handleIndividualClearFilter(e,"brand")}>Clear</Button>
+                        </div>}
                         <div style={{margin:'0px 0px 10px 25px'}}>
-                        <Radio.Group value={filter && filter.brand}>
-                            <Radio style={radioStyle} value={"Acer"} onChange={() => handleFilterChange("brand","Acer")}>
-                                Acer
-                            </Radio>
-                            <Radio style={radioStyle} value={"Apple"} onChange={() => handleFilterChange("brand","Apple")}>
-                                Apple
-                            </Radio>
-                            <Radio style={radioStyle} value={"Asus"} onChange={() => handleFilterChange("brand","Asus")}>
-                                Asus
-                            </Radio>
-                            <Radio style={radioStyle} value={"Huawei"} onChange={() => handleFilterChange("brand","Huawei")}>
-                                Huawei
-                            </Radio>
-                        </Radio.Group>
+                            <Radio.Group value={filter && filter.brand}>
+                                {filterBrands}
+                            </Radio.Group>
                         </div>
                     </SubMenu>
                     <SubMenu key="rating" icon={<StarOutlined />} title="Rating">
+                        {filter && filter.rating && <div style={{display:'flex', justifyContent:'flex-end', paddingRight:'8px'}}>
+                            <Button size="small" type="link" onClick={(e) => handleIndividualClearFilter(e,"rating")}>Clear</Button>
+                        </div>}
                         <div style={{margin:'0px 0px 10px 25px'}}>
                             <div style={{margin:'0px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",5)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
                             <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",4)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>

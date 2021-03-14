@@ -62,3 +62,7 @@ export const fetchProductsByCategory = async(category) => {
 export const fetchProductsCount = async(filter) => {
     return await axios.post(`${process.env.REACT_APP_API_URL}/productscount`, filter, {})
 }
+
+export const fetchBrands = async() => {
+    return await axios.get(`${process.env.REACT_APP_API_URL}/productsbrand`, {}, {})
+}

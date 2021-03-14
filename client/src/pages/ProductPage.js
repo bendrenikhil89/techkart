@@ -199,7 +199,7 @@ const ProductPage = ({match, history}) => {
     useEffect(() => {
         fetchProductDetails();
         getUserWishlist();
-    }, []);
+    }, [addedInCart,userWishlist]);
 
     useEffect(() => {
         checkIfProductInCart();

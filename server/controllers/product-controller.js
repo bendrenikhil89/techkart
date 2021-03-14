@@ -238,3 +238,15 @@ exports.fetchProductsByCategory = async(req, res) => {
         return res.status(500).json({msg: err.message});
     }
 }
+
+exports.fetchBrands = async(req,res) => {
+    let brands = [];
+    try{
+        const products = await Product.find({}).exec();
+        brands = [...new Set(products.map(item => item.brand))].sort();
+        res.status(200).json(brands);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}

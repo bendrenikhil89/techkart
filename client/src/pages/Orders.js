@@ -6,6 +6,7 @@ import {fetchAllOrders} from '../utils/order-util';
 import {useSelector} from 'react-redux';
 import CurrencyFormat from 'react-currency-format'; 
 import emptyOrders from '../assets/images/Empty_Orders.svg';
+import noImage from '../assets/images/No_Image.png';
 
 import './Styles/Orders.css';
 
@@ -51,7 +52,7 @@ const Orders = () => {
                 <Panel header={<p><CodeSandboxOutlined style={{marginRight:'10px'}} />Order No - <span style={{fontWeight:'600'}}>{o._id}</span> / Order Date - <span style={{fontWeight:'600'}}>{new Date(o.createdAt).toDateString()}</span> / Total - <span style={{fontWeight:'600'}}><CurrencyFormat value={o.paymentIntent.amount/100} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></span><br />{orderStatus(o.orderStatus)}</p>} key={i}>
                     {o.products.map((c,index) => {
                         return <div key={c._id}><div className="orders__products-wrapper">
-                            <div className="orders__products-img"><Image src={c.images[0].url} /></div>
+                            <div className="orders__products-img"><Image src={c.images.length > 0 ? c.images[0].url : noImage} /></div>
                             <div className="orders__products-title">
                                 <div><Tooltip title={c.title}><p>{c.title.substring(0,80)}...</p></Tooltip></div>
                                 <div style={{fontSize:'0.8rem', color:'#757575'}}>Price : <CurrencyFormat value={c.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /> * {c.count} = <CurrencyFormat value={c.count * c.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></div>
