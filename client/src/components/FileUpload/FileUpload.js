@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Avatar, Button, Badge, Image, Divider, notification } from "antd";
+import { Avatar, Button, Badge, Divider } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
 const FileUpload = ({ productDetails, setProductDetails, openNotificationWithIcon, loading, setLoading }) => {

@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import LeftNav from '../components/LeftNav/LeftNav';
 import '../components/AdminDashboard/AdminDashboard.css';
-import {Form, List, Card, Divider, notification, Popconfirm, Select, Empty} from 'antd';
+import {Form, List, Card, Divider, notification, Popconfirm, Empty} from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {fetchAll} from '../utils/categories-util';
 import {fetchAllSubCategories, createSubCategory, removeSubCategory, updatesubCategory} from '../utils/subcategories-util';
@@ -17,9 +17,6 @@ const ManageSubCategories = () => {
     const [form] = Form.useForm();
     const {user} = useSelector(state => ({...state}));
     const [visible, setVisible] = useState(false);
-    const [confirmLoading, setConfirmLoading] = useState(false);
-
-    const { Option } = Select;
     const {email, authtoken} = user;
     
     const openNotificationWithIcon = (type, msgTitle, msgBody)  => {

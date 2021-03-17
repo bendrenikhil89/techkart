@@ -98,7 +98,7 @@ const Cart = () => {
         e.preventDefault();
         if(cartContent.length > 0) {
             try{
-                const updatedUserCart = await saveCart(email, authtoken, cartContent);
+                await saveCart(email, authtoken, cartContent);
                 history.push("/checkout")
             }
             catch(err){
@@ -128,7 +128,7 @@ const Cart = () => {
                 })}
                 {user ? <div className="cart__placeorderWrapper"><Button disabled={disable} className="cart__placeorder" type="primary" size="default" onClick={checkoutHandler}>
                         <span className="cart__placeorderText">PROCEED TO CHECKOUT</span>
-                    </Button></div> : <Link to={{pathname:"/login", state: { source: "/checkout" }}}><div className="cart__placeorderWrapper"><Button disabled={disable} type="primary" size="default">Login to checkout</Button></div></Link>}
+                    </Button></div> : <Link to={{pathname:"/login", state: { source: "/cart" }}}><div className="cart__placeorderWrapper"><Button disabled={disable} type="primary" size="default">Login to continue</Button></div></Link>}
             </div>
             <div className="cart__priceDetails">
                 <h3>PRICE DETAILS</h3>

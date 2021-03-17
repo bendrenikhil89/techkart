@@ -47,7 +47,7 @@ const addAddressHandler = async(e) => {
     e.preventDefault();
     setLoading(true);
     try{
-        const user = await addAddress(email, authtoken, address.deliveryAddress);
+        await addAddress(email, authtoken, address.deliveryAddress);
         setDBAddress(address.deliveryAddress);
         openNotificationWithIcon('success',"Address add/update successful", "Delivery address is added/updated succesfully!");
         setVisible(false);

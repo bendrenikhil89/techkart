@@ -9,7 +9,6 @@ import useWindowDimensions from '../../Hooks/useWindowDimensions';
 import './Navbar.css';
 
 const Navbar = () => {
-    const { Search } = Input;
     const {user, search, cart} = useSelector(state => ({...state}));
     const {text} = search;
     const [searchText, setSearchText] = useState(text || "");

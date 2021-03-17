@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { notification, Divider, Form, Input, Button, Checkbox } from 'antd';
-import { ExclamationCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
+import { notification, Form, Input, Button } from 'antd';
+import { LockOutlined } from '@ant-design/icons';
 import {resetPassword} from '../../../utils/auth-util';
 
 const PasswordReset = ({history, match}) => {
@@ -38,18 +38,6 @@ const PasswordReset = ({history, match}) => {
 
     return (
         <div className="login-signup__container passwordreset__container">
-            {/* <form onSubmit={resetPasswordHandler}>
-                <h2>Password Reset</h2>
-                <div className="login-signup__form-group">
-                    <input type="password" required="required" value={password} onChange={(e) => setPassword(e.target.value)} />
-                    <label htmlFor="input" className="login-signup__control-label">New password</label><i className="login-signup__bar"></i>
-                </div>
-                <div className="login-signup__form-group">
-                    <input type="password" required="required" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/>
-                    <label htmlFor="input" className="login-signup__control-label">Confirm password</label><i className="login-signup__bar"></i>
-                </div>
-                <button type="submit" className="login-signup__button" >Update Password</button>
-            </form> */}
             <h2>Reset Password</h2>
             <Form
             name="normal_login"

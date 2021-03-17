@@ -28,7 +28,6 @@ const initialState = {
 };
 
 const ManageProducts = () => {
-    const [loading, setLoading] = useState(false);
     const [productDetails, setProductDetails] = useState(initialState);
     const [filter, setFilter] = useState({categoryID: []});
     const [products, setProducts] = useState([]);
@@ -149,6 +148,7 @@ const ManageProducts = () => {
                         {
                             products.map(item => { 
                                 return <Card
+                                    key={item._id}
                                     cover={
                                         item.images.length > 0 ? <img
                                             alt={item.title}

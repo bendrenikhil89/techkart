@@ -5,7 +5,7 @@ import Login from './components/Auth/Login/Login';
 import SignUp from './components/Auth/SignUp/SignUp';
 import Confirmation from './components/Auth/Confirmation/Confirmation';
 import {validatetoken} from './utils/auth-util';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import AdminRoute from './components/Routes/AdminRoute';
 import UserRoute from './components/Routes/UserRoute';
@@ -34,7 +34,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const history = useHistory();
-  const {user} = useSelector(state => ({...state}));
   
   const persistUser = async() => {
     const user = JSON.parse(localStorage.getItem("techkart-user"));

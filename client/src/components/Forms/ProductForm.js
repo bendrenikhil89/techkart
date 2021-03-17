@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Drawer, Form, Input, Select, InputNumber, Button, notification } from 'antd';
+import { Drawer, Form, Input, Select, InputNumber, Button } from 'antd';
 import { PlusOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { createProduct, updateProduct } from '../../utils/product-util';

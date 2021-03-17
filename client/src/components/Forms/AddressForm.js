@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Drawer, Form, Input, Button } from 'antd';
 
 const AddressForm = ({visible, setVisible, form, address, setAddress, loading, addAddressHandler}) => {

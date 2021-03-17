@@ -14,9 +14,8 @@ const Confirmation = ({history, match}) => {
     };
 
     const verifyEmail = async() => {
-        let res;
         try{
-            res = await confirmation(match.params.email, match.params.token);
+            await confirmation(match.params.email, match.params.token);
             openNotificationWithIcon('success', 'Email verification successful', 'Your email address has been verified succesfully.');
             history.push("/");
         }
@@ -38,9 +37,8 @@ const Confirmation = ({history, match}) => {
           content: content,
           centered: true,
           async onOk() {
-            let res;
             try{
-                res = await resendlink(match.params.email);
+                await resendlink(match.params.email);
                 openNotificationWithIcon('success','Email verification link resent', 'Email verification link has been sent to your email.');
                 history.push("/login");
             }

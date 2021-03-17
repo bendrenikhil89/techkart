@@ -17,6 +17,7 @@ const ProductPage = ({match, history}) => {
     const [rating, setRating] = useState(0);
     const [avgRating, setAvgRating] = useState({avgRating: 0, totalRatings: 0});
     const [addedInCart, setAddedInCart] = useState(false);
+    const [addedInWishlist, setAddedInWishlist] = useState(false);
     const [userWishlist, setUserWishlist] = useState([]);
 
     const dispatch = useDispatch();
@@ -65,12 +66,14 @@ const ProductPage = ({match, history}) => {
                 payload: true
             });
           }
+          setAddedInCart(true);
         }
     }
 
     const addToWishlistHandler = async(p) => {
         try{
-            const user = await addWishlist(email, authtoken, p._id);
+            await addWishlist(email, authtoken, p._id);
+            setAddedInWishlist(true);
             openNotificationWithIcon('success', 'Product added to wishlist', '');
         }
         catch(err){
@@ -177,7 +180,7 @@ const ProductPage = ({match, history}) => {
     const constructSpecifications = specs => {
         let specHTML="";
         let keyValue="";
-        JSON.parse(specs).map((s,i) => { 
+        JSON.parse(specs).forEach((s,i) => { 
             for (const [key, value] of Object.entries(Object.values(s)[0])) {
                 keyValue+=`<div class="product__details-spec-wrapper"><div class="spec-wrapper-columnName">
                             ${key}
@@ -199,7 +202,7 @@ const ProductPage = ({match, history}) => {
     useEffect(() => {
         fetchProductDetails();
         getUserWishlist();
-    }, [addedInCart,userWishlist]);
+    }, [addedInWishlist,addedInCart]);
 
     useEffect(() => {
         checkIfProductInCart();
@@ -221,7 +224,7 @@ const ProductPage = ({match, history}) => {
                     /> : <img src={noImage} style={{width:'100%',height:'45vh'}}/>}
                 </div>
                 <div className="product__carousel-buttons">
-                    {!checkIfProductInWishlist() ? <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addToWishlistHandler(productDetails)}>
+                    {!addedInWishlist ? <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addToWishlistHandler(productDetails)}>
                         <span className="product__carousel-buttonText">Wishlist</span>
                     </Button> : <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large">
                         <span className="product__carousel-buttonText">Wishlisted</span>

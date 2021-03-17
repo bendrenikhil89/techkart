@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import { notification, Divider, Form, Input, Button, Checkbox } from 'antd';
-import { ExclamationCircleOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
+import { notification, Divider, Form, Input, Button } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import {forgotPassword} from '../../../utils/auth-util';
 
 const ForgotPassword = ({history}) => {
@@ -33,16 +33,6 @@ const ForgotPassword = ({history}) => {
 
     return (
         <div className="login-signup__container forgotpassword__container">
-            {/* <form onSubmit={forgotPasswordHandler}>
-                <h2>Password Reset</h2>
-                <div className="login-signup__form-group">
-                    <input type="text" required="required" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <label htmlFor="input" className="login-signup__control-label">Your email</label><i className="login-signup__bar"></i>
-                </div>
-                <button type="submit" className="login-signup__button" >Send Reset Link</button>
-                <Divider />
-                <p className="login-signup__not-already-member">Remembered your password? <Link to="/login">Sign In</Link></p>
-            </form> */}
             <h2>Reset Password</h2>
             <Form
             name="normal_login"

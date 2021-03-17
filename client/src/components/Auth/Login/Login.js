@@ -42,9 +42,8 @@ const Login = ({history}) => {
           content: content,
           centered: true,
           async onOk() {
-            let res;
             try{
-                res = await resendlink(email);
+                await resendlink(email);
                 openNotificationWithIcon('success','Email verification link resent', 'Email verification link has been sent to your email.');
                 history.push("/login");
             }
@@ -65,7 +64,6 @@ const Login = ({history}) => {
         let res;
         try{
             res = await login(email, password);
-            // openNotificationWithIcon('success',res.data.name, res.data.token);
             localStorage.setItem("techkart-user", JSON.stringify({name: res.data.name, email: res.data.email, authtoken: res.data.token, role: res.data.role, _id: res.data.userId}))
             dispatch({
                 type: 'LOGGED_IN',
@@ -78,7 +76,6 @@ const Login = ({history}) => {
                 }
             });
             roleBasedRedirect(res.data.role);
-            // res.data.role === 'admin' ? history.push("/dashboard/admin/categories") : history.push("/");
         }
         catch(err){
             setLoading(false);

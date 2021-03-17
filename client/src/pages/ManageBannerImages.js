@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import Resizer from "react-image-file-resizer";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { Popconfirm, Empty, List, Divider, notification, Upload, Card, Button } from "antd";
+import { Popconfirm, Empty, List, Divider, notification, Card, Button } from "antd";
 import { UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import LeftNav from '../components/LeftNav/LeftNav';
 import '../components/AdminDashboard/AdminDashboard.css';
