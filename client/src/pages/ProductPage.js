@@ -1,17 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import ImageGallery from 'react-image-gallery';
-import './Styles/ProductPage.css';
-import { fetchProduct, rateProduct } from '../utils/product-util';
+import ItemsCarousel from 'react-items-carousel';
+import useWindowDimensions from '../Hooks/useWindowDimensions';
+import ProductCard from '../components/Card/ProductCard/ProductCard';
+import { fetchProduct, rateProduct, fetchSimilarProducts } from '../utils/product-util';
 import { addWishlist, getWishlist } from '../utils/user-util';
 import {Tag, notification, Button, Modal, Rate} from 'antd';
-import { HeartOutlined, ShoppingCartOutlined, StarFilled } from '@ant-design/icons';
+import { HeartOutlined, ShoppingCartOutlined, StarFilled, RightOutlined, LeftOutlined } from '@ant-design/icons';
 import {useSelector, useDispatch} from 'react-redux';
 import CurrencyFormat from 'react-currency-format';
 import {Link} from 'react-router-dom';
 import noImage from '../assets/images/No_Image.svg';
 
+import './Styles/ProductPage.css';
+
 const ProductPage = ({match, history}) => {
     const [productDetails, setProductDetails] = useState({});
+    const [similarProducts, setSimilarProducts] = useState({});
     const [productImages, setProductImages] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [rating, setRating] = useState(0);
@@ -19,6 +24,16 @@ const ProductPage = ({match, history}) => {
     const [addedInCart, setAddedInCart] = useState(false);
     const [addedInWishlist, setAddedInWishlist] = useState(false);
     const [userWishlist, setUserWishlist] = useState([]);
+
+    const [activeItemIndexSimilarProducts, setActiveItemIndexSimilarProducts] = useState(0);
+    let itemCarouselCount = 1;
+    const { width } = useWindowDimensions();
+    if(width >= 1024){
+        itemCarouselCount = 4;
+    }
+    else if(width >= 568 && width < 1024){
+        itemCarouselCount = 2;
+    }
 
     const dispatch = useDispatch();
 
@@ -169,6 +184,7 @@ const ProductPage = ({match, history}) => {
                     return {original: p.url, thumbnail: p.url}
                 }));
                 getExistingUserRating(product.data);
+                getSimilarProducts(product.data._id, product.data.category);
                 if(product.data.ratings.length > 0) getAverageProductRating(product.data);
             }
         }
@@ -177,6 +193,16 @@ const ProductPage = ({match, history}) => {
         }
     } 
     
+    const getSimilarProducts = async(_id, category) => {
+        try{
+            const products = await fetchSimilarProducts(_id, category, 8);
+            setSimilarProducts(products.data);
+        }
+        catch(err){
+            openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+        }
+    }
+
     const constructSpecifications = specs => {
         let specHTML="";
         let keyValue="";
@@ -262,6 +288,35 @@ const ProductPage = ({match, history}) => {
                 </div>
             </div>
         </div>
+        
+        <div className="product__similar-products">
+        <h2>Similar Products</h2>
+        <div className="product__similar-products-wrapper" style={{"maxWidth":"1300px","margin":"0 auto"}}>
+            {similarProducts && similarProducts.length > 0 ? <ItemsCarousel
+                numberOfCards={itemCarouselCount}
+                infiniteLoop={false}
+                gutter={16}
+                activePosition={'center'}
+                chevronWidth={60}
+                disableSwipe={false}
+                alwaysShowChevrons={false}
+                slidesToScroll={1}
+                outsideChevron={false}
+                showSlither={false}
+                firstAndLastGutter={false}
+                activeItemIndex={activeItemIndexSimilarProducts}
+                requestToChangeActive={value => setActiveItemIndexSimilarProducts(value)}
+                rightChevron={<button className="ant-btn ant-btn-circle">{<RightOutlined />}</button>}
+                leftChevron={<button className="ant-btn ant-btn-circle">{<LeftOutlined />}</button>}
+            >
+                {similarProducts.map(p=>{
+                    return <ProductCard p={p} key={p._id}/>
+                    })
+                }
+            </ItemsCarousel> : <p>No similar products found!</p>}
+        </div>
+        </div>
+
         <Modal title="Rate Product" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
             {user && user.authtoken ? <Rate defaultValue={0} onChange={handleRatingChange} value={rating}/> : <p>Please <Link to={{pathname:"/login", state: { source: `/product/${productDetails.slug}` }}}>login</Link> to rate a product!</p>}
         </Modal>

@@ -250,3 +250,23 @@ exports.fetchBrands = async(req,res) => {
         return res.status(500).json({msg: err.message});
     }
 }
+
+exports.fetchSimilarProducts = async(req,res) => {
+    const {_id, category, perPage} = req.body;
+    console.log(category);
+    try{
+        const similarProducts = await Product.find({
+            _id : {$ne : _id},
+            category
+        })
+            .populate("category")
+            .populate("subcategories")
+            .sort([["sold", "desc"]])
+            .limit(perPage)
+            .exec();
+        return res.status(200).json(similarProducts);
+    }
+    catch(err){
+        return res.status(500).json({msg: err.message});
+    }
+}

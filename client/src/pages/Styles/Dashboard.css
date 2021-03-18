@@ -29,7 +29,7 @@
 
 .dashboard__content__wrapper h2{
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 600;
     margin: 40px 0px;
     position: relative;
 }
@@ -41,7 +41,7 @@
     right: 0;
     top: 100%;
     width: 75px;
-    height: 4px;
+    height: 3.5px;
     background: #ff4d4f;
     margin-top: 10px;
 }

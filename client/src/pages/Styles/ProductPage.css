@@ -8,6 +8,35 @@
     background: #fff;
 }
 
+.product__similar-products{
+    max-width: 1300px;
+    margin:60px auto 32px auto;
+}
+
+.product__similar-products h2{
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0px 0px 40px 0px;
+    position: relative;
+}
+
+.product__similar-products h2::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    width: 85px;
+    height: 3px;
+    background: #ff4d4f;
+    margin-top: 10px;
+}
+
+.product__similar-products-wrapper .ant-card-cover > *{
+    padding: 10px 40px;
+    height:200px;
+}
+
 .product__carousel{
     flex:1;
     position: sticky;
@@ -153,6 +182,13 @@
     top: 0;
     z-index: 4;
     font-size: 10px !important;
+}
+
+@media screen and (max-width:1365px){
+    .product__similar-products{
+        padding:16px;
+        margin:40px auto 25px auto;
+    }
 }
 
 @media screen and (max-width:992px){
