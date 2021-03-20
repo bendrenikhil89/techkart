@@ -29,7 +29,7 @@ exports.signUp = async(req, res) => {
                     var token = await new Token({ _userId: newUser._id, token: crypto.randomBytes(16).toString('hex') }).save();
                     transporter.sendMail({
                         to: newUser.email,
-                        from : 'bendre.nikhil.89@gmail.com',
+                        from : 'noreply.techkart@gmail.com',
                         subject: 'TechKart - Account Verification Link',
                         html: 'Hello '+ newUser.name +',<br /><br />' + 'Please verify your account by clicking the link: \n' + req.headers.origin + '\/confirmation\/' + newUser.email + '\/' + token.token + '<br /><br />Thank You!\n'
                     }, err => {
@@ -87,7 +87,7 @@ exports.forgotPassword = async(req, res) => {
                 var token = await new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') }).save();
                 transporter.sendMail({
                     to: user.email,
-                    from : 'bendre.nikhil.89@gmail.com',
+                    from : 'noreply.techkart@gmail.com',
                     subject: 'TechKart - Password Reset Link',
                     html: 'Hello '+ user.name +',<br /><br />' + 'Please reset your account password by clicking the link: \n' + req.headers.origin + '\/resetpassword\/' + user.email + '\/' + token.token + '<br /><br />Thank You!\n'
                 }, err => {
@@ -192,7 +192,7 @@ exports.resendLink = async(req, res) => {
                 let token = await new Token({ _userId: user._id, token: crypto.randomBytes(16).toString('hex') }).save();
                 transporter.sendMail({
                     to: user.email,
-                    from : 'bendre.nikhil.89@gmail.com',
+                    from : 'noreply.techkart@gmail.com',
                     subject: 'TechKart - Account Verification Link',
                     html: 'Hello '+ user.name +',<br /><br />' + 'Please verify your account by clicking the link: \n' + req.headers.origin + '\/confirmation\/' + user.email + '\/' + token.token + '<br /><br />Thank You!\n'
                 }, err => {
