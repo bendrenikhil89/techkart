@@ -102,7 +102,10 @@ const StripeCheckout = ({history}) => {
                     <Button size="default" type="primary" style={{width:'150px'}}><Link to="/shop">SHOP</Link></Button>
                 ]}
             />
-            :<form id="payment-form" className="stripe-form" onSubmit={handleSubmit}>
+            :
+            <>
+            <Alert style={{maxWidth: '600px',margin:'20px auto', borderRadius:'5px'}} message="Enter 4242 4242 4242 4242 to make the payment. Please note, this is a test card no!" type="info" showIcon />
+            <form id="payment-form" className="stripe-form" onSubmit={handleSubmit}>
                 <h3>Complete your purchase</h3>
                 <CardElement
                     id="card-element"
@@ -114,13 +117,12 @@ const StripeCheckout = ({history}) => {
                 disabled={processing || disabled || succeeded}
                 >
                 <span id="button-text">
-                    {/* {processing ? <div className="spinner" id="spinner"></div> : `Pay $${cart.reduce((total,curr) => total + (curr.count * curr.price), 0)}`} */}
                     <CurrencyFormat value={cart.reduce((total,curr) => total + (curr.count * curr.price), 0)} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{`Pay ${value}`}</span>} />
                 </span>
                 </button>
                 <br />
                 {error && <Alert message={error} type="error" showIcon />}
-            </form>}
+            </form></>}
         </>
     )
 }

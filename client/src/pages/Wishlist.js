@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 
 import LeftNav from '../components/LeftNav/LeftNav';
 import {getWishlist, removeWishlist} from '../utils/user-util';
-import { Tooltip, Card , Image, notification } from 'antd';
+import { Tooltip, Card , Image, notification, Skeleton } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import CurrencyFormat from 'react-currency-format'; 
 import emptyWishlist from '../assets/images/Empty_Wishlist.svg';
@@ -12,6 +12,7 @@ import noImage from '../assets/images/No_Image.png';
 
 const Wishlist = ({history}) => {
     const [wishlist, setWishlist] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const links = [
         {to:"/my/profile", title:"Profile"},
@@ -42,6 +43,9 @@ const Wishlist = ({history}) => {
         catch(err){
             openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
         }
+        finally{
+            setLoading(false);
+        }
     }
 
     const wishlistProductHandler = p => {
@@ -71,6 +75,8 @@ const Wishlist = ({history}) => {
             </div>
             <div className="main__content">
                 <div className="wishlist__wrapper">
+                    {loading ? <Card><Skeleton /></Card> :
+                    <>
                     {wishlist && wishlist.length > 0 ? wishlist.map((c) => {
                         return <Card key={c._id}><div className="orders__products-wrapper wishlist__card">
                                     <div className="orders__products-img"><Image src={c.images.length > 0 ? c.images[0].url : noImage} /></div>
@@ -85,7 +91,7 @@ const Wishlist = ({history}) => {
                                     </div>
                                 </div>
                             </Card>
-                    }) : <div className="orders__empty"><div><img src={emptyWishlist} alt="Empty wishlist" /><p>Your wishlist is empty!</p></div></div>}
+                    }) : <div className="orders__empty"><div><img src={emptyWishlist} alt="Empty wishlist" /><p>Your wishlist is empty!</p></div></div>}</>}
                 </div>
             </div>
         </div>

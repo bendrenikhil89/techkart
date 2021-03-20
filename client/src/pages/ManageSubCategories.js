@@ -44,6 +44,7 @@ const ManageSubCategories = () => {
               fetchSubCategories();
               setCategory(null);
               setSubCategory({slug:'', name:'', mode:'new'});
+              form.resetFields();
               setVisible(false);
               openNotificationWithIcon('success','Sub Category Created', `${newSubCategory.data.subCategory} created successfully!`)
           }
@@ -66,6 +67,7 @@ const ManageSubCategories = () => {
               fetchSubCategories();
               setCategory(null);
               setSubCategory({slug:'', name:'', mode:'new'});
+              form.resetFields();
               setVisible(false);
               openNotificationWithIcon('success','Sub Category Updated', `${updatedSubCategory.data.subCategory} updated successfully!`)
           }

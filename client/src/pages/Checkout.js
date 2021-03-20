@@ -7,6 +7,7 @@ import {useHistory} from 'react-router-dom';
 import './Styles/Checkout.css';
 import AddressForm from '../components/Forms/AddressForm';
 import StepWizard from '../components/StepWizard/StepWizard';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 const Checkout = () => {
 const {user} = useSelector(state => ({...state}));
@@ -28,6 +29,7 @@ const openNotificationWithIcon = (type, msgTitle, msgBody)  => {
 };
 
 const getCartFromDB = async() => {
+    setLoading(true);
     try{
         const userCart = await getCart(email, authtoken);
         setCartContent(userCart.data.cart);
@@ -36,6 +38,9 @@ const getCartFromDB = async() => {
     }
     catch(err){
         openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
+    }
+    finally{
+        setLoading(false);
     }
 }
 
@@ -92,7 +97,7 @@ useEffect(() => {
         <>
         <StepWizard />
         <div className="checkout__wrapper">
-            {cartContent && cartContent.length>0 ?
+            {!loading && cartContent && cartContent.length>0 ?
             <>
             <div className="checkout__left">
                 <h3>Delivery Address</h3>
@@ -140,7 +145,7 @@ useEffect(() => {
                     </div>
                 </div>
             </div>
-            </> : null}
+            </> : <LoadingSpinner />}
         </div>
         </>
     )

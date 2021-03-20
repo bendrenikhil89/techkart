@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import LeftNav from '../components/LeftNav/LeftNav';
 import '../components/AdminDashboard/AdminDashboard.css';
-import { Popconfirm, Empty, Pagination, Divider, notification, Card } from "antd";
+import { Popconfirm, Empty, Pagination, Divider, notification, Card, Skeleton } from "antd";
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import ProductForm from '../components/Forms/ProductForm';
 import { removeProduct, fetchProduct, fetchFilteredProducts, fetchProductsCount } from '../utils/product-util';
@@ -34,6 +34,7 @@ const ManageProducts = () => {
     const [visible, setVisible] = useState(false);
     const [page, setPage] = useState(1);
     const [productsCount, setProductsCount] = useState(0);
+    const [loading, setLoading] = useState(true);
 
     let pageSizeCount = 9;
 
@@ -79,6 +80,7 @@ const ManageProducts = () => {
         try{
             let products = await fetchFilteredProducts({query: "",filter, page, pageSizeCount});
             setProducts(products.data);
+            setLoading(false);
         }
         catch(err){
             openNotificationWithIcon('error',err.response.statusText, err.response.data.msg);
@@ -142,7 +144,9 @@ const ManageProducts = () => {
                         <Pagination size="small" hideOnSinglePage={true} defaultCurrent={1} total={productsCount} pageSize={pageSizeCount} value={page} onChange={value => setPage(value)} />
                     </div>
                 </div>
-                {products.length > 0 
+                {loading ? <Card><Skeleton/></Card>
+                :<>
+                {products.length > 0
                 ?
                 <div className="admin__productcard-wrapper">
                         {
@@ -176,7 +180,7 @@ const ManageProducts = () => {
                             })
                         }
                     </div>
-                    : <Empty
+                    : <><Empty
                         image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
                         imageStyle={{
                         height: 60,
@@ -186,7 +190,8 @@ const ManageProducts = () => {
                             No products found!
                         </span>
                         }
-                    />}
+                    /></>
+                 }</>}
             </div>
         </div>
     )

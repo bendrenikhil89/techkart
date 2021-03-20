@@ -6,10 +6,11 @@ import { getCart, updateUserProfile } from '../utils/user-util';
 
 import './Styles/Profile.css';
 import './Styles/Orders.css';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 const Profile = () => {
     const [userProfile, setUserProfile] = useState({name:'', email:'', mobile:'', gender:'', location:''});
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const {user} = useSelector(state => ({...state}));
     const {email, authtoken} = user;
@@ -32,7 +33,6 @@ const Profile = () => {
 
     const getUserProfileDetails = async() => {
         try{
-            setLoading(true);
             const user = await getCart(email, authtoken);
             let mobile, gender, location;
             user.data.mobile === undefined ? mobile = '' : mobile = user.data.mobile;
@@ -78,7 +78,7 @@ const Profile = () => {
                 <LeftNav links={links} title="Account" active="/my/profile" />
             </div>
             <div className="main__content">
-                <Form
+                {loading ? <LoadingSpinner /> : <Form
                     className="passwordupdate__form"
                     layout="vertical"
                     name="Update Profile"
@@ -134,7 +134,7 @@ const Profile = () => {
                             Save
                         </Button>
                     </Form.Item>
-                </Form>
+                </Form>}
             </div>
         </div>
     )

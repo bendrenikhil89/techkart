@@ -177,7 +177,7 @@ const Dashboard = ({history}) => {
                     />}
                     <h2>New Arrivals</h2>
                     <div className="dashboard__new-arrivals-wrapper" style={{"padding":0,"maxWidth":"1300px","margin":"0 auto"}}>
-                        {newArrivals && newArrivals.length > 0 && <ItemsCarousel
+                        {newArrivals && newArrivals.length > 0 ? <ItemsCarousel
                             numberOfCards={itemCarouselCount}
                             infiniteLoop={false}
                             gutter={16}
@@ -198,49 +198,22 @@ const Dashboard = ({history}) => {
                                 return <ProductCard p={p} key={p._id}/>
                                 })
                             }
-                        </ItemsCarousel>}
+                        </ItemsCarousel> : 
+                        <Empty
+                            image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                            imageStyle={{
+                            height: 60,
+                            }}
+                            description={
+                            <span>
+                                No products found!
+                            </span>
+                            }
+                        />}
                     </div>
-                    {/* <div style={{marginTop:"40px"}}>
-                        <ItemsCarousel
-                                numberOfCards={3}
-                                infiniteLoop={false}
-                                gutter={4}
-                                activePosition={'center'}
-                                disableSwipe={false}
-                                alwaysShowChevrons={false}
-                                slidesToScroll={1}
-                                outsideChevron={false}
-                                showSlither={false}
-                                firstAndLastGutter={false}
-                                activeItemIndex={1}
-                            >
-                                <div
-                                    style={{
-                                    height: 200,
-                                    background: `url(${Offer1})`,
-                                    backgroundRepeat: 'round'
-                                    }}
-                                />
-                                <div
-                                    style={{
-                                    height: 200,
-                                    background: `url(${Offer2})`,
-                                    backgroundRepeat: 'round'
-                                    }}
-                                />
-                                <div
-                                    style={{
-                                    height: 200,
-                                    background: `url(${Offer3})`,
-                                    backgroundRepeat: 'round'
-                                    }}
-                                />
-                            </ItemsCarousel>
-                        </div>     */}
-
                     <h2 style={{paddingTop:'15px'}}>Best Sellers</h2>
                     <div className="dashboard__best-sellers-wrapper" style={{"padding":0,"maxWidth":"1300px","margin":"0 auto"}}>
-                        {bestSellers && bestSellers.length > 0 && <ItemsCarousel
+                        {bestSellers && bestSellers.length > 0 ? <ItemsCarousel
                             numberOfCards={itemCarouselCount}
                             infiniteLoop={false}
                             gutter={16}
@@ -261,7 +234,19 @@ const Dashboard = ({history}) => {
                                 return <ProductCard p={p} key={p._id}/>
                                 })
                             }
-                        </ItemsCarousel>}
+                        </ItemsCarousel> :
+                        <Empty
+                            image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+                            imageStyle={{
+                            height: 60,
+                            }}
+                            description={
+                            <span>
+                                No products found!
+                            </span>
+                            }
+                        />
+                        }
                     </div>
             </div>
             <FooterCard />

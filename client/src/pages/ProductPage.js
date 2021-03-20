@@ -3,6 +3,7 @@ import ImageGallery from 'react-image-gallery';
 import ItemsCarousel from 'react-items-carousel';
 import useWindowDimensions from '../Hooks/useWindowDimensions';
 import ProductCard from '../components/Card/ProductCard/ProductCard';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 import { fetchProduct, rateProduct, fetchSimilarProducts } from '../utils/product-util';
 import { addWishlist, getWishlist } from '../utils/user-util';
 import {Tag, notification, Button, Modal, Rate} from 'antd';
@@ -24,6 +25,7 @@ const ProductPage = ({match, history}) => {
     const [addedInCart, setAddedInCart] = useState(false);
     const [addedInWishlist, setAddedInWishlist] = useState(false);
     const [userWishlist, setUserWishlist] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const [activeItemIndexSimilarProducts, setActiveItemIndexSimilarProducts] = useState(0);
     let itemCarouselCount = 1;
@@ -186,6 +188,7 @@ const ProductPage = ({match, history}) => {
                 getExistingUserRating(product.data);
                 getSimilarProducts(product.data._id, product.data.category);
                 if(product.data.ratings.length > 0) getAverageProductRating(product.data);
+                setLoading(false);
             }
         }
         catch(err){
@@ -236,7 +239,7 @@ const ProductPage = ({match, history}) => {
 
     return (
         <>
-        <div className="product__container">
+        {!loading ? <><div className="product__container">
             <div className="product__carousel">
                 <div className="product__carousel-wrapper">
                     {productImages.length > 0 ? <ImageGallery 
@@ -315,7 +318,7 @@ const ProductPage = ({match, history}) => {
                 }
             </ItemsCarousel> : <p>No similar products found!</p>}
         </div>
-        </div>
+        </div></> : <LoadingSpinner />}
 
         <Modal title="Rate Product" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} centered>
             {user && user.authtoken ? <Rate defaultValue={0} onChange={handleRatingChange} value={rating}/> : <p>Please <Link to={{pathname:"/login", state: { source: `/product/${productDetails.slug}` }}}>login</Link> to rate a product!</p>}

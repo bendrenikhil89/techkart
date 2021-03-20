@@ -40,6 +40,7 @@ const ManageCategory = () => {
                 const newCategory = await create(category.name, category.images, email, authtoken);
                 fetchCategories();
                 setCategory({slug:'', name:'', mode:'', images: []});
+                form.resetFields();
                 setVisible(false);
                 openNotificationWithIcon('success','Category Created', `${newCategory.data.category} created successfully!`)
             }
@@ -65,6 +66,7 @@ const ManageCategory = () => {
                 const updatedCategory = await update(category.name, category.images, email, authtoken, category.slug);
                 fetchCategories();
                 setCategory({slug:'', name:'', mode:'', images: []});
+                form.resetFields();
                 setVisible(false);
                 openNotificationWithIcon('success','Category Updated', `${updatedCategory.data.category} updated successfully!`)
             }

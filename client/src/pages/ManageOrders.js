@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import LeftNav from '../components/LeftNav/LeftNav';
-import { Button, Tooltip, Collapse, Image, Divider, Select, notification } from 'antd';
+import { Button, Tooltip, Collapse, Image, Divider, Select, notification, Card, Skeleton } from 'antd';
 import { CodeSandboxOutlined } from '@ant-design/icons';
 import {useSelector} from 'react-redux';
 import CurrencyFormat from 'react-currency-format'; 
@@ -15,6 +15,7 @@ const ManageOrders = () => {
     const [orders, setOrders] = useState([]);
     const [updateOrder, setUpdateOrder] = useState({status:'', _id:''});
     const [activeCollapse, setActiveCollapse] = useState('0');
+    const [loading, setLoading] = useState(true);
     const links = [
         {to:"/dashboard/admin/categories", title:"Categories"},
         {to:"/dashboard/admin/subcategories", title:"Sub Categories"},
@@ -68,6 +69,9 @@ const ManageOrders = () => {
         catch(err){
             console.log(err);
         }
+        finally{
+            setLoading(false);
+        }
     }
 
     const displayOrders = () => {
@@ -106,7 +110,10 @@ const ManageOrders = () => {
                 <LeftNav links={links} title="Admin Dashboard" active="/dashboard/admin/orders" />
             </div>
             <div className="main__content">
-                {orders && orders.length > 0 ? displayOrders() : <div className="orders__empty"><div><img src={emptyOrders} /><p>Your order history is empty!</p></div></div> } 
+                {loading ? <Card style={{marginTop:'16px'}}><Skeleton /></Card> :
+                <>
+                {orders && orders.length > 0 ? displayOrders() : <div className="orders__empty"><div><img src={emptyOrders} /><p>Order history is empty!</p></div></div> } 
+                </>}
             </div>
         </div>
     )

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import LeftNav from '../components/LeftNav/LeftNav';
-import { Tag, Tooltip, Collapse, Image, Divider } from 'antd';
+import { Tag, Tooltip, Collapse, Image, Divider, Card, Skeleton } from 'antd';
 import { CodeSandboxOutlined, CheckCircleOutlined, SyncOutlined, CloseCircleOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import {fetchAllOrders} from '../utils/order-util';
 import {useSelector} from 'react-redux';
@@ -12,6 +12,7 @@ import './Styles/Orders.css';
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
     const links = [
         {to:"/my/profile", title:"Profile"},
         {to:"/my/passwordupdate", title:"Update Password"},
@@ -36,6 +37,9 @@ const Orders = () => {
         }
         catch(err){
             console.log(err);
+        }
+        finally{
+            setLoading(false);
         }
     }
 
@@ -74,7 +78,11 @@ const Orders = () => {
                 <LeftNav links={links} title="Account" active="/my/orders" />
             </div>
             <div className="main__content">
-                {orders && orders.length > 0 ? displayOrders() : <div className="orders__empty"><div><img src={emptyOrders} /><p>Your order history is empty!</p></div></div> } 
+                {loading ? <Card style={{marginTop:'16px'}}><Skeleton /></Card> :
+                <>
+                {orders && orders.length > 0 ? displayOrders() : 
+                    <div className="orders__empty"><div><img src={emptyOrders} /><p>Your order history is empty!</p></div></div>
+                }</>} 
             </div>
         </div>
     )
