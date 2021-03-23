@@ -184,6 +184,11 @@
     font-size: 10px !important;
 }
 
+.product__carousel-button-outOfStock{
+    background: #bdbdbd !important;
+    color:#323e32 !important;
+}
+
 @media screen and (max-width:1365px){
     .product__similar-products{
         padding:16px;

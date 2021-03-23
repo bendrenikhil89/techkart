@@ -46,10 +46,6 @@ const Navbar = () => {
               <strong>New customer?</strong>
               <Link to="/signup">Sign Up</Link>
           </div>
-          {/* <Divider /> 
-          <Button type="text" icon={<UserOutlined />}>My Profile</Button>
-          <Divider />
-          <Button type="text" icon={<FundOutlined />}>Orders</Button> */}
         </div>
     );
     
@@ -99,7 +95,7 @@ const Navbar = () => {
             <nav className="navbar__nav">
                 <div className="navbar__brand-wrapper">
                     <Link to="/" className="navbar__brand">TechKart</Link>
-                    {width > 768 && <Input placeholder="Search for products, brands and more" value={text} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />}
+                    {width > 940 && <Input placeholder="Search for products, brands and more" value={text} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />}
                 </div>
                 <div className="navbar__links-wrapper">
                     <ul className="navbar__links">
@@ -133,7 +129,7 @@ const Navbar = () => {
                     </ul>
                 </div>
             </nav>
-            {width <=  768 && <Input placeholder="Search for products, brands and more" value={searchText} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />}
+            {width <=  940 && <Input placeholder="Search for products, brands and more" value={searchText} onChange={searchChangeHandler} suffix={<SearchOutlined onClick={searchHandler} />} className="navbar__search" />}
         </div>
     )
 }

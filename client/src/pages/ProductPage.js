@@ -258,9 +258,13 @@ const ProductPage = ({match, history}) => {
                     </Button> : <Button className="product__carousel-button" type="primary" icon={<HeartOutlined style={{fontSize:'1rem'}}/>} size="large">
                         <span className="product__carousel-buttonText">Wishlisted</span>
                     </Button>}
-                    {!addedInCart ? <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addCartHandler(productDetails)}>
+                    {!addedInCart ? 
+                    (productDetails.quantity > 0 ? <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => addCartHandler(productDetails)}>
                         <span className="product__carousel-buttonText">Add to cart</span>
-                    </Button> : <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => history.push("/cart")}>
+                    </Button> : <Button className="product__carousel-button product__carousel-button-outOfStock" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large">
+                        <span className="product__carousel-buttonText">Out of stock</span>
+                    </Button>) 
+                    : <Button className="product__carousel-button" type="primary" icon={<ShoppingCartOutlined style={{fontSize:'1rem'}}/>} size="large" onClick={() => history.push("/cart")}>
                         <span className="product__carousel-buttonText">Go to cart</span>
                     </Button>}
                 </div>

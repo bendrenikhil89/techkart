@@ -9,7 +9,7 @@
     transform: translate(-50%, -50%);
     text-transform: uppercase;
     font-weight: 900;
-    color: #212c8b;
+    color: #1976d2;
     letter-spacing: 0.2em;
   }
   .loading__spinner::before, .loading__spinner::after {
@@ -17,7 +17,7 @@
     display: block;
     width: 15px;
     height: 15px;
-    background: #212c8b;
+    background: #1976d2;
     position: absolute;
     -webkit-animation: load 0.7s infinite alternate ease-in-out;
             animation: load 0.7s infinite alternate ease-in-out;

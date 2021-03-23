@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import { fetchFilteredProducts, fetchProductsCount, fetchBrands } from '../utils/product-util';
 import {fetchAllSubCategories} from '../utils/subcategories-util';
 import {fetchAll} from '../utils/categories-util';
-import {notification, Menu, Slider, Checkbox, Radio, Pagination, Button, Skeleton, Card} from 'antd';
+import {notification, Menu, Slider, Checkbox, Radio, Pagination, Button, Skeleton, Card, Collapse} from 'antd';
 import { DollarOutlined, BarsOutlined, AntDesignOutlined, StarOutlined, StarFilled, TagsOutlined, ClearOutlined } from '@ant-design/icons';
 import ProductCard from '../components/Card/ProductCard/ProductCard';
 import {useSelector, useDispatch} from 'react-redux';
+import useWindowDimensions from '../Hooks/useWindowDimensions';
 import notFound from '../assets/images/Not_Found.svg';
 
 import './Styles/Shop.css';
@@ -14,6 +15,7 @@ const Shop = () => {
     const dispatch = useDispatch();
     const {search} = useSelector(state => ({...state}));
     const {text, category} = search;
+    const {width} = useWindowDimensions();
 
     const [pageLoadProducts, setPageLoadProducts] = useState([]);
     const [brands, setBrands] = useState([]);
@@ -30,6 +32,8 @@ const Shop = () => {
           description: msgBody
         });
     };
+
+    const { Panel } = Collapse;
 
     const radioStyle = {
         display: 'block',
@@ -208,7 +212,51 @@ const Shop = () => {
     return (
         <div className="productspage__wrapper">
             <div className="productspage__leftnav">
-            <Button type="primary" style={{background:'#1976d2'}} block onClick={handleClearFilter}>Clear Filter</Button>
+                {width < 768 ? <Collapse bordered={false}>
+                    <Panel header="Filter(s)" key="1">
+                        <Button type="primary" style={{background:'#1976d2'}} block onClick={handleClearFilter}>Clear Filter</Button>
+                        <Menu mode="inline" defaultOpenKeys={['price', 'categories','subcategories', 'brand','rating']}>
+                            <SubMenu key="price" icon={<DollarOutlined />} title="Price" >
+                                <Slider range max="4999" value={filter && filter.price ? filter.price : [0,0]} tipFormatter={sliderToolTipFormatter} onChange={value => handleFilterChange("price", value)} style={{margin:'0px 20px 10px 30px'}}/>
+                            </SubMenu>
+                            <SubMenu key="categories" icon={<BarsOutlined />} title="Category">
+                                {filterCategories}
+                            </SubMenu>
+                            <SubMenu key="subcategories" icon={<TagsOutlined />} title="SubCategories">
+                                {filter && filter.subcategoryID && <div style={{display:'flex', justifyContent:'flex-end', paddingRight:'8px'}}>
+                                    <Button size="small" icon={<ClearOutlined />} type="text" onClick={(e) => handleIndividualClearFilter(e,"subcategoryID")}>Clear</Button>
+                                </div>}
+                                <div style={{margin:'0px 0px 10px 25px'}}>
+                                    <Radio.Group value={filter && (filter.subcategoryID || null)}>{filterSubCategories}</Radio.Group>
+                                </div>
+                            </SubMenu>
+                            <SubMenu key="brand" icon={<AntDesignOutlined />} title="Brand">
+                                {filter && filter.brand && <div style={{display:'flex', justifyContent:'flex-end', paddingRight:'8px'}}>
+                                    <Button size="small" icon={<ClearOutlined />} type="text" onClick={(e) => handleIndividualClearFilter(e,"brand")}>Clear</Button>
+                                </div>}
+                                <div style={{margin:'0px 0px 10px 25px'}}>
+                                    <Radio.Group value={filter && filter.brand}>
+                                        {filterBrands}
+                                    </Radio.Group>
+                                </div>
+                            </SubMenu>
+                            <SubMenu key="rating" icon={<StarOutlined />} title="Rating">
+                                {filter && filter.rating && <div style={{display:'flex', justifyContent:'flex-end', paddingRight:'8px'}}>
+                                    <Button size="small" icon={<ClearOutlined />} type="text" onClick={(e) => handleIndividualClearFilter(e,"rating")}>Clear</Button>
+                                </div>}
+                                <div style={{margin:'0px 0px 10px 25px'}}>
+                                    <div style={{margin:'0px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",5)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                                    <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",4)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                                    <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",3)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                                    <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",2)}><StarFilled style={{color:'#ffc107'}}/><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                                    <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",1)}><StarFilled style={{color:'#ffc107'}}/><br /></div>
+                                </div>
+                            </SubMenu>
+                        </Menu>
+                    </Panel>
+                </Collapse>    
+                :
+                <><Button type="primary" style={{background:'#1976d2'}} block onClick={handleClearFilter}>Clear Filter</Button>
                 <Menu mode="inline" defaultOpenKeys={['price', 'categories','subcategories', 'brand','rating']}>
                     <SubMenu key="price" icon={<DollarOutlined />} title="Price" >
                         <Slider range max="4999" value={filter && filter.price ? filter.price : [0,0]} tipFormatter={sliderToolTipFormatter} onChange={value => handleFilterChange("price", value)} style={{margin:'0px 20px 10px 30px'}}/>
@@ -246,7 +294,7 @@ const Shop = () => {
                             <div style={{margin:'10px 0px', cursor:'pointer'}} onClick={() => handleFilterChange("rating",1)}><StarFilled style={{color:'#ffc107'}}/><br /></div>
                         </div>
                     </SubMenu>
-                </Menu>
+                </Menu></> }
             </div>
             <div className="shop__content">
                 {loading ? <Card><Skeleton/></Card> :

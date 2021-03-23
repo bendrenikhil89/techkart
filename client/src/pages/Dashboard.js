@@ -15,7 +15,7 @@ import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 import { Link } from 'react-router-dom';
 
 const Dashboard = ({history}) => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [bannerImages, setBannerImages] = useState([]);
     const [categories, setCategories] = useState({slug:'', name:'', images: [], id:''});
     const [newArrivals, setNewArrivals] = useState([]);
@@ -77,7 +77,6 @@ const Dashboard = ({history}) => {
     }
 
     const fetchProductsBestSellers = async() => {
-        setLoading(true);
         try{
             let newArrivals = await fetchProductsByPageSize("sold", "desc", 1, 8);
             setBestSellers(newArrivals.data);
