@@ -72,7 +72,7 @@ const Cart = () => {
             <div className="productDetails__details">
                 <p>{cartDetails.title}<span style={{paddingLeft:"20px"}}>{cartDetails.quantity > 0 ? <Tag color="#87d068">In stock</Tag> : <Tag color="red">Out of stock</Tag> }</span></p>
                 <p><strong><CurrencyFormat value={cartDetails.price} displayType={'text'} thousandSeparator={true} prefix={'$'} renderText={value => <span>{value}</span>} /></strong></p>
-                <div style={{display:'flex'}}>
+                <div className="productDetails__quantity-delete">
                     <div style={{marginRight:'20px',display:'flex',alignItems:'center'}}>
                         <span style={{marginRight:'10px'}}>Quantity:</span><InputNumber min={1} max={cartDetails.quantity} defaultValue={cartDetails.count} onChange={value => updateCartQuantity(value, cartDetails)} />
                     </div>

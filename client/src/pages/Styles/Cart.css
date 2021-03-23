@@ -123,3 +123,9 @@
         padding:0px 16px;
     }
 }
+
+@media screen and (min-width:400px){
+    .productDetails__quantity-delete{
+        display: flex;
+    }
+}

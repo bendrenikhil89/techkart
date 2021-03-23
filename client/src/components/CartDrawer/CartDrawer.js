@@ -29,7 +29,7 @@ const CartDrawer = () => {
     return (
         <Drawer
             title="Your cart"
-            width={window.innerWidth > 768 ? 300 : window.innerWidth - 150}
+            width={window.innerWidth > 768 ? 300 : window.innerWidth - 75}
             placement="right"
             closable={true}
             onClose={onCartDrawerClose}
