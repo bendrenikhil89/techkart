@@ -69,8 +69,7 @@ const SiteFooter = () => {
                     <li><YoutubeFilled style={{fontSize:'2rem',color:'#f70000'}}/></li>
                     </ul>
                 </div>
-                <div className="clearfix"></div>
-                </div>
+            </div>
         </div> : null}
         </>
     )
